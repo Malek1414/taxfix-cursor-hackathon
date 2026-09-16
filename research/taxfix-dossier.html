@@ -1,0 +1,920 @@
+<title>Taxfix Hackathon Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --paper:      #F6F8F3;
+    --surface:    #FFFFFF;
+    --surface-2:  #EFF3EB;
+    --ink:        #13190F;
+    --ink-2:      #4B564A;
+    --ink-3:      #78836F;
+    --rule:       #D7DED0;
+    --rule-2:     #E9EDE3;
+    --pine:       #10593D;
+    --pine-soft:  #DDEBE1;
+    --sienna:     #A63D1B;
+    --sienna-soft:#F6E3DB;
+    --ochre:      #7A5B0B;
+    --ochre-soft: #F3E9CE;
+    --shadow:     0 1px 2px rgba(19,25,15,.05), 0 8px 24px -16px rgba(19,25,15,.25);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #0E110C;
+      --surface:    #161A13;
+      --surface-2:  #1D221A;
+      --ink:        #E9EEE4;
+      --ink-2:      #A3AE9C;
+      --ink-3:      #7C876F;
+      --rule:       #2A3026;
+      --rule-2:     #21261E;
+      --pine:       #5CC494;
+      --pine-soft:  #17301F;
+      --sienna:     #E88257;
+      --sienna-soft:#33190F;
+      --ochre:      #D9B45C;
+      --ochre-soft: #2C2413;
+      --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #0E110C;
+    --surface:    #161A13;
+    --surface-2:  #1D221A;
+    --ink:        #E9EEE4;
+    --ink-2:      #A3AE9C;
+    --ink-3:      #7C876F;
+    --rule:       #2A3026;
+    --rule-2:     #21261E;
+    --pine:       #5CC494;
+    --pine-soft:  #17301F;
+    --sienna:     #E88257;
+    --sienna-soft:#33190F;
+    --ochre:      #D9B45C;
+    --ochre-soft: #2C2413;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono, .tag, .rail, th, .kpi-n, .stat-n, .lede-k {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  h1, h2, h3, h4, .ui, .btn, nav a {
+    font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* ---------- shell ---------- */
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px 120px; }
+  .col  { max-width: 700px; }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .topbar-in {
+    max-width: 1180px; margin: 0 auto; padding: 10px 28px;
+    display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  }
+  .brandmark {
+    font-family: Archivo, sans-serif; font-weight: 800; font-size: 13px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink);
+    display: flex; align-items: center; gap: 8px; white-space: nowrap;
+  }
+  .brandmark i {
+    display: inline-block; width: 9px; height: 9px; background: var(--pine);
+    border-radius: 2px; font-style: normal;
+  }
+  nav { display: flex; gap: 16px; flex-wrap: wrap; overflow-x: auto; }
+  nav a {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .04em;
+    color: var(--ink-3); text-decoration: none; white-space: nowrap;
+    padding: 3px 0; border-bottom: 2px solid transparent;
+  }
+  nav a:hover { color: var(--pine); border-bottom-color: var(--pine); }
+  nav a:focus-visible { outline: 2px solid var(--pine); outline-offset: 3px; }
+
+  /* ---------- masthead ---------- */
+  header.mast { padding: 56px 0 40px; border-bottom: 3px double var(--rule); }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace; font-size: 11.5px; font-weight: 500;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--pine);
+    display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+  }
+  .eyebrow span { color: var(--ink-3); }
+  h1 {
+    font-size: clamp(38px, 7vw, 76px); font-weight: 800; line-height: .96;
+    letter-spacing: -.035em; margin: 20px 0 0; text-wrap: balance;
+  }
+  h1 em { font-style: normal; color: var(--pine); }
+  .standfirst {
+    font-size: 20px; line-height: 1.5; color: var(--ink-2);
+    max-width: 640px; margin: 22px 0 0;
+  }
+
+  /* ---------- lede box ---------- */
+  .lede {
+    margin: 40px 0 0; background: var(--surface); border: 1px solid var(--rule);
+    border-left: 4px solid var(--pine); box-shadow: var(--shadow);
+  }
+  .lede-hd {
+    padding: 14px 24px; border-bottom: 1px solid var(--rule-2);
+    font-family: Archivo, sans-serif; font-weight: 700; font-size: 12px;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--ink);
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  .lede-hd span { color: var(--ink-3); font-weight: 500; letter-spacing: .06em; }
+  .lede ol { margin: 0; padding: 22px 26px 26px 26px; list-style: none; display: grid; gap: 18px; }
+  .lede li { display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: start; }
+  .lede-k { font-size: 12px; font-weight: 600; color: var(--pine); padding-top: 4px; }
+  .lede li p { margin: 0; font-size: 16.5px; line-height: 1.55; }
+  .lede li b { font-weight: 600; }
+
+  /* ---------- sections ---------- */
+  section { padding: 66px 0 0; scroll-margin-top: 62px; }
+  .sec-hd { display: grid; grid-template-columns: 76px 1fr; gap: 20px; align-items: baseline; }
+  .rail {
+    font-size: 12px; font-weight: 600; letter-spacing: .06em; color: var(--pine);
+    border-top: 2px solid var(--pine); padding-top: 8px;
+  }
+  h2 {
+    font-size: clamp(25px, 3.4vw, 36px); font-weight: 700; letter-spacing: -.024em;
+    line-height: 1.1; margin: 0; text-wrap: balance;
+  }
+  .sec-body { margin-left: 0; }
+  @media (min-width: 760px) { .sec-body { margin-left: 96px; } }
+  .sec-body > p, .sec-body > ul, .sec-body > ol { max-width: 700px; }
+  p { margin: 18px 0 0; }
+  h3 {
+    font-size: 17px; font-weight: 700; letter-spacing: -.005em; margin: 38px 0 0;
+    padding-bottom: 7px; border-bottom: 1px solid var(--rule);
+    max-width: 700px;
+  }
+  h4 { font-size: 14.5px; font-weight: 700; margin: 26px 0 0; letter-spacing: -.005em; }
+  ul, ol { padding-left: 20px; }
+  li { margin: 9px 0; }
+  a { color: var(--pine); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  strong { font-weight: 600; }
+  .de { font-style: italic; color: var(--ink-2); }
+
+  /* ---------- tags ---------- */
+  .tag {
+    display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; padding: 2.5px 7px; border-radius: 2px;
+    vertical-align: 2px; white-space: nowrap;
+  }
+  .t-fact { background: var(--pine-soft); color: var(--pine); }
+  .t-read { background: var(--ochre-soft); color: var(--ochre); }
+  .t-risk { background: var(--sienna-soft); color: var(--sienna); }
+
+  /* ---------- stat strip ---------- */
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    margin: 32px 0 0;
+  }
+  .stat { background: var(--surface); padding: 18px 18px 16px; }
+  .stat-n {
+    font-size: 26px; font-weight: 600; letter-spacing: -.03em; color: var(--ink);
+    font-variant-numeric: tabular-nums; line-height: 1.1;
+  }
+  .stat-l {
+    font-family: Archivo, sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3);
+    margin-top: 7px; line-height: 1.35;
+  }
+
+  /* ---------- tables ---------- */
+  .tscroll { overflow-x: auto; margin: 26px 0 0; border: 1px solid var(--rule); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 14.5px; }
+  th {
+    text-align: left; font-size: 10.5px; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-3); padding: 12px 14px;
+    border-bottom: 1px solid var(--rule); background: var(--surface-2);
+    white-space: nowrap;
+  }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--rule-2); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td.num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.me td { background: var(--pine-soft); font-weight: 600; }
+  tr.me td:first-child::before { content: "▸ "; color: var(--pine); }
+  .caption { font-size: 13px; color: var(--ink-3); margin-top: 10px; max-width: 700px; }
+
+  /* ---------- people ---------- */
+  .people { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 28px 0 0; }
+  .person { background: var(--surface); padding: 20px 22px; display: grid; grid-template-columns: 1fr; gap: 4px; }
+  @media (min-width: 720px) { .person { grid-template-columns: 210px 1fr; gap: 24px; } }
+  .p-id { }
+  .p-name { font-family: Archivo, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -.01em; }
+  .p-role {
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--pine); margin-top: 3px;
+  }
+  .p-note { font-size: 15.5px; line-height: 1.55; color: var(--ink-2); }
+  .p-note b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- pressure cards ---------- */
+  .threats { display: grid; gap: 18px; margin: 30px 0 0; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
+  .threat {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-top: 3px solid var(--sienna); padding: 20px 20px 22px;
+  }
+  .threat h4 { margin: 10px 0 0; font-size: 16px; }
+  .threat p { font-size: 15px; margin: 10px 0 0; color: var(--ink-2); }
+  .threat .vec {
+    font-family: "IBM Plex Mono", monospace; font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--sienna);
+  }
+
+  /* ---------- chart ---------- */
+  .figure { margin: 30px 0 0; background: var(--surface); border: 1px solid var(--rule); padding: 22px 22px 16px; }
+  .fig-hd { font-family: Archivo, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: -.005em; }
+  .fig-sub { font-size: 12.5px; color: var(--ink-3); margin-top: 3px; font-family: "IBM Plex Mono", monospace; }
+  .fig-svg { width: 100%; height: auto; display: block; margin-top: 16px; overflow: visible; }
+  .fig-legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; font-size: 12px; color: var(--ink-2); font-family: "IBM Plex Mono", monospace; }
+  .fig-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+  /* ---------- build ideas ---------- */
+  .idea {
+    background: var(--surface); border: 1px solid var(--rule); margin: 20px 0 0;
+    display: grid; grid-template-columns: 1fr; box-shadow: var(--shadow);
+  }
+  .idea-hd { padding: 18px 22px 0; }
+  .idea-n {
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: .1em; color: var(--pine);
+  }
+  .idea-hd h4 { margin: 6px 0 0; font-size: 19px; letter-spacing: -.015em; }
+  .idea-body { padding: 0 22px 20px; }
+  .idea-body p { font-size: 15.5px; margin: 12px 0 0; }
+  .idea-meta {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1px; background: var(--rule); border-top: 1px solid var(--rule);
+  }
+  .idea-meta div { background: var(--surface-2); padding: 11px 14px; }
+  .idea-meta dt {
+    font-family: Archivo, sans-serif; font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .idea-meta dd {
+    margin: 4px 0 0; font-size: 13.5px; font-family: "IBM Plex Mono", monospace;
+    color: var(--ink); line-height: 1.4;
+  }
+
+  /* ---------- callout ---------- */
+  .callout {
+    margin: 30px 0 0; padding: 20px 24px; background: var(--surface-2);
+    border-left: 3px solid var(--ochre); max-width: 700px;
+  }
+  .callout p:first-child { margin-top: 0; }
+  .callout .lbl {
+    font-family: Archivo, sans-serif; font-size: 10.5px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--ochre);
+    display: block; margin-bottom: 8px;
+  }
+
+  blockquote {
+    margin: 26px 0 0; padding: 0 0 0 20px; border-left: 2px solid var(--pine);
+    font-size: 18px; line-height: 1.5; color: var(--ink); max-width: 660px;
+  }
+  blockquote cite {
+    display: block; margin-top: 10px; font-style: normal; font-size: 12.5px;
+    font-family: "IBM Plex Mono", monospace; color: var(--ink-3); letter-spacing: .03em;
+  }
+
+  /* ---------- glossary ---------- */
+  .gloss { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 28px 0 0; }
+  .gl { background: var(--surface); padding: 14px 18px; display: grid; grid-template-columns: 1fr; gap: 3px; }
+  @media (min-width: 680px) { .gl { grid-template-columns: 230px 1fr; gap: 20px; } }
+  .gl-t { font-family: "IBM Plex Mono", monospace; font-size: 13.5px; font-weight: 600; color: var(--pine); }
+  .gl-d { font-size: 14.5px; color: var(--ink-2); line-height: 1.5; }
+
+  /* ---------- sources ---------- */
+  .src { columns: 2; column-gap: 34px; font-size: 13px; color: var(--ink-2); margin: 24px 0 0; }
+  @media (max-width: 680px) { .src { columns: 1; } }
+  .src li { break-inside: avoid; margin: 0 0 9px; }
+
+  footer {
+    margin-top: 80px; padding-top: 26px; border-top: 3px double var(--rule);
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink-3);
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brandmark"><i></i>Taxfix Dossier</div>
+    <nav>
+      <a href="#company">§01 Company</a>
+      <a href="#money">§02 Money</a>
+      <a href="#people">§03 People</a>
+      <a href="#clients">§04 Clients</a>
+      <a href="#squeeze">§05 Squeeze</a>
+      <a href="#product">§06 Product</a>
+      <a href="#inside">§07 Inside</a>
+      <a href="#ask">§08 The Ask</a>
+      <a href="#build">§09 Build</a>
+      <a href="#stage">§10 Stage</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="eyebrow">
+      Field brief <span>·</span> <span>Cursor Hackathon Berlin @ Taxfix SE</span> <span>·</span> <span>Köpenicker Str. 122</span> <span>·</span> <span>Compiled 16 Sep 2026</span>
+    </div>
+    <h1>A unicorn with<br>two years <em>on the clock</em></h1>
+    <p class="standfirst">Taxfix put €5bn back in people's pockets and got to within sight of breakeven. Then ChatGPT, a free Check24 app, and the German finance ministry all arrived at once. Here is what's actually broken inside — and what to build in the 135 minutes you get.</p>
+
+    <div class="lede">
+      <div class="lede-hd">The short version <span>Read this if you read nothing else</span></div>
+      <ol>
+        <li><span class="lede-k">01</span><p>They are <b>squeezed on three fronts simultaneously</b>: free general AI, a free best-in-class competitor app (Check24), and the German state building automatic pre-filled returns. Their core product — the simple employee return — is the exact thing all three commoditise.</p></li>
+        <li><span class="lede-k">02</span><p>They have <b>already pivoted the company's answer</b>: "AI-native financial platform," an R&amp;D reorg around <b>"Builders"</b> in pods of 2–3, and job ads that name Cursor, Claude and Lovable by name. This hackathon is that thesis performed in public.</p></li>
+        <li><span class="lede-k">03</span><p>Their real growth bet isn't the employee app at all — it's the <b>€19.99/month self-employed subscription</b> launched March 2026. Recurring revenue, 3.7m addressable people, and a category where they are the newest entrant, not the leader.</p></li>
+        <li><span class="lede-k">04</span><p>Their most expensive, least-scalable asset is <b>human tax experts</b>. Every hour of expert time you automate is direct margin — and Germany's tax-advisor shortage means they can't buy their way out.</p></li>
+        <li><span class="lede-k">05</span><p><b>Build for the 25%, not the 75%.</b> Their own design job ad says it: AI gets software to 75% and "excellence lives in the remaining 25%." Demo the judgment layer, not the generation layer.</p></li>
+      </ol>
+    </div>
+  </header>
+
+  <!-- ============ 01 ============ -->
+  <section id="company">
+    <div class="sec-hd">
+      <div class="rail">§01</div>
+      <h2>The company, in plain terms</h2>
+    </div>
+    <div class="sec-body">
+      <p>Taxfix SE was founded in Berlin in 2016 by <strong>Lino Teuteberg</strong> and <strong>Mathis Büchi</strong> on one observation: roughly half of German employees who are owed a refund never claim it, because the <span class="de">Steuererklärung</span> is genuinely frightening. Their answer was to throw away the form entirely and replace it with a chat-style questionnaire — you photograph your <span class="de">Lohnsteuerbescheinigung</span>, answer plain-language questions, and the app does the mapping to tax law behind the curtain.</p>
+
+      <p>The stated mission has stayed remarkably consistent: <strong>"fix finance for all"</strong> — make financial obligations legible to people who were never taught them. Internally the phrasing you'll hear is about confidence and control over your own money, not about tax software. That distinction matters for what you build: they see themselves as a consumer finance company that happens to start at tax, not a tax tool.</p>
+
+      <div class="stats">
+        <div class="stat"><div class="stat-n">10m+</div><div class="stat-l">Returns filed</div></div>
+        <div class="stat"><div class="stat-n">€5bn+</div><div class="stat-l">Refunded to users</div></div>
+        <div class="stat"><div class="stat-n">~400</div><div class="stat-l">Employees</div></div>
+        <div class="stat"><div class="stat-n">$330m</div><div class="stat-l">Raised, total</div></div>
+        <div class="stat"><div class="stat-n">4</div><div class="stat-l">Markets: DE ES UK IT</div></div>
+        <div class="stat"><div class="stat-n">2016</div><div class="stat-l">Founded, Berlin</div></div>
+      </div>
+
+      <h3>Timeline that explains the mood in the building</h3>
+      <div class="tscroll">
+        <table>
+          <thead><tr><th>When</th><th>What happened</th><th>Why it matters tomorrow</th></tr></thead>
+          <tbody>
+            <tr><td class="num">Apr 2022</td><td>$220m Series D led by Ontario Teachers' (TVG), with Index, Valar, Creandum, Redalpine. Unicorn at $1bn.</td><td>That valuation is now the thing they have to grow into. No round since.</td></tr>
+            <tr><td class="num">Feb 2023</td><td>Acquired Steuerbot (Stuttgart tax chatbot).</td><td>They still run it as a separate brand — duplicated stack.</td></tr>
+            <tr><td class="num">May 2023</td><td>Laid off 120 people — 20% of staff.</td><td>Institutional memory of a crunch. Efficiency framing lands well here.</td></tr>
+            <tr><td class="num">Feb 2024</td><td>Snir Yarom joins as CTO from Zalando.</td><td>He owns the AI-native R&amp;D agenda. Likely in the room.</td></tr>
+            <tr><td class="num">Jul 2024</td><td>Acquired TaxScouts (London + Madrid + Tallinn) — accountant-assisted filing, self-employed expertise.</td><td>This is where the self-employed capability came from.</td></tr>
+            <tr><td class="num">May 2025</td><td>Kristen Waeber (ex-N26) replaces co-founder Teuteberg as CPO.</td><td>Founder-led product era formally over.</td></tr>
+            <tr><td class="num">Sep 2025</td><td>TaxScouts folded into the Taxfix brand.</td><td>Three brands, one platform ambition — integration debt.</td></tr>
+            <tr><td class="num">Nov 2025</td><td>Markus Berger-de León joins as COO for UK/European growth.</td><td>Operator hire. Signals scale-and-tighten, not explore.</td></tr>
+            <tr><td class="num">Mar 2026</td><td>Launch: self-employed offering, €19.99/mo net.</td><td>The growth bet. Newest, least-defended product.</td></tr>
+            <tr><td class="num">Mar 2026</td><td>German state opens sign-ups for automatic pre-filled mobile returns.</td><td>The state is now a competitor to their core.</td></tr>
+            <tr><td class="num">Q1 2026</td><td>OpenAI reports tax-related ChatGPT queries up 300%.</td><td>The number being quoted in every board deck they wrote this year.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">Sources at the foot of the page. Dates are as published; the Q1 2026 ChatGPT figure comes via German trade press citing OpenAI.</p>
+    </div>
+  </section>
+
+  <!-- ============ 02 ============ -->
+  <section id="money">
+    <div class="sec-hd">
+      <div class="rail">§02</div>
+      <h2>How the money actually works</h2>
+    </div>
+    <div class="sec-body">
+      <p>Taxfix is not a SaaS business, and understanding why is the single highest-leverage thing you can know walking in. It is a <strong>once-a-year, transactional, brutally seasonal consumer business</strong> — and almost everything that's hard about running it flows from that sentence.</p>
+
+      <h3>The revenue lines</h3>
+      <div class="tscroll">
+        <table>
+          <thead><tr><th>Product</th><th>Price (DE)</th><th>Shape</th><th>The problem with it</th></tr></thead>
+          <tbody>
+            <tr><td><b>Start</b> — refund estimate</td><td class="num">Free</td><td>Funnel top</td><td>Pure cost until conversion. The estimate is the hook.</td></tr>
+            <tr><td><b>Basic</b> — self-filing</td><td class="num">€39.99–49.99</td><td>One-off, per return</td><td>Most expensive in a market where the #2 app is free.</td></tr>
+            <tr><td><b>Expert Service</b></td><td class="num">20% of refund,<br>min €99.99</td><td>One-off, gross-margin drag</td><td>Requires a licensed human. Doesn't scale. Can't hire out of it.</td></tr>
+            <tr class="me"><td><b>Self-employed</b> (Mar 2026)</td><td class="num">€19.99/mo net</td><td>Recurring</td><td>New, unproven, crowded field. The bet.</td></tr>
+            <tr><td><b>Annual subscription</b></td><td class="num">−€10/return</td><td>Retention device</td><td>Attempts to fix once-a-year churn. Modest.</td></tr>
+            <tr><td><b>Instant Refund</b></td><td class="num">€0 to user</td><td>Conversion tool</td><td>Taxfix fronts 50% of the refund in cash. Working-capital cost, not revenue.</td></tr>
+            <tr><td><b>B2B / partner referrals</b></td><td class="num">Rev-share</td><td>Distribution</td><td>Discount-led, so it compresses an already thin AOV.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <span class="lbl">The structural problem, stated once</span>
+        <p>A customer pays them roughly <strong>€45, once a year</strong>. Acquisition is paid, front-loaded into a three-month window, and has to be re-won annually because there is no habitual reason to open a tax app in November. That is a business that only survives on either (a) very low CAC through brand and partners, or (b) turning a once-a-year event into a year-round relationship. <strong>Everything in their 2026 strategy is a version of (b).</strong></p>
+      </div>
+
+      <h3>The financials, and why the mood changed</h3>
+
+      <div class="figure">
+        <div class="fig-hd">Annual net loss, 2022–2024</div>
+        <div class="fig-sub">€ millions · Taxfix Group filings via German trade press</div>
+        <svg class="fig-svg" viewBox="0 0 640 210" role="img" aria-label="Bar chart: net loss fell from 58.1 million euros in 2022 to 48.7 million in 2023 to 19.4 million in 2024.">
+          <line x1="52" y1="170" x2="620" y2="170" stroke="var(--rule)" stroke-width="1"/>
+          <line x1="52" y1="20" x2="52" y2="170" stroke="var(--rule)" stroke-width="1"/>
+
+          <text x="44" y="24" text-anchor="end" fill="var(--ink-3)" font-family="IBM Plex Mono, monospace" font-size="11">60</text>
+          <text x="44" y="99" text-anchor="end" fill="var(--ink-3)" font-family="IBM Plex Mono, monospace" font-size="11">30</text>
+          <text x="44" y="174" text-anchor="end" fill="var(--ink-3)" font-family="IBM Plex Mono, monospace" font-size="11">0</text>
+          <line x1="52" y1="20" x2="620" y2="20" stroke="var(--rule-2)" stroke-width="1"/>
+          <line x1="52" y1="95" x2="620" y2="95" stroke="var(--rule-2)" stroke-width="1"/>
+
+          <rect x="96" y="25" width="120" height="145" fill="var(--sienna)" opacity="0.85"/>
+          <text x="156" y="17" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600">58.1</text>
+          <text x="156" y="190" text-anchor="middle" fill="var(--ink-2)" font-family="IBM Plex Mono, monospace" font-size="12">2022</text>
+
+          <rect x="276" y="48" width="120" height="122" fill="var(--sienna)" opacity="0.65"/>
+          <text x="336" y="40" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600">48.7</text>
+          <text x="336" y="190" text-anchor="middle" fill="var(--ink-2)" font-family="IBM Plex Mono, monospace" font-size="12">2023</text>
+
+          <rect x="456" y="122" width="120" height="48" fill="var(--pine)" opacity="0.9"/>
+          <text x="516" y="114" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600">19.4</text>
+          <text x="516" y="190" text-anchor="middle" fill="var(--ink-2)" font-family="IBM Plex Mono, monospace" font-size="12">2024</text>
+        </svg>
+        <div class="fig-legend"><span><i style="background:var(--sienna)"></i>Growth-at-cost era</span><span><i style="background:var(--pine)"></i>Discipline era</span></div>
+      </div>
+
+      <p>Revenue over the same stretch: <strong>€55.9m in 2023</strong> (+45%), <strong>€67.3m in 2024</strong> (+20%), with the CFO guiding to "high double-digit millions" for 2025. Read those two series together and the story is unambiguous: <strong>they bought down the burn by two thirds while growth halved.</strong> They are steering hard at breakeven, and the cost of that is that the top line no longer looks like a unicorn's.</p>
+
+      <p><span class="tag t-read">Inference</span> This is why a hackathon at their office is framed around AI-native building rather than, say, new consumer features. <strong>An idea that makes an existing person faster is worth more to them right now than an idea that requires hiring three people.</strong> Price everything you pitch in that currency.</p>
+    </div>
+  </section>
+
+  <!-- ============ 03 ============ -->
+  <section id="people">
+    <div class="sec-hd">
+      <div class="rail">§03</div>
+      <h2>Who is in the room, and what each of them wants to hear</h2>
+    </div>
+    <div class="sec-body">
+      <p>Taxfix's C-suite has turned over almost completely in 24 months. Both founders have stepped back from operating roles. This is now a professional-operator company, and the operators were each hired to fix a specific thing. If you can name the thing, you have their attention.</p>
+
+      <div class="people">
+        <div class="person">
+          <div class="p-id"><div class="p-name">Martin Ott</div><div class="p-role">CEO · since 2021</div></div>
+          <div class="p-note">Ex-Meta (ran Central Europe). Not a founder — brought in to scale and then to survive. He is the one publicly saying <b>"AI first"</b> and "AI-native financial platform." He has personally instituted <b>weekly AI training days for the whole company and internal AI hackathons.</b> Pitch him: defensibility. Why does Taxfix still exist when ChatGPT can answer a tax question?</div>
+        </div>
+        <div class="person">
+          <div class="p-id"><div class="p-name">Snir Yarom</div><div class="p-role">CTO · since Feb 2024</div></div>
+          <div class="p-note">Ex-Director of Engineering at Zalando, before that built Codility's tech org. He gave a conference talk titled <b>"How Taxfix is Building an AI-Native R&amp;D Powerhouse."</b> His stated three goals: customer value, <b>R&amp;D productivity</b>, new growth. He is the most likely person to judge on engineering taste. Pitch him: leverage per engineer.</div>
+        </div>
+        <div class="person">
+          <div class="p-id"><div class="p-name">Kristen Waeber</div><div class="p-role">CPO · since May 2025</div></div>
+          <div class="p-note">Ex-N26 (Director of Product), then Product Growth at a global crypto exchange owning <b>acquisition, onboarding, KYC and in-app engagement.</b> That résumé is a tell: she was hired for the funnel. Her public framing is users feeling <b>"confident and in control."</b> Pitch her: activation, drop-off, trust at the moment of hesitation.</div>
+        </div>
+        <div class="person">
+          <div class="p-id"><div class="p-name">Markus Berger-de León</div><div class="p-role">COO · since Nov 2025</div></div>
+          <div class="p-note">Brought in explicitly for <b>UK and European growth</b>, succeeding a seven-year incumbent. Operator, not builder. Pitch him: anything that makes a process repeatable across DE/ES/UK without re-staffing it in each country.</div>
+        </div>
+        <div class="person">
+          <div class="p-id"><div class="p-name">Mohamed Omaizat</div><div class="p-role">CFO</div></div>
+          <div class="p-note">The public voice on M&amp;A and revenue targets. Running a <b>three-pronged bolt-on acquisition strategy</b> (product, segment, geography), preferring cash-plus-equity so founders stay. Has said an IPO is a future option. He is currently hiring a Head of Financial Systems Transformation and a Programme Manager for the Office of the CFO — <b>he is rebuilding the finance stack.</b></div>
+        </div>
+        <div class="person">
+          <div class="p-id"><div class="p-name">Lino Teuteberg</div><div class="p-role">Co-founder · strategic advisor</div></div>
+          <div class="p-note">Built the product for nine years as CPO, handed over in 2025, stayed on in a strategic capacity. If he's in the room, he is the person who remembers why every question in the questionnaire is worded the way it is.</div>
+        </div>
+      </div>
+
+      <h3>What the workforce says</h3>
+      <p>Glassdoor: <strong>61% would recommend</strong>, work-life balance 3.9, culture 3.8, career opportunities 3.5. The recurring negative themes are worth knowing because they tell you where the organisation is strained: <em>"senior leadership have no clue how to move forward,"</em> uneven workload distribution with juniors covering senior scope, and teams where people <em>"end up overworked very fast."</em> <span class="tag t-read">Inference</span> Post-layoff, post-reorg, mid-pivot — that is a company where individual contributors are stretched across more surface than they can hold. <strong>Which is precisely the gap the "Builder + AI" model is meant to fill, and precisely why a tool that removes grunt work will resonate emotionally, not just commercially.</strong></p>
+    </div>
+  </section>
+
+  <!-- ============ 04 ============ -->
+  <section id="clients">
+    <div class="sec-hd">
+      <div class="rail">§04</div>
+      <h2>Their customers — and their "biggest clients"</h2>
+    </div>
+    <div class="sec-body">
+      <p>Taxfix is overwhelmingly B2C, so "biggest client" means two different things: the user segments that carry the revenue, and the distribution partners that deliver users cheaply.</p>
+
+      <h3>The four user segments, ranked by strategic weight</h3>
+      <div class="tscroll">
+        <table>
+          <thead><tr><th>Segment</th><th>Size of prize</th><th>What Taxfix does for them</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><b>Employees</b><br><span class="de">Arbeitnehmer</span></td><td class="num">~14.9m file<br>~€1,172 avg refund</td><td>Photograph the wage statement, ~30 min of questions, file via ELSTER, optionally take half the refund instantly.</td><td>Core. Under attack from all three fronts.</td></tr>
+            <tr><td><b>Expats &amp; non-German speakers</b></td><td class="num">Millions in DE</td><td>The whole flow in English. This is a genuine moat — the <span class="de">Finanzamt</span> is German-only and terrifying if you aren't.</td><td><b>Their most defensible niche. Underplayed.</b></td></tr>
+            <tr class="me"><td><b>Self-employed &amp; small business</b></td><td class="num">~3.7m people<br>(~8% of workforce)</td><td>Upload invoices/receipts → auto-categorise → file the monthly VAT return (<span class="de">UStVA</span>) via ELSTER, plus the annual return.</td><td>Launched Mar 2026. The growth bet.</td></tr>
+            <tr><td><b>Complex cases</b><br>(landlords, investors, married couples)</td><td class="num">High value per case</td><td>Expert Service: a licensed <span class="de">Steuerberater</span> prepares it inside the platform.</td><td>Highest revenue, worst margin, hardest to staff.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Distribution partners — the closest thing they have to enterprise clients</h3>
+      <p>Taxfix's partner model is almost entirely <strong>embedded referral inside another company's app</strong>, priced as a discount to that company's users:</p>
+      <ul>
+        <li><strong>N26</strong> — the flagship. N26 customers get <strong>30% off on Standard, up to 50% off on premium tiers</strong>. Taxfix is bundled into N26 Business Metal's perks alongside Fiverr and Dropbox. The partnership runs in Germany and ran in Italy too.</li>
+        <li><strong>Qonto</strong> — their first named B2B partnership, reaching European SMEs and freelancers through a business banking product. Strategically the right door for the new self-employed product.</li>
+        <li><strong>Employer benefit deals</strong> — e.g. <strong>Mymenu</strong> in Italy offered Taxfix to all staff including delivery riders as a welfare benefit. This is the shape they want to scale: one contract, thousands of users, near-zero CAC.</li>
+        <li><strong>UK partner programme</strong> — an open pitch to any company whose customer base needs personal tax help (they specifically court audiences of self-employed, landlords, investors, expats, construction workers, company directors).</li>
+      </ul>
+
+      <div class="callout">
+        <span class="lbl">The gap worth pointing at</span>
+        <p>Every one of those partnerships is a <strong>discount link</strong>. None of them is an API, an embedded SDK, or a white-label surface. A neobank, a payroll provider, or an HR platform cannot currently <em>build tax into their own product</em> using Taxfix — they can only hand their user off to a different app with a coupon. <strong>That is a large, obvious, unbuilt product</strong>: Taxfix-as-infrastructure. If your team wants a business-model swing rather than a feature, this is the one.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 ============ -->
+  <section id="squeeze">
+    <div class="sec-hd">
+      <div class="rail">§05</div>
+      <h2>The three-front squeeze</h2>
+    </div>
+    <div class="sec-body">
+      <p>German business press has spent 2026 writing about Taxfix in explicitly existential terms — one headline literally reads <em>"the tax app Taxfix's fight against AI death."</em> That framing is now internal vocabulary. Three separate forces are compressing the same product at the same time.</p>
+
+      <div class="threats">
+        <div class="threat">
+          <div class="vec">Front 01 · Substitution</div>
+          <h4>General-purpose AI</h4>
+          <p>OpenAI reported tax-related ChatGPT queries up <b>300% in Q1 2026</b>. The question users now ask out loud: why pay €49.99 for guided simplicity when a subscription I already have explains the form for free? Taxfix's original value proposition — <em>guidance through complexity</em> — is now a commodity feature of a chatbot.</p>
+        </div>
+        <div class="threat">
+          <div class="vec">Front 02 · Price collapse</div>
+          <h4>Check24 Steuer, free</h4>
+          <p>In Finanztip's 2026 test, <b>Check24's completely free tax app scored 9.49 and finished second overall</b> — ahead of every paid competitor except WISO, and well ahead of Taxfix's 8.3. It's funded by Check24's comparison business, so it never has to make money on tax. Taxfix is the most expensive app in the table.</p>
+        </div>
+        <div class="threat">
+          <div class="vec">Front 03 · Disintermediation</div>
+          <h4>The German state</h4>
+          <p>The coalition is rolling out an <b>automatically pre-filled digital tax return on your phone</b>, submittable in one click. Sign-ups opened <b>31 March 2026</b>; first nationwide user group from mid-2026, with a further simplification law drafted by autumn 2026. The explicit goal is to relieve employees and pensioners of filing at all. That is Taxfix's core use case, delivered by the tax office, for free.</p>
+        </div>
+      </div>
+
+      <blockquote>
+        "The next 24 months will determine whether Taxfix becomes a German tech success story or a cautionary tale about AI's industry-destroying velocity."
+        <cite>German trade press on Taxfix, 2026</cite>
+      </blockquote>
+
+      <h3>Where the defensibility actually is</h3>
+      <p>Worth having on the tip of your tongue, because it's the argument they're making internally and you'll sound aligned if you make it too:</p>
+      <ol>
+        <li><strong>The submission, not the explanation.</strong> ChatGPT can explain <span class="de">Werbungskosten</span>. It cannot authenticate to ELSTER, sign with a certificate, file a legally binding return, and be accountable for it. The regulated last mile is the moat.</li>
+        <li><strong>Liability and licensure.</strong> Germany's <span class="de">Steuerberatungsgesetz</span> restricts who may give tax advice. A general chatbot operates entirely outside that perimeter; Taxfix's Expert Service operates inside it. Trust is the product.</li>
+        <li><strong>Proprietary outcome data.</strong> Ten million filed returns with known outcomes — what was claimed, what the <span class="de">Finanzamt</span> accepted, what it rejected. No foundation model has that. It is the one dataset that could make a German tax model measurably better than a general one.</li>
+        <li><strong>The cases the state will never automate.</strong> Pre-filled returns work for the simple salaried case. They do not work for a freelancer with mixed income, a landlord, or a cross-border expat. <strong>The state is going to eat the bottom of Taxfix's market and leave the top.</strong></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ 06 ============ -->
+  <section id="product">
+    <div class="sec-hd">
+      <div class="rail">§06</div>
+      <h2>What is actually holding the product up</h2>
+    </div>
+    <div class="sec-body">
+      <p>This is the section to mine for a build idea. These are concrete, documented gaps — not speculation about what a tax app might lack.</p>
+
+      <h3>Where they sit in the market, measured</h3>
+      <div class="tscroll">
+        <table>
+          <thead><tr><th>App</th><th>Score</th><th>Price</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>WISO Steuer</td><td class="num">9.53</td><td class="num">€45.99</td><td>Winner. Ships an AI assistant, "SteuerGPT," that tested well.</td></tr>
+            <tr><td>Check24 Steuer</td><td class="num">9.49</td><td class="num">Free</td><td>Free, covers every case type including self-employed.</td></tr>
+            <tr><td>Smartsteuer</td><td class="num">9.00</td><td class="num">€39.99</td><td>Browser.</td></tr>
+            <tr><td>SteuerGo</td><td class="num">8.60</td><td class="num">€34.95</td><td>Browser.</td></tr>
+            <tr><td>Lohnsteuer kompakt</td><td class="num">8.60</td><td class="num">€34.95</td><td>Browser.</td></tr>
+            <tr class="me"><td>Taxfix</td><td class="num">8.30</td><td class="num">€49.99</td><td>Sixth place, highest price in the field.</td></tr>
+            <tr><td>Steuerbot <span class="de">(Taxfix-owned)</span></td><td class="num">8.10</td><td class="num">€39.99</td><td>Their own second brand, seventh.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">Finanztip tax app test, 2026. Finanztip is the most-cited consumer finance authority in Germany; this ranking directly shapes German purchase decisions. Taxfix remains "recommended," but specifically "for very simple entry-level cases."</p>
+
+      <h3>The specific, named deficiencies</h3>
+      <ul>
+        <li><strong>It miscalculates at the edges.</strong> The reviewers' phrasing: the app "did not calculate perfectly."</li>
+        <li><strong>No <span class="de">Günstigerprüfung</span> for married couples.</strong> Taxfix cannot check whether joint or separate assessment produces a better outcome. For a married filer that is potentially hundreds of euros left on the table — and it's table stakes in competing products.</li>
+        <li><strong>Self-employed support stops at the <span class="de">Kleinunternehmer</span> threshold.</strong> Cross €25k prior-year turnover and the app stops being able to help you. Their newest strategic segment is also their hardest wall.</li>
+        <li><strong>Checking your <span class="de">Steuerbescheid</span> is limited or expensive.</strong> The assessment notice arriving 6–12 weeks later is the moment of maximum anxiety and maximum error — and it's where the product is thinnest.</li>
+        <li><strong>Support falls off a cliff when the <span class="de">Finanzamt</span> asks a question.</strong> The most-repeated complaint in reviews: the app is great until the tax office writes back, at which point users feel abandoned mid-process. Response times of "eight messages before a reply" appear in reviews.</li>
+        <li><strong>The refund-vs-bill surprise.</strong> Users report being told at the very end that they owe money — after investing the full effort. That's a trust failure and a refund-request generator.</li>
+      </ul>
+
+      <h3>The operational bottleneck: human experts</h3>
+      <p>Expert Service is priced at 20% of refund with a €99.99 minimum, and the promised turnaround is roughly four weeks. It depends on licensed German tax advisors, and Germany cannot supply them: <strong>over 72% of tax firms report being unable to find qualified staff</strong>, <strong>more than half of practising tax advisors are 50 or older</strong>, and 2026 is the first year in which more German workers retire than enter the workforce (1.1m out, 780k in). <span class="tag t-read">Inference</span> <strong>Taxfix cannot grow its highest-revenue product by hiring. It can only grow it by making each expert dramatically more productive.</strong> That is the clearest, most defensible automation target in the entire company.</p>
+
+      <h3>Plus the seasonality problem nobody can engineer away</h3>
+      <p>German filing peaks hard into the <strong>31 July</strong> deadline. Demand for expert capacity, support headcount and compute is wildly concentrated; for the rest of the year the app has no reason to be opened. Every strategic move they've made in 2026 — the monthly self-employed subscription, the annual plan, the "financial platform" framing — is an attempt to flatten that curve.</p>
+
+      <h3>And the stack it all runs on</h3>
+      <p><span class="tag t-fact">Public</span> A single <strong>React Native</strong> codebase for mobile with cross-platform modules for web; <strong>Node.js and Go microservices</strong> plus Pub/Sub workers on the backend (GCP); migrated from a monolith. ELSTER integration via API for submission, and support for the pre-filled-return data retrieval (<span class="de">Belegabruf</span>) which requires the user to hold an ELSTER certificate. Hiring posts confirm GCP data pipelines, GDPR controls, and dataset preparation for ML. Useful if you want to claim your prototype is realistically integrable.</p>
+    </div>
+  </section>
+
+  <!-- ============ 07 ============ -->
+  <section id="inside">
+    <div class="sec-hd">
+      <div class="rail">§07</div>
+      <h2>Inside the transformation — the part most teams will miss</h2>
+    </div>
+    <div class="sec-body">
+      <p>This is your edge. Taxfix isn't vaguely "interested in AI." They have published, in their own job ads, a precise and unusual operating philosophy — and the hackathon is a live performance of it. Quote it back at them.</p>
+
+      <h3>The "Builder" model</h3>
+      <p>Taxfix is restructuring R&amp;D around people they call <strong>Builders</strong>. Their own definition: someone with <em>a primary craft at which they're genuinely excellent, but who stretches across product, design and engineering as the situation demands, using AI to cover the gaps</em> — and who is <em>"accountable to outcomes, not job descriptions."</em> They work in <strong>pods of 2–3</strong>. The ads are blunt about what this replaces: <em>"There's no designer to give you a Figma file. No engineer to hand the spec to."</em></p>
+
+      <p>They are currently hiring <strong>AI First Builder (Product Management)</strong> and <strong>AI First Builder (Design)</strong>, and the requirements name the tools: <em>"you use Claude, Cursor, Lovable or equivalent regularly"</em> and <em>"builder track record: you've made things with AI, not just written specs."</em></p>
+
+      <blockquote>
+        It's easier than ever to get software to 75%. Excellence lives in the remaining 25% — and in knowing when the AI output is wrong even when it looks right.
+        <cite>Taxfix, AI First Builder (Design) job description, 2026</cite>
+      </blockquote>
+
+      <p><strong>That sentence is the judging criterion.</strong> A room full of teams will demo something AI-generated that looks right. The team that demos the 25% — the verification layer, the point where the model is caught being confidently wrong, the detail that only a person who understood the domain would have added — wins on their own stated terms.</p>
+
+      <h3>What their open roles reveal about the actual priorities</h3>
+      <p>The current job board is the most honest strategy document a company produces. Theirs is striking for what it <em>doesn't</em> contain — almost no core consumer feature engineering. What it does contain:</p>
+      <div class="tscroll">
+        <table>
+          <thead><tr><th>Open role</th><th>What it tells you</th></tr></thead>
+          <tbody>
+            <tr><td>AI Automation Specialist — Marketing &amp; GTM</td><td>"Design agentic operating models, embed with teams to find and automate bottlenecks." They are hiring people whose entire job is building internal agents.</td></tr>
+            <tr><td>AI First Builder (Product) &amp; (Design)</td><td>The Builder reorg, live.</td></tr>
+            <tr><td>Technical PM — People Intelligence Apps</td><td>No-code/low-code, AI-augmented internal apps. Even HR is being automated.</td></tr>
+            <tr><td>Content Automation Engineer (Madrid) + Content Engineer (Berlin)</td><td>Multi-market content, translation automation, A/B and ASO experiments as a pipeline, not a team.</td></tr>
+            <tr><td>Head of Financial Systems Transformation; Programme Manager, Office of the CFO; Senior FP&amp;A — Revenue Modeling</td><td>Three finance-systems hires at once. The CFO is rebuilding billing, ERP and the revenue model from scratch.</td></tr>
+            <tr><td>Software Engineers — <b>Self-Employed team</b></td><td>The only product engineering hiring. Confirms where the bet is.</td></tr>
+            <tr><td>Staff Systems Engineer — IT &amp; Infrastructure (Okta)</td><td>Identity governance. Boring, and a real constraint on shipping fast.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>How far the AI adoption already goes</h3>
+      <ul>
+        <li><strong>~90% of marketing assets are now AI-generated.</strong> They ran a full brand campaign using Google's Veo 3 in July 2025.</li>
+        <li><strong>Weekly AI training days</strong> for all staff, company-wide.</li>
+        <li><strong>Internal AI hackathons</strong> run regularly — so the format tomorrow is one they already believe in, and the bar is set by things their own staff have built.</li>
+      </ul>
+      <p><span class="tag t-read">Inference</span> Do not pitch "you should use AI." They are past that, and it will read as naive. Pitch a specific, uncomfortable, domain-shaped problem that AI is a credible answer to.</p>
+    </div>
+  </section>
+
+  <!-- ============ 08 ============ -->
+  <section id="ask">
+    <div class="sec-hd">
+      <div class="rail">§08</div>
+      <h2>What they'll actually ask you to build</h2>
+    </div>
+    <div class="sec-body">
+      <p>The challenge is revealed at 19:00 and you get until 21:15 — <strong>about 135 minutes.</strong> Based on how this organiser has framed previous Cursor Berlin hackathons, the brief will be short, host-domain-flavoured, and deliberately open. Prior events listed candidate themes like <em>AI-native workflows for product and engineering teams</em>, <em>internal tools built with Cursor</em>, <em>design-to-code workflows</em>, <em>"a useful product feature in 120 minutes,"</em> and a theme aligned to the host's own domain.</p>
+
+      <p>Here is how I'd handicap the framings, with the prep that pays off in each. <span class="tag t-read">These are my read, not announced</span></p>
+
+      <div class="tscroll">
+        <table>
+          <thead><tr><th>Likely framing</th><th>Odds</th><th>Prepare by</th></tr></thead>
+          <tbody>
+            <tr class="me"><td><b>"Build an AI-native tool that removes friction from the tax experience"</b> — deliberately broad, host-domain</td><td class="num">High</td><td>Having two tax-specific ideas ready to pick from in minute one. Everything in §09.</td></tr>
+            <tr><td><b>"Build an internal tool that makes a Taxfix team 10× faster"</b> — the Builder thesis, literally</td><td class="num">High</td><td>Knowing which internal team has the worst bottleneck: the tax experts. See §09 idea 01.</td></tr>
+            <tr><td><b>"Ship a real product feature in 120 minutes"</b> — craft test, open subject</td><td class="num">Medium</td><td>Choosing the feature they publicly lack. The Bescheid checker or the Günstigerprüfung.</td></tr>
+            <tr><td><b>"Design-to-code / prototype-to-product"</b></td><td class="num">Medium</td><td>Having a visual point of view ready. The CPO and a design-jobs community partner are involved.</td></tr>
+            <tr><td><b>"How does Taxfix stay relevant when ChatGPT does taxes?"</b> — strategy-flavoured</td><td class="num">Lower</td><td>The four defensibility arguments in §05. But still ship something running.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <span class="lbl">The one preparation that survives any framing</span>
+        <p>Whatever the brief says, <strong>the winning move is a working demo on real German tax artefacts.</strong> Tonight, get hold of: a sample <span class="de">Lohnsteuerbescheinigung</span>, a sample <span class="de">Steuerbescheid</span>, and two or three receipts. Have them on your laptop as images/PDFs. Almost every team will demo on invented data, and the one that runs on a real German tax document will feel ten times more credible in the same 3 minutes — <em>and it costs you nothing if the brief turns out to be something else, because you'll still have real documents to reach for.</em></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 09 ============ -->
+  <section id="build">
+    <div class="sec-hd">
+      <div class="rail">§09</div>
+      <h2>Seven things worth building</h2>
+    </div>
+    <div class="sec-body">
+      <p>Ordered by how directly they hit a documented Taxfix pain. Each is scoped so that three people with Cursor can get a convincing version running in 135 minutes.</p>
+
+      <article class="idea">
+        <div class="idea-hd"><div class="idea-n">IDEA 01 · STRONGEST</div><h4>The tax expert's co-pilot</h4></div>
+        <div class="idea-body">
+          <p>Their Expert Service is the highest-revenue, lowest-margin product, and Germany has no spare tax advisors to hire. Build the tool that makes one expert do the work of three: drop in a client's document bundle, and it produces a <strong>pre-filled draft return plus a ranked queue of exactly the items a human must decide</strong> — each flagged with the reason, the amount at stake, and the source document region highlighted.</p>
+          <p><strong>Why it wins:</strong> it is the only idea here that directly relieves a constraint they demonstrably cannot buy their way out of. And it's a perfect expression of the 25% principle — the AI does the extraction, the human does the judgment, and the product's entire job is routing between them.</p>
+        </div>
+        <dl class="idea-meta">
+          <div><dt>Hits</dt><dd>Margin + capacity</dd></div>
+          <div><dt>Demo</dt><dd>Doc bundle → draft + decision queue</dd></div>
+          <div><dt>Risk</dt><dd>Needs real docs</dd></div>
+          <div><dt>Buildable</dt><dd>Yes, 135 min</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="idea-hd"><div class="idea-n">IDEA 02</div><h4>Bescheid-Check — the assessment notice decoder</h4></div>
+        <div class="idea-body">
+          <p>Six to twelve weeks after filing, a dense multi-page <span class="de">Steuerbescheid</span> arrives. Roughly one in five contains an error in the taxpayer's disfavour, the objection window is <strong>one month</strong>, and Taxfix's own review of this is documented as "limited or expensive."</p>
+          <p>Build: photograph the notice → the tool <strong>diffs it line by line against what was filed</strong>, flags each deviation in plain German and English, states the euro impact, and where a deviation looks wrong, drafts the <span class="de">Einspruch</span> letter with the deadline counted down.</p>
+          <p><strong>Why it wins:</strong> it converts their single most anxious, most-complained-about moment into a reason to open the app — and it's a year-round touchpoint on a once-a-year product. Also the most emotionally legible demo in the room: everyone has felt that envelope.</p>
+        </div>
+        <dl class="idea-meta">
+          <div><dt>Hits</dt><dd>Named product gap</dd></div>
+          <div><dt>Demo</dt><dd>Photo → diff → draft objection</dd></div>
+          <div><dt>Risk</dt><dd>Low</dd></div>
+          <div><dt>Buildable</dt><dd>Very</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="idea-hd"><div class="idea-n">IDEA 03</div><h4>The Finanzamt correspondence agent</h4></div>
+        <div class="idea-body">
+          <p>Their loudest, most repeated user complaint: <em>the app is great until the tax office writes back, and then you're on your own.</em> Build the thing that catches that moment. Upload the <span class="de">Finanzamt</span> letter → it classifies the request, explains in plain language what is actually being asked, lists precisely which documents satisfy it, and drafts the reply with the legal deadline tracked.</p>
+          <p><strong>Why it wins:</strong> you can name the exact review quotes it answers. Fixing your loudest complaint is a very easy story to tell in three minutes.</p>
+        </div>
+        <dl class="idea-meta">
+          <div><dt>Hits</dt><dd>Top support complaint</dd></div>
+          <div><dt>Demo</dt><dd>Letter → explain → draft reply</dd></div>
+          <div><dt>Risk</dt><dd>Low</dd></div>
+          <div><dt>Buildable</dt><dd>Very</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="idea-hd"><div class="idea-n">IDEA 04</div><h4>Always-on bookkeeping for the self-employed</h4></div>
+        <div class="idea-body">
+          <p>Aimed squarely at the €19.99/month bet. Receipts arrive by forward-to-email, photo, or bank feed; the agent categorises, posts, keeps a running <span class="de">EÜR</span>, drafts the monthly <span class="de">UStVA</span>, and — crucially — <strong>warns before the €25k / €100k <span class="de">Kleinunternehmer</span> thresholds are crossed</strong>, because crossing one changes your legal obligations overnight.</p>
+          <p>Add the e-invoicing angle if you want extra credit: every German business has been required to <em>receive</em> structured e-invoices since 1 Jan 2025, issuing becomes mandatory for larger businesses from 2027 and everyone from 2028. Parsing an incoming XRechnung/ZUGFeRD into a posted entry is a real, dated, near-term compliance problem.</p>
+          <p><strong>Why it wins:</strong> it's the product they're actively staffing. The threshold warning is the kind of specific, only-if-you-know-German-tax detail that wins the 25%.</p>
+        </div>
+        <dl class="idea-meta">
+          <div><dt>Hits</dt><dd>The growth bet</dd></div>
+          <div><dt>Demo</dt><dd>Receipts → EÜR + UStVA draft</dd></div>
+          <div><dt>Risk</dt><dd>Crowded field</dd></div>
+          <div><dt>Buildable</dt><dd>Yes, scope tightly</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="idea-hd"><div class="idea-n">IDEA 05</div><h4>Taxfix Embedded — tax as an API</h4></div>
+        <div class="idea-body">
+          <p>The business-model swing. Today every partner integration is a discount link. Build the SDK instead: a drop-in component a neobank, payroll provider or HR platform embeds so their users file <em>without leaving their app</em>, with Taxfix taking the fee and owning the regulated last mile. Demo it by embedding your widget into a fake banking app on stage.</p>
+          <p><strong>Why it wins:</strong> it's the highest-ceiling idea here — near-zero CAC, recurring, and it turns their regulatory position into a product other companies must buy rather than a cost they must carry. Risk: it's a strategy pitch, so it lives or dies on whether the demo is genuinely running.</p>
+        </div>
+        <dl class="idea-meta">
+          <div><dt>Hits</dt><dd>CAC + new revenue line</dd></div>
+          <div><dt>Demo</dt><dd>Widget inside a host app</dd></div>
+          <div><dt>Risk</dt><dd>Medium — must run</dd></div>
+          <div><dt>Buildable</dt><dd>Yes, as a demo</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="idea-hd"><div class="idea-n">IDEA 06</div><h4>The answer to "why not just use ChatGPT?"</h4></div>
+        <div class="idea-body">
+          <p>Meet the threat head-on. Build a <strong>verification harness</strong>: the same set of real German tax questions run through a general model and through a Taxfix-grounded pipeline that cites the actual paragraph of law and the actual filed-outcome data, and <strong>shows on screen where the general model is confidently wrong.</strong> A live scoreboard of hallucinations against ground truth.</p>
+          <p><strong>Why it wins:</strong> it is <em>literally</em> their stated hiring criterion — "knowing when the AI output is wrong even when it looks right" — turned into a product. And it hands the CEO the slide he needs for his next board meeting. Make sure you also ship the grounded assistant, not just the critique.</p>
+        </div>
+        <dl class="idea-meta">
+          <div><dt>Hits</dt><dd>The existential question</dd></div>
+          <div><dt>Demo</dt><dd>Side-by-side + error scoreboard</dd></div>
+          <div><dt>Risk</dt><dd>Needs a truth set</dd></div>
+          <div><dt>Buildable</dt><dd>Yes if you prep questions</dd></div>
+        </dl>
+      </article>
+
+      <article class="idea">
+        <div class="idea-hd"><div class="idea-n">IDEA 07 · DARK HORSE</div><h4>Günstigerprüfung for couples</h4></div>
+        <div class="idea-body">
+          <p>The smallest idea here and possibly the sharpest. Taxfix cannot currently tell a married couple whether joint or separate assessment (<span class="de">Zusammenveranlagung</span> vs <span class="de">Einzelveranlagung</span>) leaves them better off. It's a documented gap, it's worth real money to the user, and it's a bounded computation you can genuinely finish and get right in 135 minutes.</p>
+          <p><strong>Why it wins:</strong> it is the only idea on this list where you can stand up and say <em>"this is a feature Finanztip specifically criticised you for not having, and here it is, working."</em> That is an unusually strong closing line. Weakness: small scope — sell it as craft and correctness, not ambition.</p>
+        </div>
+        <dl class="idea-meta">
+          <div><dt>Hits</dt><dd>A named, public gap</dd></div>
+          <div><dt>Demo</dt><dd>Two incomes → both paths → €</dd></div>
+          <div><dt>Risk</dt><dd>Must be numerically right</dd></div>
+          <div><dt>Buildable</dt><dd>Comfortably</dd></div>
+        </dl>
+      </article>
+
+      <div class="callout">
+        <span class="lbl">If you want my pick</span>
+        <p><strong>Idea 02 (Bescheid-Check)</strong> if you want the highest chance of winning — it's emotionally legible in three minutes, it's a gap they're publicly criticised for, and it's fully buildable. <strong>Idea 01 (Expert co-pilot)</strong> if the brief turns out to be about internal tools, which I'd put at roughly even odds. Decide which of the two you're doing <em>before</em> 19:00, so the brief only has to tell you which one to reach for.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 10 ============ -->
+  <section id="stage">
+    <div class="sec-hd">
+      <div class="rail">§10</div>
+      <h2>Winning this specific room</h2>
+    </div>
+    <div class="sec-body">
+      <p>172 people registered. Teams need three or more. You get roughly 2–3 minutes to demo, then awards at 21:40. Prizes are per person: €500 / €300 / €100.</p>
+
+      <h3>Tactics</h3>
+      <ul>
+        <li><strong>Assemble your three before 19:00.</strong> The organisers do cross-disciplinary matching for solo attendees, but that costs you the first 20 minutes. Arrive at 18:00 for check-in and lock your team during networking.</li>
+        <li><strong>Mirror their pod structure.</strong> 2–3 Builders is literally their org design. One person owns the working demo path end to end, one owns the artefacts and data, one owns the narrative and the slide. Nobody "does the backend."</li>
+        <li><strong>Protect the demo path.</strong> At 20:45, stop building. Rehearse the exact click sequence twice. Record a fallback screen capture. More hackathon demos die on a live API call than on a missing feature.</li>
+        <li><strong>Open with the pain, in their words.</strong> Not "we built an AI tax assistant." Try: <em>"Your most repeated review complaint is that support ends when the Finanzamt writes back. Here's that fixed."</em> You will be the only team that has read their reviews.</li>
+        <li><strong>Show the 25%.</strong> Deliberately include one moment where your system <em>catches the model being wrong</em> and escalates. That single beat is worth more than three extra features, because it's their stated definition of excellence.</li>
+        <li><strong>Close on a number.</strong> Expert minutes saved per case. Percentage of assessment notices with a caught deviation. Euros recovered per married couple. Judges remember one number.</li>
+        <li><strong>Don't pitch "use AI."</strong> They generate 90% of their marketing with AI, run weekly AI training days, and hold their own internal AI hackathons. Assume the audience is further along than you are on adoption, and win on domain insight instead.</li>
+      </ul>
+
+      <h3>Vocabulary that proves you did the work</h3>
+      <div class="gloss">
+        <div class="gl"><div class="gl-t">Lohnsteuerbescheinigung</div><div class="gl-d">Annual wage tax statement from your employer. Taxfix's entire onboarding starts with photographing this.</div></div>
+        <div class="gl"><div class="gl-t">Steuerbescheid</div><div class="gl-d">The tax office's assessment notice, arriving 6–12 weeks after filing. One month to file an objection.</div></div>
+        <div class="gl"><div class="gl-t">Einspruch</div><div class="gl-d">The formal objection against an assessment. One-month window, strictly enforced.</div></div>
+        <div class="gl"><div class="gl-t">ELSTER / ERiC</div><div class="gl-d">The state's electronic filing portal and its interface. The regulated last mile no chatbot can cross.</div></div>
+        <div class="gl"><div class="gl-t">Belegabruf / VaSt</div><div class="gl-d">Retrieving the data the tax office already holds about you, to pre-fill the return. Requires an ELSTER certificate.</div></div>
+        <div class="gl"><div class="gl-t">Werbungskosten</div><div class="gl-d">Income-related deductible expenses — the main lever on an employee's refund.</div></div>
+        <div class="gl"><div class="gl-t">EÜR</div><div class="gl-d">Cash-basis profit-and-loss statement. Mandatory for self-employed people not doing double-entry books.</div></div>
+        <div class="gl"><div class="gl-t">UStVA</div><div class="gl-d">The advance VAT return, filed monthly or quarterly. The recurring obligation their subscription is built on.</div></div>
+        <div class="gl"><div class="gl-t">Kleinunternehmerregelung</div><div class="gl-d">§19 UStG small-business VAT exemption. Thresholds since 2025: €25k prior year, €100k current year.</div></div>
+        <div class="gl"><div class="gl-t">Günstigerprüfung</div><div class="gl-d">Comparing two legal treatments to find the cheaper one. Notably absent from Taxfix for married couples.</div></div>
+        <div class="gl"><div class="gl-t">Steuerberatungsgesetz</div><div class="gl-d">The law restricting who may give tax advice in Germany. The regulatory perimeter that protects Taxfix from general chatbots.</div></div>
+        <div class="gl"><div class="gl-t">XRechnung / ZUGFeRD</div><div class="gl-d">Germany's structured e-invoice formats (EN 16931). Receiving them is already mandatory; issuing phases in 2027–2028.</div></div>
+      </div>
+
+      <h3>Three questions to ask a Taxfix person during networking</h3>
+      <ol>
+        <li><em>"Where does an expert's time actually go on a case — what's the part you wish you could delete?"</em> Gets you a build target from the person who feels the pain.</li>
+        <li><em>"What breaks between Taxfix, Steuerbot and the UK product — is it one platform yet?"</em> Integration debt is where the unglamorous, high-value problems live.</li>
+        <li><em>"When the state's pre-filled return goes live, which of your users stops needing you?"</em> A pointed question that shows you understand their year. Whatever they answer names the segment they're defending — build for that.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ sources ============ -->
+  <section id="sources">
+    <div class="sec-hd">
+      <div class="rail">§SRC</div>
+      <h2>Sources</h2>
+    </div>
+    <div class="sec-body">
+      <p>Everything above is drawn from public material gathered on 16 September 2026. Items tagged <span class="tag t-read">Inference</span> are my reading, not reported fact. Financial figures are from German trade press reporting on filed accounts; the Q1 2026 ChatGPT figure is reported second-hand and worth treating as directional.</p>
+      <ul class="src">
+        <li>Luma — Cursor Hackathon Berlin @ Taxfix event page, and the prior @Bliq edition</li>
+        <li>Taxfix newsroom and press page (2024–2026 releases)</li>
+        <li>Taxfix product, pricing, expert service and how-it-works pages</li>
+        <li>Taxfix support centre — pre-filled return / Belegabruf documentation</li>
+        <li>FinanceFWD — "Taxfix will Millionengeschäft mit Selbstständigen erschließen" (2024 accounts, self-employed launch)</li>
+        <li>FinanceFWD — "Der Kampf der Steuer-App Taxfix gegen den KI-Tod"; and 2022 accounts reporting</li>
+        <li>Investmentweek — Taxfix vs ChatGPT analysis, 2026</li>
+        <li>ION Analytics / Mergermarket — "Taxfix pursues three-pronged M&amp;A strategy" (CFO interview, 2023 revenue)</li>
+        <li>Berliner Wirtschaft — "Taxfix – vom Steuer-Tool zur KI-basierten Finanzplattform" (Feb 2026)</li>
+        <li>Finanztip — 2026 tax app and tax software comparison tests; Taxfix review page</li>
+        <li>Taxfix job descriptions: AI First Builder (Product Management), AI First Builder (Design); Built In / Index Ventures / Speedinvest job boards</li>
+        <li>Digitale Leute Summit 2025 — Snir Yarom, "Building an AI-Native R&amp;D Powerhouse"</li>
+        <li>TechCrunch, FinTech Futures — 2023 layoffs; 2022 Series D</li>
+        <li>Index Ventures, Redalpine — Series D announcements</li>
+        <li>Osborne Clarke — TaxScouts acquisition advisory note</li>
+        <li>Glassdoor — Taxfix employee reviews; Trustpilot — Taxfix customer reviews</li>
+        <li>t-online, Steuertipps — coalition plans for automatic pre-filled returns; Baden-Württemberg finance ministry launch notice</li>
+        <li>ifo / IW / tax-talents — German tax advisor shortage data</li>
+        <li>Destatis via tax press — filing volumes and average refunds</li>
+        <li>ClearTax, Marosa, VATupdate — German e-invoicing mandate timeline</li>
+        <li>N26 blog and partner pages — Taxfix partnership terms</li>
+        <li>Medium / Team Taxfix and GitHub — engineering stack references</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div>Taxfix hackathon dossier · compiled 16 Sep 2026</div>
+    <div>For use at Köpenicker Str. 122, 17 Sep</div>
+  </footer>
+
+</div>

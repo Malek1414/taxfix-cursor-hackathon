@@ -1,0 +1,617 @@
+<title>Taxfix Validation Playbook</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  @page { size: A4; margin: 13mm 12mm 11mm; }
+
+  :root{
+    --ink:#12180F; --ink2:#414C3D; --ink3:#6E7A68;
+    --pine:#10593D; --pine-bg:#EAF2EC; --pine-line:#BFD6C6;
+    --sienna:#9E3A18; --sienna-bg:#FAEDE7;
+    --ochre:#6F520A; --ochre-bg:#F7EFD8;
+    --rule:#CBD3C4; --rule2:#E6EBE0; --paper:#fff; --panel:#F6F8F3;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:"Source Serif 4",Georgia,serif; font-size:8.6pt; line-height:1.36;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact; margin:0;
+  }
+  .mono,.num,.cover-meta dd,.tag{font-family:"IBM Plex Mono",Menlo,monospace;}
+  h1,h2,h3,h4,.ui,th,.lbl{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;}
+  p{margin:.42em 0 0;} ul,ol{margin:.38em 0 0; padding-left:1.05em;} li{margin:.16em 0;}
+  strong{font-weight:600;} .de{font-style:italic; color:var(--ink2);}
+  a{color:var(--pine); text-decoration:none;}
+
+  .page{page-break-after:always;}
+  .page:last-child{page-break-after:auto;}
+  .nobreak{break-inside:avoid;}
+
+  /* cover */
+  .cover{padding-top:20mm;}
+  .kicker{font-family:"IBM Plex Mono",monospace; font-size:8.5pt; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--pine);}
+  h1{font-size:30pt; font-weight:800; line-height:.98; letter-spacing:-.03em; margin:8mm 0 0;}
+  h1 em{font-style:normal; color:var(--pine);}
+  .cover .sub{font-size:11.6pt; line-height:1.4; color:var(--ink2); max-width:130mm; margin-top:6mm;}
+  .cover-meta{margin-top:11mm; border-top:2px solid var(--pine); padding-top:4mm;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:5mm; font-size:8.6pt;}
+  .cover-meta dt{font-family:Archivo,sans-serif; font-weight:700; font-size:7.4pt;
+    letter-spacing:.11em; text-transform:uppercase; color:var(--ink3);}
+  .cover-meta dd{margin:1.4mm 0 0; font-size:9pt; color:var(--ink);}
+  .cover-note{margin-top:10mm; background:var(--panel); border-left:3px solid var(--pine);
+    padding:4mm 5mm; font-size:8.8pt;}
+
+  /* section heads */
+  h2{font-size:15pt; font-weight:800; letter-spacing:-.02em; margin:0 0 1mm;
+     padding-bottom:2mm; border-bottom:2px solid var(--pine); display:flex;
+     justify-content:space-between; align-items:baseline; gap:6mm;}
+  h2 span{font-family:"IBM Plex Mono",monospace; font-size:8.5pt; font-weight:500;
+     letter-spacing:.14em; color:var(--pine);}
+  .dek{font-size:8.7pt; color:var(--ink2); margin:2.4mm 0 0; max-width:150mm;}
+  h3{font-size:10pt; font-weight:700; margin:4.5mm 0 0; letter-spacing:-.005em;}
+  h4{font-size:8.6pt; font-weight:700; margin:3.2mm 0 0; letter-spacing:.02em;}
+
+  /* tables */
+  table{border-collapse:collapse; width:100%; font-size:7.9pt; margin-top:3mm;}
+  th{text-align:left; font-size:6.7pt; font-weight:700; letter-spacing:.1em;
+     text-transform:uppercase; color:var(--ink3); padding:1.5mm 2mm;
+     border-bottom:1.2px solid var(--rule); background:var(--panel);}
+  td{padding:1.5mm 2mm; border-bottom:.8px solid var(--rule2); vertical-align:top;}
+  td.n{font-family:"IBM Plex Mono",monospace; white-space:nowrap;}
+  table.tight td, table.tight th{padding:1.05mm 1.7mm; line-height:1.3;}
+  .ok{color:var(--pine); font-weight:600;} .gate{color:var(--ochre); font-weight:600;}
+
+  /* tag */
+  .tag{display:inline-block; font-size:6.8pt; font-weight:600; letter-spacing:.1em;
+    text-transform:uppercase; padding:.7mm 1.6mm; border-radius:1px; vertical-align:1.2px;}
+  .t-have{background:var(--pine-bg); color:var(--pine);}
+  .t-gate{background:var(--ochre-bg); color:var(--ochre);}
+  .t-make{background:var(--sienna-bg); color:var(--sienna);}
+
+  /* idea block */
+  .idea-hd{border-top:3px solid var(--pine); padding-top:3mm; margin-top:0;}
+  .idea-n{font-family:"IBM Plex Mono",monospace; font-size:8pt; font-weight:600;
+    letter-spacing:.14em; color:var(--pine);}
+  .idea-hd h3{font-size:15.5pt; font-weight:800; letter-spacing:-.025em; margin:1.5mm 0 0; line-height:1.05;}
+  .pitch{font-size:9.2pt; color:var(--ink2); margin-top:1.6mm; max-width:150mm;}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:4mm; margin-top:2.8mm;}
+  .panel{background:var(--panel); border:.8px solid var(--rule); padding:3mm 3.4mm; font-size:8.5pt;}
+  .panel.warn{background:var(--sienna-bg); border-color:#E2C5B8;}
+  .panel.hit{background:var(--pine-bg); border-color:var(--pine-line);}
+  .lbl{font-size:7.4pt; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink3); display:block; margin-bottom:2mm;}
+  .panel.warn .lbl{color:var(--sienna);} .panel.hit .lbl{color:var(--pine);}
+  .panel p:first-of-type{margin-top:0;}
+
+  /* protocol rows */
+  .proto{margin-top:2.6mm; border:.8px solid var(--rule);}
+  .prow{display:grid; grid-template-columns:26mm 1fr; border-bottom:.8px solid var(--rule2);}
+  .prow:last-child{border-bottom:0;}
+  .prow dt{font-family:Archivo,sans-serif; font-size:6.8pt; font-weight:700; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink3); padding:2mm 2.4mm; background:var(--panel);}
+  .prow dd{margin:0; padding:2mm 2.8mm; font-size:8.3pt; font-family:"Source Serif 4",serif;}
+  .prow dd code{font-family:"IBM Plex Mono",monospace; font-size:8.3pt; background:var(--panel); padding:0 1mm;}
+  .barpass{color:var(--pine); font-weight:600;}
+
+  /* objections */
+  .obj{margin-top:2.2mm;}
+  .obj dt{font-weight:600; font-size:8.7pt; color:var(--sienna); margin-top:2.2mm;}
+  .obj dt::before{content:"“";} .obj dt::after{content:"”";}
+  .obj dd{margin:.7mm 0 0; font-size:8.7pt;}
+  .obj dd::before{content:"→ "; color:var(--pine); font-weight:700;}
+
+  .say{border-left:3px solid var(--pine); padding:1.2mm 0 1.2mm 3mm; margin-top:2mm;
+    font-size:8.9pt; font-style:italic; color:var(--ink);}
+  .say b{font-style:normal;}
+
+  .checkline{display:grid; grid-template-columns:5mm 1fr; gap:2mm; align-items:start;
+    font-size:8.6pt; margin-top:1.6mm;}
+  .box{width:3.4mm; height:3.4mm; border:1.1px solid var(--ink3); margin-top:1.5mm;}
+
+  .clock{display:grid; grid-template-columns:15mm 1fr; gap:3mm; font-size:8.6pt; margin-top:1.8mm;}
+  .clock b{font-family:"IBM Plex Mono",monospace; color:var(--pine); font-weight:600;}
+
+  footer{margin-top:3mm; padding-top:2mm; border-top:1px solid var(--rule);
+    font-family:"IBM Plex Mono",monospace; font-size:7.4pt; color:var(--ink3);
+    display:flex; justify-content:space-between;}
+</style>
+
+<!-- ============== COVER ============== -->
+<div class="page cover">
+  <div class="kicker">Cursor Hackathon Berlin · Taxfix SE · Köpenicker Str. 122 · 17 Sep 2026</div>
+  <h1>Seven ideas,<br>and how to <em>prove</em><br>each one works</h1>
+  <p class="sub">A validation protocol and a jury defence for every build candidate — plus the public German tax data that makes the proof possible. Built on a corpus already downloaded to this machine.</p>
+
+  <dl class="cover-meta">
+    <div><dt>Build window</dt><dd>135 minutes<br>19:00 → 21:15</dd></div>
+    <div><dt>Demo</dt><dd>2–3 min<br>Awards 21:40</dd></div>
+    <div><dt>Team</dt><dd>3 minimum<br>Pods of 2–3</dd></div>
+    <div><dt>Prize</dt><dd>€500 / €300 / €100<br>per person</dd></div>
+  </dl>
+
+  <div class="cover-note">
+    <p><strong>The thesis of this document.</strong> Every team in that room will demo something that looks right. Taxfix's own job ads say excellence is <em>"knowing when the AI output is wrong even when it looks right."</em> So the differentiator is not the build — it's the <strong>oracle</strong>: an independent source of truth you can check yourself against, live, on stage.</p>
+    <p>For four of the seven ideas below, a genuine oracle exists in German public data and is already on this laptop. Those four are the strong candidates. The other three are validated differently, and this document says so plainly rather than pretending otherwise.</p>
+  </div>
+</div>
+
+<!-- ============== §A DATA ============== -->
+<div class="page">
+  <h2>The public data supply chain <span>§A</span></h2>
+  <p class="dek">German tax is unusually well served by open data, because the state publishes the rules as machine-readable artefacts — including its own reference implementation of the tax arithmetic. Status below is as verified on this machine, 16 Sep 2026.</p>
+
+  <table class="tight">
+    <thead><tr><th style="width:36mm">Source</th><th style="width:19mm">Status</th><th>What it actually is</th><th style="width:30mm">Validates</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Gesetze im Internet</strong><br><span class="de">gesetze-im-internet.de</span></td>
+        <td><span class="tag t-have">On disk</span></td>
+        <td>Full statutory text as XML, free to reuse, with a published DTD and a daily-updated TOC. Downloaded: <strong>EStG</strong> (1.5 MB), <strong>UStG</strong>, <strong>AO</strong>, <strong>StBerG</strong>. Every paragraph addressable.</td>
+        <td class="n">Citations,<br>grounding</td>
+      </tr>
+      <tr>
+        <td><strong>BMF Muster</strong><br><span class="de">Lohnsteuerbescheinigung 2026</span></td>
+        <td><span class="tag t-have">On disk</span></td>
+        <td>The official 4-page template for the printed wage tax statement, published 29 Aug 2025. This is <em>the</em> document Taxfix onboarding starts by photographing — field numbering and layout are prescribed here.</td>
+        <td class="n">Extraction<br>layout</td>
+      </tr>
+      <tr>
+        <td><strong>KoSIT XRechnung test suite</strong><br><span class="de">projekte.kosit.org</span></td>
+        <td><span class="tag t-have">On disk</span></td>
+        <td><strong>90 XML test instances</strong> of the German e-invoice standard, the official conformance corpus used by the state's own validator.</td>
+        <td class="n">E-invoice<br>parsing</td>
+      </tr>
+      <tr>
+        <td><strong>Mustangproject fixtures</strong><br><span class="de">ZUGFeRD / Factur-X</span></td>
+        <td><span class="tag t-have">On disk</span></td>
+        <td>158 PDF+XML fixtures. Critically: these are <strong>hybrid invoices — a human-readable PDF with the structured truth embedded inside it.</strong> The answer key ships in the file.</td>
+        <td class="n">Receipt OCR<br>ground truth</td>
+      </tr>
+      <tr>
+        <td><strong>BMF Lohn- &amp; Einkommensteuerrechner</strong><br><span class="de">bmf-steuerrechner.de</span></td>
+        <td><span class="tag t-make">Email only</span></td>
+        <td>The government's own calculator, with an external interface the BMF publishes so third parties can machine-check against the official one. Endpoint verified live and returning structured XML — but it needs a <span class="de">Zugriffscode</span> and <strong>there is no self-service signup: the only route is emailing Steuerrechner@bmf.bund.de.</strong> <strong>Not available for tomorrow.</strong> Use the PAP below instead.</td>
+        <td class="n">Tax arithmetic,<br>to the cent</td>
+      </tr>
+      <tr>
+        <td><strong>BMF Programmablaufplan 2026</strong><br><span class="de">PAP, XML pseudocode</span></td>
+        <td><span class="tag t-have">On disk</span></td>
+        <td><strong>This is your oracle.</strong> The official wage-tax algorithm as XML pseudocode, explicitly published for transliteration into Java or C — because the BMF knows the graphical PAP is ambiguous about decimal handling. <strong>No gate, no signup: downloaded, 68 KB, 23 methods, 41 execution steps,</strong> all the real variables (STKL, RE4, KVZ, PVS…). Both 2025 and 2026 on disk.</td>
+        <td class="n">Wage tax,<br>offline</td>
+      </tr>
+      <tr>
+        <td><strong>Destatis</strong><br><span class="de">Lohn- u. Einkommensteuerstatistik</span></td>
+        <td><span class="tag t-have">On disk</span></td>
+        <td>Official distributions of income, deductions and refunds, plus a REST/JSON GENESIS API. Use for <strong>plausible synthetic personas</strong> — incomes drawn from the real distribution, not invented.</td>
+        <td class="n">Realistic<br>test cases</td>
+      </tr>
+      <tr>
+        <td><strong>ELSTER / ERiC SDK</strong></td>
+        <td><span class="tag t-make">Not tonight</span></td>
+        <td>The C library for actually transmitting returns. Free, but requires developer registration and a manufacturer ID. <strong>Out of scope for 135 minutes</strong> — reference it as the integration path, don't attempt it.</td>
+        <td class="n">—</td>
+      </tr>
+      <tr>
+        <td><strong>SROIE / CORD</strong><br><span class="de">receipt OCR benchmarks</span></td>
+        <td><span class="tag t-make">Optional</span></td>
+        <td>Public annotated receipt datasets (~1k images each), but retail receipts without VAT structure. <strong>The ZUGFeRD fixtures above are strictly better here.</strong></td>
+        <td class="n">Fallback OCR</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>What this corpus does and does not give you</h3>
+  <p><strong>It gives you:</strong> the law as structured data, the government's own arithmetic as runnable pseudocode, the exact document format Taxfix ingests, and invoices where the correct parse is embedded in the file. An unusually strong position for a hackathon.</p>
+  <p><strong>It does not give you:</strong> real <span class="de">Steuerbescheide</span>, <span class="de">Finanzamt</span> correspondence, or user returns — personal tax data, correctly not public. For ideas needing them, <strong>synthesise the test set and say out loud that you did.</strong> "We generated 40 notices with known injected errors" beats "we tried one example," and a stated limitation beats a quiet one.</p>
+
+  <div class="panel hit" style="margin-top:5mm">
+    <span class="lbl">The one move that pays for itself</span>
+    <p><strong>Implement the PAP 2026 XML.</strong> It is the Bundesfinanzministerium's own wage-tax algorithm, on this laptop, with no gatekeeper — and it converts idea 07 from "we think this is right" into "this is the federal calculation, transliterated, and here is the diff running live." The BMF publishes it in exactly this form <em>because</em> they want third parties to get the arithmetic right.  No other team will have that. One warning the BMF gives on the page itself: <strong>use <code>BigDecimal</code>, not floats</strong> — rounding drift is the one thing that will silently break a cent-exact claim on stage.</p>
+  </div>
+
+  <footer><span>Taxfix Validation Playbook</span><span>§A — Data</span></footer>
+</div>
+
+<!-- ============== §B DOCTRINE ============== -->
+<div class="page">
+  <h2>How to validate anything in 135 minutes <span>§B</span></h2>
+  <p class="dek">The same five-part skeleton applies to all seven ideas. Fill it in before you write code — it takes four minutes and it determines what your demo can claim.</p>
+
+  <div class="proto">
+    <div class="prow"><dt>Oracle</dt><dd>The independent source of truth. Ranked best to worst: <strong>(1)</strong> a government reference implementation, <strong>(2)</strong> ground truth embedded in the test file itself, <strong>(3)</strong> a test set you constructed, so you know the answer by construction, <strong>(4)</strong> a human judgment you recorded beforehand. Never: the same model grading itself.</dd></div>
+    <div class="prow"><dt>Test set</dt><dd>Small and adversarial beats large and easy. <strong>15–40 cases</strong> is plenty. Include at least three cases designed to break your own system, and keep them in the demo.</dd></div>
+    <div class="prow"><dt>Metric</dt><dd>One headline number a judge can hold. Prefer <strong>asymmetric</strong> metrics that reflect real cost: in tax, a missed deduction is annoying, a wrong figure filed with the <span class="de">Finanzamt</span> is a legal problem. Measure those separately, never as one accuracy score.</dd></div>
+    <div class="prow"><dt>Pass bar</dt><dd>Declared <em>before</em> you run it. "≥95% extraction F1 <strong>and zero silent errors</strong>" is a bar. "It works well" is not.</dd></div>
+    <div class="prow"><dt>Failure mode</dt><dd>Name what wrong looks like, and show the system catching it on stage. <strong>This is the single highest-value 20 seconds of your demo.</strong></dd></div>
+  </div>
+
+  <h3>The asymmetry that matters in this domain</h3>
+  <p>Tax software has two failure classes and they are not equally bad:</p>
+  <table>
+    <thead><tr><th style="width:42mm">Failure</th><th style="width:26mm">Cost</th><th>Correct system behaviour</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Over-escalation</strong><br>flags something a human didn't need to see</td><td class="n ok">Low<br>wasted minutes</td><td>Acceptable. Tune towards this.</td></tr>
+      <tr><td><strong>Silent error</strong><br>auto-decides, and is wrong, and nobody is told</td><td class="n" style="color:var(--sienna);font-weight:600">Severe<br>filed, legal, liability</td><td>Must be zero. Every auto-decision needs a confidence floor and an audit line.</td></tr>
+    </tbody>
+  </table>
+  <p>Say this out loud during your demo. It shows you understand that Taxfix is a regulated financial product and not a chatbot — which is precisely the argument the company is making about itself right now.</p>
+
+  <h3>Scoring the seven, before you pick</h3>
+  <table>
+    <thead><tr><th>#</th><th style="width:48mm">Idea</th><th style="width:26mm">Oracle quality</th><th style="width:22mm">Buildable<br>in 135 min</th><th style="width:22mm">Demo<br>legibility</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td class="n">01</td><td>Expert co-pilot</td><td class="n">Constructed</td><td class="n ok">Yes</td><td class="n">Medium</td><td>Take if brief is internal tools</td></tr>
+      <tr style="background:var(--pine-bg)"><td class="n">02</td><td><strong>Bescheid-Check</strong></td><td class="n">Constructed, exact</td><td class="n ok">Yes</td><td class="n ok">Very high</td><td><strong>Default pick</strong></td></tr>
+      <tr><td class="n">03</td><td>Finanzamt agent</td><td class="n">Constructed</td><td class="n ok">Yes</td><td class="n ok">High</td><td>Strong, close to 02</td></tr>
+      <tr style="background:var(--pine-bg)"><td class="n">04</td><td><strong>Self-employed books</strong></td><td class="n ok">Embedded in file</td><td class="n">Tight</td><td class="n">Medium</td><td><strong>Best oracle of all</strong></td></tr>
+      <tr><td class="n">05</td><td>Embedded SDK</td><td class="n">None — integration</td><td class="n ok">Yes</td><td class="n">Medium</td><td>Strategy swing, risky</td></tr>
+      <tr><td class="n">06</td><td>Verification harness</td><td class="n ok">EStG XML</td><td class="n ok">Yes</td><td class="n ok">High</td><td>On-thesis, needs prep</td></tr>
+      <tr style="background:var(--pine-bg)"><td class="n">07</td><td><strong>Günstigerprüfung</strong></td><td class="n ok">Federal ministry</td><td class="n ok">Yes</td><td class="n">Medium</td><td><strong>Unbeatable proof</strong></td></tr>
+    </tbody>
+  </table>
+
+  <footer><span>Taxfix Validation Playbook</span><span>§B — Doctrine</span></footer>
+</div>
+
+<!-- ============== IDEA 01 ============== -->
+<div class="page">
+  <div class="idea-hd">
+    <div class="idea-n">IDEA 01 · INTERNAL TOOLS</div>
+    <h3>The tax expert's co-pilot</h3>
+  </div>
+  <p class="pitch">Drop in a client's document bundle. Out comes a pre-filled draft return, plus a ranked queue of exactly the items a licensed human must decide — each with the reason, the euro at stake, and the source region highlighted.</p>
+
+  <div class="grid2">
+    <div class="panel hit"><span class="lbl">The pain it hits</span>
+      <p>Expert Service is priced at 20% of refund, min €99.99 — their highest-revenue line and their worst margin, because it needs a licensed <span class="de">Steuerberater</span>. Germany cannot supply them: <strong>72% of tax firms report unfillable vacancies</strong>, over half of practising advisors are 50+, and 2026 is the first year more Germans retire than join the workforce.</p>
+      <p><strong>They cannot hire their way out. Only productivity works.</strong></p>
+    </div>
+    <div class="panel"><span class="lbl">Data you have</span>
+      <p>BMF <span class="de">Lohnsteuerbescheinigung</span> Muster 2026 (prescribed field numbering), ZUGFeRD fixtures as expense documents, Destatis distributions for realistic incomes.</p>
+      <p><strong>Construct 12 cases</strong> across three difficulty tiers: clean, ambiguous, and one containing a deliberate contradiction between two documents.</p>
+    </div>
+  </div>
+
+  <div class="proto">
+    <div class="prow"><dt>Oracle</dt><dd>Constructed. You build each case from known inputs, so the correct extraction and the correct escalation decision are known by construction. Record the expected answers in a <code>cases.json</code> before you build the system.</dd></div>
+    <div class="prow"><dt>Test set</dt><dd>12 cases × ~20 fields. Tier A clean (5), Tier B ambiguous (5), Tier C contradictory (2).</dd></div>
+    <div class="prow"><dt>Metric</dt><dd>Two numbers, reported separately. <strong>(1) Field extraction F1</strong> against the known values. <strong>(2) Escalation confusion matrix</strong> — of items auto-decided, how many were wrong (<em>silent error rate</em>); of items escalated, how many genuinely needed a human (<em>escalation precision</em>).</dd></div>
+    <div class="prow"><dt>Pass bar</dt><dd><span class="barpass">Extraction F1 ≥ 0.95 · silent error rate = 0 · both Tier C contradictions escalated.</span> Over-escalation up to ~20% is an explicit pass, not a failure.</dd></div>
+    <div class="prow"><dt>Failure mode</dt><dd>The system confidently reads a figure from the wrong line of the wage statement and files it without flagging. <strong>Demo this:</strong> run Tier C live and show the contradiction caught and routed to a human.</dd></div>
+  </div>
+
+  <h4>Defending it to the jury</h4>
+  <p class="say"><b>Open:</b> "Your highest-revenue product needs a licensed human, and Germany has run out of them — 72% of tax firms can't fill roles and half the profession is over 50. You can't hire out of this. So we didn't build something that replaces the expert. We built the thing that decides what the expert never has to look at."</p>
+  <p><strong>The number:</strong> expert-touch items per case, before and after. "Twenty decisions become four, and the four are ranked by euros at stake."</p>
+  <dl class="obj">
+    <dt>Isn't this just OCR? We already do document scanning.</dt>
+    <dd>The extraction isn't the product — the <em>triage</em> is. We're not claiming to read documents better than you. We're claiming to know which four of twenty items a human must see, and we measured that as a confusion matrix rather than an accuracy number.</dd>
+    <dt>What happens when it's wrong?</dt>
+    <dd>We separate the two failure classes. Over-escalation costs minutes; a silent wrong auto-decision is a filing liability. Our pass bar allows the first and requires zero of the second. Here's the case where it catches itself.</dd>
+    <dt>Your test cases are synthetic.</dt>
+    <dd>Yes, deliberately — real returns are personal data we shouldn't have. Synthetic means we know the right answer by construction, which is exactly what lets us report a silent-error rate at all. With your real corpus this protocol runs unchanged.</dd>
+  </dl>
+
+  <footer><span>Taxfix Validation Playbook</span><span>Idea 01</span></footer>
+</div>
+
+<!-- ============== IDEA 02 ============== -->
+<div class="page">
+  <div class="idea-hd">
+    <div class="idea-n">IDEA 02 · DEFAULT PICK</div>
+    <h3>Bescheid-Check</h3>
+  </div>
+  <p class="pitch">Photograph the assessment notice. The tool diffs it line by line against what was filed, flags every deviation in plain German and English with the euro impact, and where a deviation looks wrong, drafts the <span class="de">Einspruch</span> with the deadline counting down.</p>
+
+  <div class="grid2">
+    <div class="panel hit"><span class="lbl">The pain it hits</span>
+      <p>Six to twelve weeks after filing, a dense multi-page <span class="de">Steuerbescheid</span> arrives. The objection window under §355 AO is <strong>one month</strong>. Finanztip's 2026 review names this as a Taxfix weakness in exactly these terms: checking the assessment is <strong>"only possible in a limited way, or expensively."</strong></p>
+      <p>It is also a <strong>year-round touchpoint</strong> on a once-a-year product — which is the company's stated strategic problem.</p>
+    </div>
+    <div class="panel"><span class="lbl">Data you have</span>
+      <p>You generate both sides, which is what makes the oracle exact. Take a filed-return object, render a synthetic <span class="de">Bescheid</span> from it, then <strong>inject N known deviations</strong> of known euro value. <strong>EStG XML</strong> supplies the paragraph citations for each deviation type.</p>
+    </div>
+  </div>
+
+  <div class="proto">
+    <div class="prow"><dt>Oracle</dt><dd>Exact and constructed. You injected the deviations, so you know precisely which ones exist, where, and what each is worth. This is the cleanest oracle of the three "constructed" ideas because it has zero interpretive ambiguity.</dd></div>
+    <div class="prow"><dt>Test set</dt><dd><strong>40 synthetic notices.</strong> 10 clean (no deviation — tests false positives), 25 with 1–3 injected deviations spanning value bands, 5 adversarial: a deviation that is <em>correct in law</em> (the <span class="de">Finanzamt</span> was right) and must <strong>not</strong> be flagged as an error.</dd></div>
+    <div class="prow"><dt>Metric</dt><dd><strong>Recall</strong> on injected deviations, banded by euro value. <strong>False positives per clean notice.</strong> <strong>Euro-impact accuracy</strong> (absolute error on the stated amount). <strong>Deadline arithmetic</strong> — exact date, no tolerance.</dd></div>
+    <div class="prow"><dt>Pass bar</dt><dd><span class="barpass">100% recall on deviations ≥ €50 · &lt; 1 false positive per notice · euro impact exact · deadline exact on all 40 · all 5 adversarial cases correctly not flagged.</span></dd></div>
+    <div class="prow"><dt>Failure mode</dt><dd>Crying wolf. A tool that flags a lawful adjustment as an error teaches users to file pointless objections and destroys trust in one step. <strong>Demo the adversarial case:</strong> show it recognising that the tax office was right.</dd></div>
+  </div>
+
+  <h4>Defending it to the jury</h4>
+  <p class="say"><b>Open:</b> "Finanztip's 2026 review says checking your <span class="de">Bescheid</span> with Taxfix is only possible in a limited way, or expensively. That's the moment your user is most anxious and you're thinnest. It's also the one moment that brings them back in November. Here it is, fixed."</p>
+  <p><strong>The number:</strong> "Across 40 notices we caught every deviation above €50, with fewer than one false positive per notice — and we correctly stayed quiet on five where the tax office was right."</p>
+  <dl class="obj">
+    <dt>Users could just read the notice themselves.</dt>
+    <dd>They don't, which is why this is a known problem. And the clock is the product as much as the diff — §355 AO gives one month, and a user who reads it in week five has no remedy left.</dd>
+    <dt>How do you know your deviations are the ones that matter?</dt>
+    <dd>We banded by euro value and report recall per band rather than one blended number, because a €4 rounding difference and a €400 rejected deduction are not the same event. Above €50 we're at 100%.</dd>
+    <dt>Aren't you going to generate a lot of pointless objections?</dt>
+    <dd>That's the failure mode we optimised against first. Five of our forty cases are deviations where the <span class="de">Finanzamt</span> was legally correct, and the pass bar requires we flag none of them. Watch — this is that case.</dd>
+    <dt>This is a feature, not a business.</dt>
+    <dd>It's a retention mechanism. Your structural problem is a €45 transaction once a year with no reason to open the app in between. This puts a real reason in week eight, and it's the moment the user is most receptive to an upsell into Expert Service.</dd>
+  </dl>
+
+  <footer><span>Taxfix Validation Playbook</span><span>Idea 02</span></footer>
+</div>
+
+<!-- ============== IDEA 03 ============== -->
+<div class="page">
+  <div class="idea-hd">
+    <div class="idea-n">IDEA 03 · SUPPORT</div>
+    <h3>The Finanzamt correspondence agent</h3>
+  </div>
+  <p class="pitch">Upload the letter from the tax office. It classifies what is actually being asked, explains it in plain language, lists precisely which documents satisfy the request, and drafts the reply with the statutory deadline tracked.</p>
+
+  <div class="grid2">
+    <div class="panel hit"><span class="lbl">The pain it hits</span>
+      <p>The single most repeated complaint in Taxfix reviews: the app is excellent right up until the <span class="de">Finanzamt</span> writes back, and then users feel abandoned mid-process. Reviews cite <strong>eight messages before a reply</strong>. Support demand also spikes hard into the 31 July deadline — the same window where staff are most stretched.</p>
+    </div>
+    <div class="panel"><span class="lbl">Data you have</span>
+      <p><strong>AO XML</strong> for the procedural deadlines, <strong>EStG XML</strong> for the substantive grounds. Letter types are standardised and publicly documented in tax guidance — write 15 from templates, covering the common request classes.</p>
+    </div>
+  </div>
+
+  <div class="proto">
+    <div class="prow"><dt>Oracle</dt><dd>Constructed, with a labelled taxonomy. Define ~8 request classes (proof of expenses, missing attachment, clarification of income, notice of intended deviation, etc.), write 15 letters against them, label each with its class, its required-document list, and its deadline.</dd></div>
+    <div class="prow"><dt>Test set</dt><dd>15 letters. Include two where the letter asks for <strong>more than one thing</strong> — multi-intent is where these systems quietly fail.</dd></div>
+    <div class="prow"><dt>Metric</dt><dd><strong>Intent classification accuracy.</strong> <strong>Document-list completeness</strong> — treat any under-listing as a failure, since a user who replies with 3 of 4 documents triggers another round trip and another month. <strong>Deadline extraction exactness.</strong></dd></div>
+    <div class="prow"><dt>Pass bar</dt><dd><span class="barpass">Zero missed deadlines · zero under-listed document sets · both multi-intent letters fully decomposed.</span> Over-listing documents is acceptable; under-listing is not.</dd></div>
+    <div class="prow"><dt>Failure mode</dt><dd>The letter asks two things and the agent answers one. <strong>Demo this:</strong> feed the multi-intent letter and show both requests surfaced separately.</dd></div>
+  </div>
+
+  <h4>Defending it to the jury</h4>
+  <p class="say"><b>Open:</b> "We read your reviews. The loudest recurring complaint is that support ends the moment the tax office writes back. That's also your worst support cost, in your worst week of the year. This is that complaint, answered."</p>
+  <p><strong>The number:</strong> "Deflected round trips. Every under-listed document set costs the user a month and costs you a support thread — we made under-listing a hard failure in our pass bar, and we have zero."</p>
+  <dl class="obj">
+    <dt>This is a support automation, not a product.</dt>
+    <dd>It's both, and the support saving is the part you can bank this year. But it also fixes the reason users say they'd not recommend you — which is a CAC argument, not a support argument.</dd>
+    <dt>Tax office letters are too varied to classify.</dt>
+    <dd>They're more standardised than they look — we built against eight classes and the two we deliberately made multi-intent are the interesting ones. Here's the decomposition.</dd>
+    <dt>What if it gives wrong advice? You're not tax advisors.</dt>
+    <dd>Correct, and that's designed in. It never asserts a tax position — it classifies the request, lists documents, and tracks the deadline. Anything touching a substantive position routes to your licensed staff. That's the <span class="de">Steuerberatungsgesetz</span> line and we stay on the right side of it.</dd>
+  </dl>
+
+  <footer><span>Taxfix Validation Playbook</span><span>Idea 03</span></footer>
+</div>
+
+<!-- ============== IDEA 04 ============== -->
+<div class="page">
+  <div class="idea-hd">
+    <div class="idea-n">IDEA 04 · BEST ORACLE · GROWTH BET</div>
+    <h3>Always-on bookkeeping for the self-employed</h3>
+  </div>
+  <p class="pitch">Receipts arrive by email forward, photo or bank feed. The agent categorises, posts, keeps a running <span class="de">EÜR</span>, drafts the monthly <span class="de">UStVA</span> — and warns before the §19 UStG thresholds are crossed, because crossing one changes your legal obligations overnight.</p>
+
+  <div class="grid2">
+    <div class="panel hit"><span class="lbl">The pain it hits</span>
+      <p>The <strong>€19.99/month self-employed product launched March 2026</strong> is their only recurring revenue and the only product team they're actively hiring engineers for. Market: ~3.7m self-employed Germans. They are the newest entrant against Accountable, sevDesk, Lexware and Norman — and their app currently <strong>stops working entirely above the Kleinunternehmer threshold.</strong></p>
+    </div>
+    <div class="panel"><span class="lbl">Data you have</span>
+      <p><strong>This is the strongest oracle on the list.</strong> ZUGFeRD/Factur-X fixtures are hybrid files: a human-readable PDF <em>with the structured ground truth embedded inside the same document</em>. Plus <strong>90 KoSIT XRechnung conformance instances.</strong> The answer key ships in the file.</p>
+    </div>
+  </div>
+
+  <div class="proto">
+    <div class="prow"><dt>Oracle</dt><dd>Embedded. Parse the PDF as a human would — visually — then compare against the XML payload inside that same PDF. No labelling, no construction, no judgment call. Machine-checkable at line-item granularity across ~150 fixtures.</dd></div>
+    <div class="prow"><dt>Test set</dt><dd>~30 ZUGFeRD PDFs for extraction, plus the 90 KoSIT XML instances for structural conformance. Include the <code>corrupt-factur-x-waytoosmall.pdf</code> fixture — malformed input is a real production case.</dd></div>
+    <div class="prow"><dt>Metric</dt><dd><strong>Field-level accuracy</strong> vs embedded XML. <strong>VAT reconciliation to the cent</strong> — net + VAT must equal gross, and the VAT rate must match the line item. <strong>Threshold alarm timing</strong> — fires <em>before</em> cumulative turnover crosses €25,000, not after.</dd></div>
+    <div class="prow"><dt>Pass bar</dt><dd><span class="barpass">Cent-exact VAT reconciliation on 100% of fixtures · threshold alarm fires before crossing · malformed input fails loudly rather than silently posting a wrong entry.</span></dd></div>
+    <div class="prow"><dt>Failure mode</dt><dd>Silently posting a wrong VAT rate. This propagates into a filed <span class="de">UStVA</span> — a legal document. <strong>Demo the corrupt fixture</strong> and show it refusing to post.</dd></div>
+  </div>
+
+  <h4>Defending it to the jury</h4>
+  <p class="say"><b>Open:</b> "Your €19.99 subscription is the only recurring revenue you have, and it's the only place you're hiring product engineers. So we built for it — and we validated against the government's own e-invoice conformance corpus, where the correct answer is embedded inside the file. Cent-exact, across a hundred and fifty invoices."</p>
+  <p><strong>The number:</strong> "Cent-exact VAT reconciliation on 100% of fixtures. Not sampled — all of them."</p>
+  <dl class="obj">
+    <dt>Accountable, sevDesk and Lexware already do this.</dt>
+    <dd>They do bookkeeping. None of them owns the filing relationship and the licensed advisor on the other side of it. Your wedge isn't the ledger, it's that you can take the ledger all the way through ELSTER and stand behind it. Also — the threshold alarm is a tax-advice feature, not a bookkeeping feature, and it's the moment a freelancer needs you most.</dd>
+    <dt>Why does the threshold warning matter so much?</dt>
+    <dd>Because crossing €25,000 changes your legal obligations overnight, and the current app just stops being able to help you at exactly that point. That's your most valuable customer becoming someone else's on the day they get successful.</dd>
+    <dt>E-invoicing isn't mandatory for small businesses.</dt>
+    <dd>Issuing isn't — <span class="de">Kleinunternehmer</span> are exempt under §34a UStDV. But <strong>receiving structured e-invoices has been mandatory for every German business since 1 January 2025, with no exemption.</strong> Every one of your users is already receiving files they can't read. That's the wedge.</dd>
+  </dl>
+
+  <footer><span>Taxfix Validation Playbook</span><span>Idea 04</span></footer>
+</div>
+
+<!-- ============== IDEA 05 ============== -->
+<div class="page">
+  <div class="idea-hd">
+    <div class="idea-n">IDEA 05 · STRATEGY SWING</div>
+    <h3>Taxfix Embedded — tax as an API</h3>
+  </div>
+  <p class="pitch">A drop-in component a neobank, payroll provider or HR platform embeds so their users file without ever leaving that app — with Taxfix taking the fee and owning the regulated last mile.</p>
+
+  <div class="grid2">
+    <div class="panel hit"><span class="lbl">The pain it hits</span>
+      <p>Every Taxfix partnership today is a <strong>discount link</strong>. N26 users get 30–50% off; Qonto and employer deals work the same way. Not one of them is an API. A partner cannot build tax <em>into</em> their product — they can only hand the user away with a coupon, which compresses an already thin ~€45 AOV and leaks the relationship.</p>
+    </div>
+    <div class="panel warn"><span class="lbl">Be honest about this one</span>
+      <p><strong>There is no accuracy oracle here</strong>, because correctness isn't the question — adoptability is. Don't fake a metric. Validate it as an integration problem, which has its own perfectly respectable measurements.</p>
+    </div>
+  </div>
+
+  <div class="proto">
+    <div class="prow"><dt>Oracle</dt><dd>None, and say so. Substitute: <strong>a cold integrator.</strong> Recruit one person at the event who has not seen your code, hand them the snippet, and time them.</dd></div>
+    <div class="prow"><dt>Test set</dt><dd><strong>Three host environments</strong> with deliberately conflicting styling — e.g. a Tailwind app, a Bootstrap app, and a plain-CSS app with an aggressive global reset. Style bleed in either direction is the classic embed failure.</dd></div>
+    <div class="prow"><dt>Metric</dt><dd><strong>Lines of host code</strong> to first working embed. <strong>Time to integrate</strong>, measured on the cold integrator. <strong>Style isolation</strong> — pass/fail per host. <strong>Data boundary</strong> — can the host read the user's tax data? It must not.</dd></div>
+    <div class="prow"><dt>Pass bar</dt><dd><span class="barpass">&lt; 20 lines of host code · &lt; 10 minutes for someone who has never seen it · zero style bleed across all three hosts · host provably cannot read tax data.</span></dd></div>
+    <div class="prow"><dt>Failure mode</dt><dd>It works in your demo host and nowhere else. <strong>Demo all three hosts</strong>, switching live. That switch is the whole proof.</dd></div>
+  </div>
+
+  <h4>Defending it to the jury</h4>
+  <p class="say"><b>Open:</b> "Every partnership you have is a discount link. N26 users get 50% off and then leave your partner's app. We think the asset isn't the app — it's that you're the one who can legally file. So we made that embeddable, and here it is running inside three different host apps."</p>
+  <p><strong>The number:</strong> "Eleven lines of host code. Ten minutes for someone who'd never seen it. Three hosts, no style bleed."</p>
+  <dl class="obj">
+    <dt>Our partners don't want to build this.</dt>
+    <dd>They don't want to build tax — they want the retention. A neobank that hands its user to a different app in filing season loses the most engaged session of the year. This lets them keep it and lets you keep the fee instead of discounting it away.</dd>
+    <dt>This is a two-year platform project, not a hackathon demo.</dt>
+    <dd>Agreed — which is why we scoped it to the thing that's actually in doubt: whether it embeds cleanly in a host you don't control. That's testable tonight and it's the part that kills these projects. The rest is your existing stack.</dd>
+    <dt>What about liability and data protection?</dt>
+    <dd>That's the design constraint, not an afterthought. The host never touches tax data — it's isolated, and the host app can't read it. We tested that as a pass/fail, because the moment a partner can read a user's income you have a very different regulatory conversation.</dd>
+  </dl>
+
+  <footer><span>Taxfix Validation Playbook</span><span>Idea 05</span></footer>
+</div>
+
+<!-- ============== IDEA 06 ============== -->
+<div class="page">
+  <div class="idea-hd">
+    <div class="idea-n">IDEA 06 · ON-THESIS</div>
+    <h3>The answer to "why not just use ChatGPT?"</h3>
+  </div>
+  <p class="pitch">A verification harness. The same real German tax questions run through a general model and through a Taxfix-grounded pipeline that cites the actual paragraph — with a live scoreboard showing where the general model is confidently, checkably wrong.</p>
+
+  <div class="grid2">
+    <div class="panel hit"><span class="lbl">The pain it hits</span>
+      <p>OpenAI reported tax-related ChatGPT queries up <strong>300% in Q1 2026</strong>. German trade press is writing about Taxfix in explicitly existential terms. This is the question their CEO is being asked in every board meeting, and it is <em>literally</em> their stated hiring criterion: <strong>"knowing when the AI output is wrong even when it looks right."</strong></p>
+    </div>
+    <div class="panel"><span class="lbl">Data you have</span>
+      <p><strong>EStG, UStG, AO and StBerG as XML, on this laptop.</strong> Every paragraph addressable. Which means every citation the system emits is <strong>resolvable live, on stage</strong> — and so is every citation the general model invents.</p>
+    </div>
+  </div>
+
+  <div class="proto">
+    <div class="prow"><dt>Oracle</dt><dd>The statute itself. Two-layer: <strong>(a) citation validity</strong> — does the cited paragraph exist in the XML, and does its text support the claim? This is mechanically checkable. <strong>(b) answer correctness</strong> — graded against the paragraph, by you, recorded beforehand.</dd></div>
+    <div class="prow"><dt>Test set</dt><dd><strong>25 questions</strong> written before you build anything. Mix: 10 that a general model handles fine (be fair — this makes the comparison credible), 10 German-specific and current-year sensitive, 5 where the correct answer is <em>"this depends on facts you haven't given me"</em> — the trap a general model falls into by answering anyway.</dd></div>
+    <div class="prow"><dt>Metric</dt><dd><strong>Citation resolution rate</strong> — % of cited paragraphs that exist and say what's claimed. <strong>Hallucinated citation count.</strong> <strong>Appropriate-refusal rate</strong> on the 5 underspecified questions.</dd></div>
+    <div class="prow"><dt>Pass bar</dt><dd><span class="barpass">100% of your pipeline's citations resolve in the EStG/UStG XML · your system declines all 5 underspecified questions · you report the general model's numbers honestly, including where it beat you.</span></dd></div>
+    <div class="prow"><dt>Failure mode</dt><dd>Building a rigged comparison. A jury of engineers will smell it instantly and you lose the room. <strong>Include the cases where the general model was right</strong> — it makes the cases where it wasn't land far harder.</dd></div>
+  </div>
+
+  <h4>Defending it to the jury</h4>
+  <p class="say"><b>Open:</b> "Your own job ad says excellence is knowing when the AI output is wrong even when it looks right. We took that literally. Here are twenty-five tax questions, two systems, and every citation checked live against the statute — including the ten where the general model was perfectly fine."</p>
+  <p><strong>The number:</strong> "Every citation our pipeline emits resolves in the EStG. The general model invented [N]. And on five questions where the honest answer is 'I need more facts,' it answered anyway — all five times."</p>
+  <dl class="obj">
+    <dt>You've rigged the questions.</dt>
+    <dd>Ten of the twenty-five are ones we expected it to get right, and it did — we report those. The interesting set is the five underspecified ones, where confidently answering <em>is</em> the failure. That's not a question-selection artefact, it's a behavioural difference.</dd>
+    <dt>Models will get better. This advantage evaporates.</dt>
+    <dd>The grounding isn't the moat and we're not claiming it is. The moat is that you can file, you carry the liability, and you have ten million returns with known <span class="de">Finanzamt</span> outcomes — what was claimed, what was accepted, what was rejected. No foundation model has that. This harness is how you'd measure a model trained on it.</dd>
+    <dt>This is a benchmark, not a product.</dt>
+    <dd>It's a product surface too — it's the trust panel you put in the app when a user asks why they should pay you. But you're right that its first customer is internal: it's the regression suite for every AI feature you ship this year.</dd>
+  </dl>
+
+  <footer><span>Taxfix Validation Playbook</span><span>Idea 06</span></footer>
+</div>
+
+<!-- ============== IDEA 07 ============== -->
+<div class="page">
+  <div class="idea-hd">
+    <div class="idea-n">IDEA 07 · STRONGEST PROOF</div>
+    <h3>Günstigerprüfung for couples</h3>
+  </div>
+  <p class="pitch">Two incomes in. Both assessment paths computed — <span class="de">Zusammenveranlagung</span> versus <span class="de">Einzelveranlagung</span> — and the euro difference out. The feature Taxfix is publicly criticised for not having.</p>
+
+  <div class="grid2">
+    <div class="panel hit"><span class="lbl">The pain it hits</span>
+      <p>Finanztip's 2026 review states it plainly: with Taxfix, <strong>a married couple cannot check whether joint or separate assessment is better for them.</strong> It's a named, published gap in the test that most shapes German purchase decisions — where Taxfix placed sixth at the highest price in the field.</p>
+    </div>
+    <div class="panel hit"><span class="lbl">Why this one is special</span>
+      <p><strong>You can run the German finance ministry's own arithmetic.</strong> The BMF publishes its wage-tax algorithm as XML pseudocode precisely so third parties can reproduce the official calculation exactly. It is on this laptop. No other idea here has an oracle with that authority.</p>
+    </div>
+  </div>
+
+  <div class="proto">
+    <div class="prow"><dt>Oracle</dt><dd><strong>BMF <span class="de">Programmablaufplan</span> 2026</strong> — the federal reference algorithm as XML pseudocode, on disk, ungated. Transliterate it and you are running the ministry's own arithmetic. <em>The live BMF API would also work but needs a <span class="de">Zugriffscode</span> obtainable only by emailing the BMF — not available on this timescale, so don't plan around it.</em></dd></div>
+    <div class="prow"><dt>Test set</dt><dd>A <strong>grid of ~200 income pairs</strong> sampled across the Destatis income distribution, plus edge cases: zero-income spouse, both at the same income (where splitting gains nothing), one spouse just over a progression threshold, and a pair straddling the top rate.</dd></div>
+    <div class="prow"><dt>Metric</dt><dd><strong>Absolute cent deviation</strong> from the BMF figure, per case. <strong>Sign correctness</strong> of the recommendation — did you name the right winner? <strong>Magnitude accuracy</strong> of the stated saving.</dd></div>
+    <div class="prow"><dt>Pass bar</dt><dd><span class="barpass">Cent-exact against BMF on all 200 tariff computations · recommendation sign correct on 100% · zero cases where you recommend the worse option.</span></dd></div>
+    <div class="prow"><dt>Scope honesty</dt><dd><strong>State this in the demo.</strong> The BMF endpoint computes the tariff under §32a EStG and wage tax per the PAP — not a full assessment, which the <span class="de">Finanzamt</span> does on individual circumstances. So the <em>tariff engine</em> is validated against the ministry, the <em>assessment-choice logic</em> against constructed cases. Saying so is a credibility gain, not a caveat.</dd></div>
+  </div>
+
+  <h4>Defending it to the jury</h4>
+  <p class="say"><b>Open:</b> "Finanztip's 2026 test says Taxfix can't tell a married couple whether joint or separate filing is better. That's a published gap in the review that moves German purchase decisions, and you're the most expensive app in that table. Here it is — and every number on this screen is cent-exact against the Bundesfinanzministerium's own calculator."</p>
+  <p><strong>The number:</strong> "Two hundred income pairs. Zero cents of deviation from the federal calculator. Zero cases where we'd have recommended the worse option."</p>
+  <dl class="obj">
+    <dt>That's a small feature.</dt>
+    <dd>It is — and it's small, named, published, and currently missing, in the one review your German customers actually read while deciding whether to pay €49.99 or take the free one. Small and shipped beats large and hypothetical tonight.</dd>
+    <dt>How do we know your maths is right?</dt>
+    <dd>You don't have to take our word for it — it isn't our maths. We transliterated the BMF's own published algorithm, which they publish in exactly this form so third parties reproduce the official result. Two hundred cases, here's the diff, live.</dd>
+    <dt>The full assessment is more complex than the tariff.</dt>
+    <dd>Correct, and we're explicit about it: the ministry's endpoint validates the tariff under §32a, not the whole assessment. The assessment-choice logic is validated separately against constructed cases. We'd rather show you exactly where the federal oracle stops than blur the line.</dd>
+    <dt>Why hasn't our team just built this?</dt>
+    <dd>Because it's unglamorous and the splitting logic is fiddly. That's the point — fiddly, correctness-critical, and now provably right against the government's own numbers. A week of your roadmap, done.</dd>
+  </dl>
+
+  <footer><span>Taxfix Validation Playbook</span><span>Idea 07</span></footer>
+</div>
+
+<!-- ============== §D QUESTIONS ============== -->
+<div class="page">
+  <h2>What to ask, and who to ask it <span>§D</span></h2>
+  <p class="dek">Check-in is 18:00; the challenge drops at 19:00. That hour is the highest-leverage part of the evening, because Taxfix staff will be in the room and unguarded. Questions that make people talk are open, specific, and slightly uncomfortable.</p>
+
+  <h3>To a Taxfix engineer or product person</h3>
+  <ol>
+    <li><strong>"Where does an expert's time actually go on a case — what's the part you wish you could just delete?"</strong><br>The single best question of the night. It hands you a build target from the person who feels the pain, and it's the one question nobody else will ask.</li>
+    <li><strong>"What breaks between Taxfix, Steuerbot and the UK product — is it genuinely one platform yet?"</strong><br>Three brands from two acquisitions. Integration debt is where the unglamorous, high-value problems live, and people are usually candid about it.</li>
+    <li><strong>"When the state's pre-filled return goes live properly, which of your users stops needing you?"</strong><br>Pointed, and shows you understand their year. Whatever they answer names the segment they're defending — build for that segment.</li>
+    <li><strong>"What's the drop-off point in the funnel that annoys you most?"</strong><br>The CPO came from N26 and a crypto exchange, owning onboarding and KYC. She was hired for the funnel. Whoever answers this is telling you her roadmap.</li>
+    <li><strong>"What did the last internal AI hackathon produce that you actually shipped?"</strong><br>They run these regularly. This tells you the real bar, and stops you pitching something they built in March.</li>
+  </ol>
+
+  <h3>To the organisers, in the first ten minutes</h3>
+  <ul>
+    <li><strong>"Is the challenge scored on the demo, the code, or the idea?"</strong> Changes where you spend minute 100 onwards.</li>
+    <li><strong>"Is there an API, a dataset, or a sandbox being provided?"</strong> If Taxfix hands out data, use it — building on their artefacts beats building on yours.</li>
+    <li><strong>"How strict is the 2–3 minutes?"</strong> Determines whether you get one demo beat or three.</li>
+    <li><strong>"Who is judging?"</strong> If the CTO is judging, lead with engineering rigour. If the CPO is, lead with the user moment.</li>
+  </ul>
+
+  <h3>Questions to have ready when the jury turns it back on you</h3>
+  <p>Have a crisp answer prepared for each of these. They come up in almost every hackathon Q&amp;A, and hesitating on them costs more than a missing feature.</p>
+  <table>
+    <thead><tr><th style="width:62mm">They will ask</th><th>Your shape of answer</th></tr></thead>
+    <tbody>
+      <tr><td>"How do you know it works?"</td><td>Name the oracle in one sentence, then the headline number, then offer to run the adversarial case live.</td></tr>
+      <tr><td>"What did you not build?"</td><td>Answer honestly and fast. "ELSTER submission — that needs a manufacturer ID and it's your existing integration anyway." Confident scoping reads as judgment.</td></tr>
+      <tr><td>"How long to production?"</td><td>Separate the model work from the compliance work. The compliance work is always longer and saying so proves you understand the domain.</td></tr>
+      <tr><td>"What's the business case?"</td><td>One of three currencies: expert minutes saved, support threads deflected, or a reason to open the app outside filing season. Pick one, don't list three.</td></tr>
+      <tr><td>"Who owns the liability when it's wrong?"</td><td>Your system never asserts a tax position without a human in the loop — and here's the escalation path. This is the answer that separates you from a chatbot demo.</td></tr>
+    </tbody>
+  </table>
+
+  <footer><span>Taxfix Validation Playbook</span><span>§D — Questions</span></footer>
+</div>
+
+<!-- ============== §E CHECKLIST ============== -->
+<div class="page">
+  <h2>Tonight, and the clock tomorrow <span>§E</span></h2>
+
+  <h3>Before you sleep</h3>
+  <div class="checkline"><div class="box"></div><div><strong>Open <code>data/truth/Lohnsteuer2026-PAP.xml</code></strong> and skim the METHOD blocks. This is the federal wage-tax algorithm and it is idea 07's entire proof. Highest-value 15 minutes available to you.</div></div>
+  <div class="checkline"><div class="box"></div><div><strong>Do not plan around the live BMF API.</strong> It needs a <span class="de">Zugriffscode</span> with no self-service signup — email only, to Steuerrechner@bmf.bund.de. Worth sending for later; useless for tomorrow.</div></div>
+  <div class="checkline"><div class="box"></div><div><strong>Unzip the ZUGFeRD fixtures</strong> and open two of them — confirm you can read the embedded XML out of the PDF. If that pipeline works, idea 04 is live.</div></div>
+  <div class="checkline"><div class="box"></div><div><strong>Open the Lohnsteuerbescheinigung Muster</strong> and note the numbered fields. That numbering is prescribed, which means extraction can be anchored to it rather than guessed.</div></div>
+  <div class="checkline"><div class="box"></div><div><strong>Pick your primary and your fallback</strong> from the seven — before the brief drops, so the brief only tells you which to reach for. Suggested: <strong>02 primary, 01 fallback if the brief is internal tooling.</strong></div></div>
+  <div class="checkline"><div class="box"></div><div><strong>Write your 25 questions / 40 notices / 200 income pairs tonight</strong> if you can. Test sets are the thing you will not have time to write tomorrow, and they're the thing that makes the demo a proof instead of a claim.</div></div>
+  <div class="checkline"><div class="box"></div><div><strong>Check your laptop runs Chrome headless, has the corpus, and your Cursor is signed in.</strong> Event credits are provided; don't spend build time on setup.</div></div>
+
+  <h3>The clock</h3>
+  <div class="clock"><b>18:00</b><div>Check-in. <strong>Lock your team of three now</strong> — organiser matching costs you the first twenty minutes.</div></div>
+  <div class="clock"><b>18:30</b><div>Welcome. Ask the organisers the four scoping questions from §D.</div></div>
+  <div class="clock"><b>18:45</b><div>Cursor session. Note anything they demo that you can exploit.</div></div>
+  <div class="clock"><b>19:00</b><div>Challenge drops. <strong>Spend four minutes filling in the §B skeleton</strong> — oracle, test set, metric, pass bar, failure mode — before anyone writes code. This is the discipline that wins.</div></div>
+  <div class="clock"><b>19:10</b><div>Split: one owns the working demo path end to end, one owns data and validation, one owns narrative and the closing number. Nobody "does the backend."</div></div>
+  <div class="clock"><b>20:30</b><div><strong>Feature freeze.</strong> Whatever isn't working now isn't going in.</div></div>
+  <div class="clock"><b>20:45</b><div>Stop building. Run the validation, get the real number, put it on a slide.</div></div>
+  <div class="clock"><b>21:00</b><div>Rehearse the exact click sequence twice. <strong>Record a fallback screen capture.</strong> More demos die on a live API call than on a missing feature.</div></div>
+  <div class="clock"><b>21:15</b><div>Demos. Open with their pain in their words. Show the failure being caught. Close on one number.</div></div>
+  <div class="clock"><b>21:40</b><div>Awards.</div></div>
+
+  <div class="panel hit" style="margin-top:7mm">
+    <span class="lbl">The three minutes, structured</span>
+    <p><strong>0:00–0:25 — The pain, quoted.</strong> Their review, their Finanztip score, their job ad. You will be the only team that read them.<br>
+    <strong>0:25–1:40 — The thing working.</strong> Live, on a real German tax document. No slides in this stretch.<br>
+    <strong>1:40–2:10 — The catch.</strong> Feed it the adversarial case. Show it refusing, escalating, or catching itself. This is the twenty seconds that wins.<br>
+    <strong>2:10–2:40 — The proof.</strong> The oracle, the test set size, the one number.<br>
+    <strong>2:40–3:00 — What's next, honestly.</strong> Name what you didn't build and why. Stop talking.</p>
+  </div>
+
+  <footer><span>Taxfix Validation Playbook · compiled 16 Sep 2026</span><span>§E — Execution</span></footer>
+</div>

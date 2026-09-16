@@ -49,6 +49,13 @@ python3 core/law/cite.py "nach § 9 EStG und § 4b EStG"   # hallucination audit
 
 No dependencies. Python 3 standard library only — don't lose hackathon minutes to pip.
 
+## Research
+
+`research/` holds the source documents: the company dossier and the 12-page
+validation playbook (one page per candidate idea, each with an oracle, a declared
+pass bar, and a prepared jury defence). Condensed versions in `docs/` are what the
+`brownie` skill reads at speed.
+
 ## Data provenance
 
 Everything in `data/` is public and free to reuse. Re-fetch with `scripts/fetch_data.sh`.
@@ -71,3 +78,4 @@ published algorithm directly.
 4. `docs/DOSSIER.md` — company facts for the opening line
 5. `docs/PLAYBOOK.md` — the seven candidate surfaces
 6. `docs/BRIEF.md` — empty until 19:00; the spine's memory
+7. `research/` — the full dossier and playbook behind all of the above
