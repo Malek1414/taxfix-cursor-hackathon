@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head>
+	<title>Lohn- und Einkommensteuerrechner:Externe Programmierschnittstelle</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta name="description" content="Interaktiver Rechner zur Berechnung der Lohn- und Einkommensteuer" />
+	<meta name="keywords" content="Steuerrechner,Steuer,Abgabe,BMF,Finanzen,Einkommen,Lohn,Gehalt,Brutto,Netto" />
+	<meta name="robots" content="index,follow" />
+	<meta name="revisit-after" content="15 days" />
+	<meta name="security" content="public" />
+		<script type="text/javascript"> //
+			/*&lt;![CDATA[*/
+			document.write('\x3Cscript type="text/javascript"\x3E/*');
+			/*&lt;]]&gt;*/
+		</script>
+		<meta http-equiv="Refresh" content="0;URL=/sonstiges/navigation/nojavascript.xhtml" />
+		<script type="text/javascript">
+			/**/
+		</script>
+	<link rel="stylesheet" media="print" type="text/css" href="/javax.faces.resource/templates/bitv20/css/bitv20print.2021.1.css.xhtml" />
+	<link rel="shortcut icon" type="image/x-icon" href="/javax.faces.resource/daten/grafiken/logos/favicon.ico.xhtml" />
+	
+<!-- 	&lt;h:outputScript name="js/jquery-2.1.4.min.js" /&gt; -->
+<!-- 	&lt;h:outputScript name="js/jquery-ui.min.js" /&gt; --><script type="text/javascript" src="/javax.faces.resource/js/jquery-3.3.1.min.js.xhtml"></script><script type="text/javascript" src="/javax.faces.resource/js/jquery-ui.1.12.1.min.js.xhtml"></script>
+	<script src="/papversion/papversion_2025.2.js"></script><link type="text/css" rel="stylesheet" href="/javax.faces.resource/templates/bitv20/css/bitv20.2021.1.css.xhtml" /><script type="text/javascript" src="/javax.faces.resource/jsf.js.xhtml?ln=javax.faces"></script></head><body><div class="wrapper information_screenreader">
+		<p>Für Benutzer mit Sprachausgabe, bitte Leseansicht aktivieren.</p>
+<form id="j_idt23" name="j_idt23" method="post" action="/interface/einganginterface.xhtml" class="si_flex_item si_flex_item_right_flow" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_idt23" value="j_idt23" />
+<input id="j_idt23:close_infoscreen" type="submit" name="j_idt23:close_infoscreen" value="x" alt="Button zum Schließen der Information." title="Blendet die Sprachausgabeninformation aus solange die Session aktiv ist." class="close_infoscreen_button" onclick="mojarra.ab(this,event,'action',0,0,{'onevent':closeInformationScreenreader});return false" /><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="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" autocomplete="off" />
+</form></div>
+	<div class="wrapper template_kopf"><div id="kopf">
+			<div class="flex-item kopf_logo"><a href="http://www.bundesfinanzministerium.de" accesskey="y" title="Link zur Internetseite des Bundesministerium der Finanzen" class="alink "><img src="/javax.faces.resource/daten/grafiken/logos/logo.svg.xhtml" alt="Logo des Bundesfinanzministerium der Finanzen" /></a>
+			</div><div class="flex-item kopf_ueberschrift">
+				<h1><a href="/index.xhtml" class="alink " title="Link zur Startseite"><span class="linkText">Lohn- und Einkommensteuerrechner</span></a>
+				</h1></div><div class="flex-item kopf_menu">
+					<ul>
+						<li>
+<form id="startseite_menusteuerung" name="startseite_menusteuerung" method="post" action="/interface/einganginterface.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="startseite_menusteuerung" value="startseite_menusteuerung" />
+<input id="startseite_menusteuerung:income_kopf_menu" type="submit" name="startseite_menusteuerung:income_kopf_menu" value="Menü" accesskey="m" title="Öffnet das Menü" class="income_kopf_menu_button" onclick="mojarra.ab(this,event,'action',0,'menusteuerung_div',{'onevent':function(data){setMenuFocus(data,'sma_hauptmenu');}});return false" /><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:1" value="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" autocomplete="off" />
+</form></li>
+
+						<li><a href="http://www.bundesfinanzministerium.de/Web/DE/Meta/Gebaerdensprache/gebaerdensprache.html" title="Link zur Gebärdensprache">Gebärdensprache</a></li>
+						<li><a href="http://www.bundesfinanzministerium.de/Web/DE/Meta/Leichte_Sprache/leichte-sprache.html" title="Link zur leichten Sprache">Leichte Sprache</a></li>
+					</ul>
+					<div class="hotkeyMenu">
+<form id="startseite_menusteuerung_hotkey" name="startseite_menusteuerung_hotkey" method="post" action="/interface/einganginterface.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="startseite_menusteuerung_hotkey" value="startseite_menusteuerung_hotkey" />
+<input id="startseite_menusteuerung_hotkey:hidden_input_url" type="hidden" name="startseite_menusteuerung_hotkey:hidden_input_url" value="/interface/einganginterface.xhtml" />
+							<ul>
+								<li><a href="/sonstiges/hilfe/hilfe.xhtml" class="alink income_hotkey_button_first" title="Link zur Benutzerhilfe"><span class="linkText">Hilfe</span></a></li>
+								<li><label for="startseite_menusteuerung_hotkey:hotkeySesssionManagerValue"><a href="/shortcut/shortcut.xhtml" class="alink income_hotkey_button" title="Link zum Aufruf der Hotkeys Übersicht"><span class="linkText">Hotkeys</span></a></label><input type="submit" name="startseite_menusteuerung_hotkey:j_idt63" value="Deaktivieren?" title="Aktualisiert die Seite mit deaktivierten Hotkeys." class="hotkey_change_button link" /><input id="startseite_menusteuerung_hotkey:hotkeySesssionManagerValue" type="checkbox" name="startseite_menusteuerung_hotkey:hotkeySesssionManagerValue" checked="checked" title="Zeigt den aktuellen Hotkey Status an: Aktiviert oder Deaktiviert" disabled="disabled" /> 
+								</li>
+							</ul><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:2" value="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" autocomplete="off" />
+</form>
+					</div><div class="hotkeyMenu">
+<form id="startseite_menusteuerung_leseansicht" name="startseite_menusteuerung_leseansicht" method="post" action="/interface/einganginterface.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="startseite_menusteuerung_leseansicht" value="startseite_menusteuerung_leseansicht" />
+<input id="startseite_menusteuerung_leseansicht:hidden_input_url" type="hidden" name="startseite_menusteuerung_leseansicht:hidden_input_url" value="/interface/einganginterface.xhtml" />
+							<ul>
+								<li><label for="startseite_menusteuerung_leseansicht:leseansichtSesssionManagerValue" class="leseansicht_button">Leseansicht</label><input type="submit" name="startseite_menusteuerung_leseansicht:j_idt69" value="Aktivieren?" title="Aktualisiert die Seite mit aktivierter Leseansicht." class="hotkey_change_button link" /><input id="startseite_menusteuerung_leseansicht:leseansichtSesssionManagerValue" type="checkbox" name="startseite_menusteuerung_leseansicht:leseansichtSesssionManagerValue" title="Zeigt den aktuellen Leseansicht Status an: Aktiviert oder Deaktiviert" disabled="disabled" />
+								</li>
+							</ul><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:3" value="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" autocomplete="off" />
+</form></div></div></div>
+	</div><div class="wrapper template_navigation"><div id="menusteuerung_div"><script type="text/javascript" src="/javax.faces.resource/js/bmf-steuerrechner-menu.js.xhtml"></script></div>
+
+		<div id="breadcrumb_all">
+			<h2 id="breadcrumb_nav_h">Navigationspfad:</h2>
+			<ul id="breadcrumb">
+					<li><span> » </span><a href="/index.xhtml" class="alink " accesskey="s" title="Link zur Startseite"><span class="linkText">Startseite</span></a></li>
+				<li><span> » </span><span title="Aktuelle Seite: Externe Programmierschnittstelle">Externe Programmierschnittstelle</span></li>
+			</ul>
+		</div></div>
+	<div class="wrapper template_inhalt">
+		<div class="menu-accordion">
+			<div class="accordion-bmf-header">
+				<h2 class="accordion-bmf-header-h2">
+						<a href="#">Berechnungen zur Lohnsteuer</a>
+				</h2>
+				<span class="accordion-information ui-widget-header ui-corner-all">
+				<a href="#" id="information-lst" class="bmf-info-button" title="Information zur Lohnsteuer"><img src="/javax.faces.resource/daten/grafiken/navigation/icon_info.gif.xhtml" alt="Grafik zum öffnen von: Information zur Lohnsteuer" />
+				</a>
+				</span>
+		<div id="information-lst-content" class="bmf-info">
+			<div class="bmf-info-content">
+				<a href="#" class="bmf-info-close" title="Schließt das Informationsfenster"><strong><img src="/javax.faces.resource/daten/grafiken/information/fancy_close.png.xhtml" alt="Grafik für den Schließen-Button" title="Schließt das Informationsfenster: Berechnung der Lohnsteuer" /></strong></a>
+				<div class="bmf-info-logo"><a href="http://www.bundesfinanzministerium.de" accesskey="y" title="Link zur Internetseite des Bundesministerium der Finanzen" class="alink bmf_navigation_link_last_dialog bmf_dlg_logo_id_js_tab"><img src="/javax.faces.resource/daten/grafiken/logos/logo.svg.xhtml" alt="Logo des Bundesfinanzministerium der Finanzen" /></a>
+				</div>
+				<h3>
+					<strong>Berechnung der Lohnsteuer</strong>
+				</h3>
+		<p>Das Bundesministerium der Finanzen (<abbr title="Bundesministerium der Finanzen">BMF</abbr>) erstellt im
+			Einvernehmen mit den obersten Finanzbehörden der Länder einen
+			Programmablaufplan für die maschinelle Berechnung der Lohnsteuer.
+			Der Programmablaufplan ist die Grundlage für die Berechnung der
+			Lohnsteuer, des Solidaritätszuschlags und der Bemessungsgrundlage
+			für die Kirchenlohnsteuer.</p>
+		<p>Der Lohnsteuerrechner ist kein "Brutto-Netto"-Rechner, <abbr title="das heißt">d.h.</abbr> er
+			berechnet nicht das individuelle Netto-Einkommen unter
+			Berücksichtigung <abbr title="gegebenenfalls">ggf.</abbr> abzuführenden Sozialabgaben. Die
+			Bereitstellung eines entsprechenden Rechners gehört nicht zu den
+			Aufgaben des <abbr title="Bundesministerium der Finanzen">BMF</abbr>.</p>
+			</div>
+		</div>
+			</div>
+		<div class="bmf_accordion_content">
+				<h3 class="bmf-start-accordion-inner-h3 accordion-bmf-header-faktorverfahren">
+					<strong>FAKTORVERFAHREN</strong>
+				</h3><div class="bmf_all_ls_link">
+					<ul class="bmf_group_jahr_list">
+							<li><a href="/fb/fb2026/eingabeformfb2026.xhtml" class="alink " title="Link zum Faktorverfahren 2026"><span class="linkText">2026</span></a></li>
+							<li><a href="/fb/fb2025/eingabeformfb2025.xhtml" class="alink " title="Link zum Faktorverfahren 2025"><span class="linkText">2025</span></a></li>
+							<li><a href="/fb/fb2024/eingabeformfb2024.xhtml" class="alink " title="Link zum Faktorverfahren 2024"><span class="linkText">2024</span></a></li>
+							<li><a href="/fb/fb2023_01/eingabeformfb2023_01.xhtml" class="alink " title="Link zum Faktorverfahren 2023 (ab Juli)"><span class="linkText">2023</span><span class="linkZusatz">(ab Juli)</span></a></li>
+							<li><a href="/fb/fb2023/eingabeformfb2023.xhtml" class="alink " title="Link zum Faktorverfahren 2023 (bis Juni)"><span class="linkText">2023</span><span class="linkZusatz">(bis Juni)</span></a></li>
+							<li><a href="/fb/fb2022/eingabeformfb2022.xhtml" class="alink " title="Link zum Faktorverfahren 2022"><span class="linkText">2022</span></a></li>
+							<li><a href="/fb/fb2021/eingabeformfb2021.xhtml" class="alink " title="Link zum Faktorverfahren 2021"><span class="linkText">2021</span></a></li>
+					</ul></div>
+				<h3 class="bmf-start-accordion-inner-h3 accordion-bmf-header-faktorverfahren">
+					<strong>BERECHNUNG DER LOHNSTEUER</strong>
+				</h3><div class="bmf_all_ls_link">
+					<ul class="bmf_group_jahr_list">
+							<li><a href="/bl/bl2026/eingabeformbl2026.xhtml" class="alink " title="Link zur Lohnsteuer 2026"><span class="linkText">2026</span></a></li>
+							<li><a href="/bl/bl2025/eingabeformbl2025.xhtml" class="alink " title="Link zur Lohnsteuer 2025"><span class="linkText">2025</span></a></li>
+							<li><a href="/bl/bl2024_01/eingabeformbl2024_01.xhtml" class="alink " title="Link zur Lohnsteuer 2024 (Dezember)"><span class="linkText">2024</span><span class="linkZusatz">(Dezember)</span></a></li>
+							<li><a href="/bl/bl2024/eingabeformbl2024.xhtml" class="alink " title="Link zur Lohnsteuer 2024 (bis November)"><span class="linkText">2024</span><span class="linkZusatz">(bis November)</span></a></li>
+							<li><a href="/bl/bl2023_01/eingabeformbl2023_01.xhtml" class="alink " title="Link zur Lohnsteuer 2023 (ab Juli)"><span class="linkText">2023</span><span class="linkZusatz">(ab Juli)</span></a></li>
+							<li><a href="/bl/bl2023/eingabeformbl2023.xhtml" class="alink " title="Link zur Lohnsteuer 2023 (bis Juni)"><span class="linkText">2023</span><span class="linkZusatz">(bis Juni)</span></a></li>
+							<li><a href="/bl/bl2022/eingabeformbl2022.xhtml" class="alink " title="Link zur Lohnsteuer 2022"><span class="linkText">2022</span></a></li>
+							<li><a href="/bl/bl2021/eingabeformbl2021.xhtml" class="alink bmf_link_ls_erstes_ls_jahr" title="Link zur Lohnsteuer 2021"><span class="linkText">2021</span></a></li>
+					</ul></div>
+				<h3 class="bmf-start-accordion-inner-h3 accordion-bmf-header-faktorverfahren">
+					<strong>ERMITTLUNG DES ZU VERSTEUERNDEN JAHRESBETRAGS</strong>
+				</h3><div class="bmf_all_ls_link">
+					<ul class="bmf_group_jahr_list">
+							<li><a class="alink " title="Link zum versteuernden Jahresbetrag 2026" href="https://www.bmf-steuerrechner.de:443/bdj/eingabeformbdj.xhtml?jahr=l_k_bdj_2026&amp;pv=true&amp;faces-redirect=true&amp;includeViewParams=true&amp;acckey=true" target="_self">
+					<span class="linkText">2026
+					</span></a></li>
+							<li><a class="alink " title="Link zum versteuernden Jahresbetrag 2025" href="https://www.bmf-steuerrechner.de:443/bdj/eingabeformbdj.xhtml?jahr=l_k_bdj_2025&amp;pv=true&amp;faces-redirect=true&amp;includeViewParams=true&amp;acckey=true" target="_self">
+					<span class="linkText">2025
+					</span></a></li>
+							<li><a class="alink " title="Link zum versteuernden Jahresbetrag 2024" href="https://www.bmf-steuerrechner.de:443/bdj/eingabeformbdj.xhtml?jahr=l_k_bdj_2024&amp;pv=true&amp;faces-redirect=true&amp;includeViewParams=true&amp;acckey=true" target="_self">
+					<span class="linkText">2024
+					</span></a></li>
+							<li><a class="alink " title="Link zum versteuernden Jahresbetrag 2023" href="https://www.bmf-steuerrechner.de:443/bdj/eingabeformbdj.xhtml?jahr=l_k_bdj_2023&amp;pv=true&amp;faces-redirect=true&amp;includeViewParams=true&amp;acckey=true" target="_self">
+					<span class="linkText">2023
+					</span></a></li>
+							<li><a class="alink " title="Link zum versteuernden Jahresbetrag 2022" href="https://www.bmf-steuerrechner.de:443/bdj/eingabeformbdj.xhtml?jahr=l_k_bdj_2022&amp;pv=true&amp;faces-redirect=true&amp;includeViewParams=true&amp;acckey=true" target="_self">
+					<span class="linkText">2022
+					</span></a></li>
+							<li><a class="alink " title="Link zum versteuernden Jahresbetrag 2021" href="https://www.bmf-steuerrechner.de:443/bdj/eingabeformbdj.xhtml?jahr=l_k_bdj_2021&amp;pv=true&amp;faces-redirect=true&amp;includeViewParams=true&amp;acckey=true" target="_self">
+					<span class="linkText">2021
+					</span></a></li>
+					</ul></div>
+				<h3 class="bmf-start-accordion-inner-h3 accordion-bmf-header-faktorverfahren">
+					<strong>ARBEITSLOHNGRENZEN</strong>
+				</h3><div class="bmf_all_ls_link">
+					<ul class="bmf_group_jahr_list">
+							<li><a class="alink " title="Link zu den Arbeitslohngrenzen 2026" href="https://www.bmf-steuerrechner.de:443/al/al2026/alcontent2026.xhtml?faces-redirect=true&amp;includeViewParams=true&amp;acckey=true" target="_self">
+					<span class="linkText">2026
+					</span></a></li>
+							<li><a class="alink " title="Link zu den Arbeitslohngrenzen 2025" href="https://www.bmf-steuerrechner.de:443/al/al2025/alcontent2025.xhtml?faces-redirect=true&amp;includeViewParams=true&amp;acckey=true" target="_self">
+					<span class="linkText">2025
+					</span></a></li>
+							<li><a class="alink " title="Link zu den Arbeitslohngrenzen 2024" href="https://www.bmf-steuerrechner.de:443/al/al2024/alcontent2024.xhtml?faces-redirect=true&amp;includeViewParams=true&amp;acckey=true" target="_self">
+					<span class="linkText">2024
+					</span></a></li>
+							<li><a class="alink " title="Link zu den Arbeitslohngrenzen 2023" href="https://www.bmf-steuerrechner.de:443/al/al2023/alcontent2023.xhtml?faces-redirect=true&amp;includeViewParams=true&amp;acckey=true" target="_self">
+					<span class="linkText">2023
+					</span></a></li>
+					</ul></div>
+					<hr class="trennlinie_after" />
+		</div>
+			<div class="accordion-bmf-header">
+				<h2 class="accordion-bmf-header-h2">
+						<a href="#">Berechnungen und Informationen zur Einkommensteuer</a>
+				</h2>
+
+				<span class="accordion-information ui-widget-header ui-corner-all">
+				<a href="#" id="information-ekst" class="bmf-info-button" title="Informationen zur Einkommensteuer"><img src="/javax.faces.resource/daten/grafiken/navigation/icon_info.gif.xhtml" alt="Grafik zum öffnen von: Informationen zur Einkommensteuer" />
+				</a>
+				</span>
+		<div id="information-ekst-content" class="bmf-info">
+			<div class="bmf-info-content">
+				<a href="#" class="bmf-info-close" title="Schließt das Informationsfenster"><strong><img src="/javax.faces.resource/daten/grafiken/information/fancy_close.png.xhtml" alt="Grafik für den Schließen-Button" title="Schließt das Informationsfenster: Berechnungen und Informationen zur Einkommensteuer" /></strong></a>
+				<div class="bmf-info-logo"><a href="http://www.bundesfinanzministerium.de" accesskey="y" title="Link zur Internetseite des Bundesministerium der Finanzen" class="alink  bmf_dlg_logo_id_js_tab"><img src="/javax.faces.resource/daten/grafiken/logos/logo.svg.xhtml" alt="Logo des Bundesfinanzministerium der Finanzen" /></a>
+				</div>
+				<h3>
+					<strong>Berechnungen und Informationen zur Einkommensteuer</strong>
+				</h3>
+		<p>
+			Die Berechnung der Lohnsteuer kann mit dem dafür vorgesehenen Modul
+			vorgenommen werden. Die Berechnung der Einkommensteuer ist
+			wesentlich komplexer und wird vom jeweiligen Finanzamt unter
+			Berücksichtigung der Umstände des Einzelfalls und der aktuellen
+			Gesetzeslage vorgenommen. An dieser Stelle wird nur auf Grundlage
+			des zu versteuernden Einkommens die tarifliche Einkommensteuer nach
+			<a href="https://www.gesetze-im-internet.de/estg/__32a.html" accesskey="j" title="Link zum § 32a EStG" target="_self" class="alink bmf_navigation_link_last_dialog">
+			<span>§ 32a EStG</span></a>
+			berechnet. Das zu versteuernde Einkommen darf hier nicht mit den
+			Begriffen „Bruttoarbeitslohn”, „Einnahmen”, „Einkünfte”,
+			„Einkommen” etc. verwechselt werden.
+		</p>
+			</div>
+		</div>
+
+			</div>
+		<div class="bmf_accordion_content">
+				<ul class="startseite-li">
+					<li><a href="/ekst/eingabeformekst.xhtml" class="alink " accesskey="l" title="Link zur Einkommensteuer"><span class="linkText">Berechnung der Einkommensteuer</span></a></li>
+					<li>
+						<a download="2025_10_14_Tarifhistorie_Steuerrechner.pdf" title="Link zu 2025_10_14_Tarifhistorie_Steuerrechner.pdf" href="/javax.faces.resource/2025_10_14_Tarifhistorie_Steuerrechner.pdf.xhtml"> <!-- Dieser Link funktioniert in der IDE nicht -->
+																
+								Tarifhistorie (PDF 2.120 kB)</a>
+					
+					</li>
+					<li><a href="/index.xhtml?st=st-ekst-tb" class="alink " title="Link zur Einkommensteuer-Tarifbelastung"><span class="linkText">Übersichten zur Einkommensteuer-Tarifbelastung</span></a></li>
+				</ul>
+		</div>
+			<div class="accordion-bmf-header">
+				<h2 class="accordion-bmf-header-h2">
+						<a href="#">Service für Entwickler</a>
+				</h2>
+				<span class="accordion-information ui-widget-header ui-corner-all">
+				<a href="#" id="information-service" class="bmf-info-button" title="Information zum Service für Entwickler"><img src="/javax.faces.resource/daten/grafiken/navigation/icon_info.gif.xhtml" alt="Grafik zum öffnen von: Information zum Service für Entwickler" />
+				</a>
+				</span>
+		<div id="information-service-content" class="bmf-info">
+			<div class="bmf-info-content">
+				<a href="#" class="bmf-info-close" title="Schließt das Informationsfenster"><strong><img src="/javax.faces.resource/daten/grafiken/information/fancy_close.png.xhtml" alt="Grafik für den Schließen-Button" title="Schließt das Informationsfenster: Service für Entwickler" /></strong></a>
+				<div class="bmf-info-logo"><a href="http://www.bundesfinanzministerium.de" accesskey="y" title="Link zur Internetseite des Bundesministerium der Finanzen" class="alink  bmf_dlg_logo_id_js_tab"><img src="/javax.faces.resource/daten/grafiken/logos/logo.svg.xhtml" alt="Logo des Bundesfinanzministerium der Finanzen" /></a>
+				</div>
+				<h3>
+					<strong>Service für Entwickler</strong>
+				</h3>
+	<p>Dem Softwareentwickler werden neben den <abbr title="Portable Document Format" lang="en">PDF</abbr>-Versionen der
+			beiden aktuellsten Programmablaufpläne (<abbr title="Programmablaufpläne">PAP</abbr>) zur Verfügung gestellt:</p>
+		<ul class="bmf_service_ul">
+			<li>die <abbr title="Programmablaufpläne">PAP</abbr> als <abbr title="Extensible Markup Language" lang="en">XML</abbr> Datei sowie
+			</li>
+			<li>eine externe Programmierschnittstelle.</li>
+		</ul>
+		<p>
+			Die externe Programmierschnittstelle kann zur automatisierten,
+			maschinellen Prüfung eines Lohn- und Einkommensteuerrechners gegen
+			den des <abbr title="Bundesministerium der Finanzen">BMF</abbr>
+			herangezogen werden.
+		</p>
+		<p>
+			Der <abbr title="Programmablaufplan">PAP</abbr> bildet die Grundlage
+			für die Erstellung von Programmen zur Berechnung der Lohnsteuer des
+			jeweiligen Jahres. Erfahrungsgemäß ist die Übersetzung der
+			grafischen Darstellung aus DIN 66001 (<abbr title="vergleiche">vgl.</abbr><a href="https://de.wikipedia.org/wiki/Programmablaufplan" accesskey="w" title="Link zu Wikipedia, DIN_66001" target="_self" class="alink ">
+			<span>Wikipedia, DIN_66001</span></a>) nicht immer problemlos möglich. Insbesondere lassen die
+			Vorschriften zum Umgang mit Dezimalstellen oft Spielraum für
+			unterschiedliche Interpretationen, was letztendlich zu fehlerhaften
+			Ergebnissen bei der Lohnsteuerberechnung führen kann.
+		</p>
+		<p>
+			Aus diesem Grund veröffentlicht das <abbr title="Bundesministerium der Finanzen">BMF</abbr> eine Version des
+			<abbr title="Programmablaufplan">PAP</abbr> im <abbr title="Extensible Markup Language" lang="en">XML</abbr>-Pseudocode. Diese lässt sich problemlos in andere prozedurale
+			Programmiersprachen wie Java oder C übersetzen.
+		</p>
+		<p>
+			Um Rundungsfehlern beim Einsatz von Gleitkommazahlen (<abbr title="vergleiche">vgl.</abbr><a href="https://de.wikipedia.org/wiki/Gleitkommazahl" accesskey="k" title="Link zu Wikipedia, Gleitkommazahl" target="_self" class="alink ">
+			<span>Wikipedia, Gleitkommazahl</span></a>) zu vermeiden, wird der Einsatz einer Klasse für numerisches
+			Rechnen empfohlen (<abbr title="vergleiche">vgl.</abbr><a href="http://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html" accesskey="o" title="Link zu Oracle API, BigDecimal" target="_self" class="alink bmf_navigation_link_last_dialog">
+			<span>Oracle, BigDecimal</span></a>).
+		</p>
+			</div>
+		</div>
+			</div>
+			<div class="bmf_accordion_content">
+				<ul class="startseite-li">
+					<li><a href="/interface/programmablauf.xhtml" class="alink " title="Link zu Programmablaufpläne"><span class="linkText">Programmablaufpläne</span></a></li>
+					<li><a href="/interface/pseudocodes.xhtml" class="alink " title="Link zu XML-Pseudocodes"><span class="linkText">XML-Pseudocodes</span></a></li>
+					<li><a href="/interface/einganginterface.xhtml" class="alink " title="Link zur Beschreibung der Externen Programmierschnittstelle"><span class="linkText">Externe Programmierschnittstelle</span></a></li>
+				</ul><div id="bmf_infobox_sub" class="template_infobox"><div class="startseite_infobox"><div class="si_flex_box">
+			
+				<h2 class="si_flex_item"><a href="#id-infobox-focus" id="id-infobox-focus" name="id-infobox-focus">Informationsbox</a></h2>
+				<span class="si_flex_item si_flex_item_right_flow"><strong><a class="si_infobox_close" href="#" title="Schließen der Informationsbox">x</a></strong></span></div><div class="si_infobox_content">
+						<ul>
+								<li class="si_infobox_info">Bei den Programmablaufplänen, XML-Pseudocodes sowie den externen Programmierschnittstellen handelt es sich um Dateien/Schnittstellen für die Softwareentwicklung. Weitere Informationen erhalten Sie vom <a href="#" id="information_service_infobox" title="Öffnet das Informationsfenster zum Service für Entwickler">Informationsdialog</a> der externen Schnittstelle.</li>
+						</ul></div></div></div><div id="bmf_fehlerbox_sub" class="template_fehlerbox template_fehlerbox_sub"></div>
+<form id="uiExternSchnittstelleForm" name="uiExternSchnittstelleForm" method="post" action="/interface/einganginterface.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="uiExternSchnittstelleForm" value="uiExternSchnittstelleForm" />
+
+			<div class="subcontent" id="uiExternSchnittstelle">
+				<h3 class="bmf-start-accordion-inner-h3">
+				</h3>
+				<div class="content">
+		<p>Die externe Programmierschnittstelle wird ausschließlich für die Nutzung
+		   zu Programmtests bereitgestellt. Ohne die Einwilligung des Bundesministeriums
+		   der Finanzen sind die Nutzung zur Abwicklung von Berechnungen direkt 
+		   über diese Schnittstelle sowie die gewerbliche Nutzung der Schnittstelle 
+		   ausdrücklich untersagt.</p>
+		<p>Weder das Bundesministerium der Finanzen noch der Entwickler,
+			noch der Betreiber übernimmt Dritten gegenüber Gewähr für
+			Richtigkeit, Aktualität, Vollständigkeit und Verfügbarkeit der
+			ausgeführten Programme.</p>
+		<p>Um die URL und das Beispiel anzuzeigen, bestätigen Sie bitte,
+			dass Sie den vorstehenden Hinweis zur Reichweite der
+			Nutzungserlaubnis sowie den damit verbundenen Haftungsausschluss zur
+			Kenntnis genommen haben und damit einverstanden sind.</p>
+		<div class="uiExtSchnittstelleButtonHinweis"><input id="uiExternSchnittstelleForm:income_ext_interface_hinweis" type="submit" name="uiExternSchnittstelleForm:income_ext_interface_hinweis" value="Ich stimme zu" title="Button für die Kenntnisname des Haftungsausschluss" class="form_button_style" onclick="mojarra.ab(this,event,'action',0,'@form',{'onevent':function(data){setExternInterfaceFocus(data);}});return false" />
+		</div>
+				</div>
+			</div><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:4" value="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" autocomplete="off" />
+</form>
+			</div>
+		</div>
+	</div><div class="wrapper template_fuss">
+		<ul id="fuss">
+			<li>© 2026 Bundesministerium der Finanzen
+			</li>
+				<li><a href="/sonstiges/hilfe/hilfe.xhtml" class="alink " title="Link zur Benutzerhilfe"><span class="linkText">Benutzerhilfe</span></a></li>
+				<li><a href="/sitemap/sitemap.xhtml" class="alink " accesskey="a" title="Link zum Aufruf des Inhaltsverzeichnis der Webseite"><span class="linkText">Inhaltsverzeichnis</span></a></li>
+				<li><a href="/sonstiges/impressum/impressum.xhtml" class="alink " accesskey="i" title="Link zum Impressum"><span class="linkText">Impressum</span></a></li>
+				<li><a href="/sonstiges/datenschutz/datenschutz.xhtml" class="alink " accesskey="z" title="Link zum Datenschutz"><span class="linkText">Datenschutz</span></a></li>
+				<li><a href="https://www.bundesfinanzministerium.de/Web/DE/Service/FAQ_Glossar/Glossar/Functions/glossar.html" accesskey="g" title="Link zum Glossar des Bundesfinanzministeriums" target="_blank" class="alink ">
+			<span>Glossar</span></a></li>
+				<li><a href="/archiv" title="Link zur Archiv-Version des Steuerrechners (31.12.2019)" target="_blank" class="alink ">
+			<span>Archiv</span></a></li>
+		</ul></div><script type="text/javascript" src="/javax.faces.resource/js/bmf-steuerrechner.js.xhtml"></script></body>
+</html>
