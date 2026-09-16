@@ -12,6 +12,11 @@ brownie  <paste the problem statement here>
 
 Everything in `core/` is brief-agnostic and already working. Only the surface changes.
 
+And if the brief doesn't fit the prep at all — it's a *Cursor* hackathon, the
+challenge may never touch German tax — `brownie` says so and switches to the
+greenfield path in `docs/PIVOT.md` instead of shoehorning. That call gets made in
+the first ten minutes.
+
 ## Why this exists
 
 Every team will demo something that *looks* right in 135 minutes. Taxfix's own job
@@ -61,6 +66,8 @@ published algorithm directly.
 ## Reading order
 
 1. `CLAUDE.md` — project instructions and the non-negotiables
-2. `docs/ROTATION.md` — the variance matrix: brief → bucket → surface
-3. `docs/DOSSIER.md` — company facts for the opening line
-4. `docs/PLAYBOOK.md` — the seven candidate surfaces
+2. `docs/ROTATION.md` — the fit gate, then brief → bucket → surface
+3. `docs/PIVOT.md` — what to do when the spine doesn't fit
+4. `docs/DOSSIER.md` — company facts for the opening line
+5. `docs/PLAYBOOK.md` — the seven candidate surfaces
+6. `docs/BRIEF.md` — empty until 19:00; the spine's memory

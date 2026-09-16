@@ -10,12 +10,20 @@ When the user says **brownie** — with or without a pasted brief — invoke the
 `brownie` skill immediately. That is the moment the real Taxfix challenge has
 been announced and the build must rotate onto it.
 
-`brownie` + the problem statement → bucket, surface, validation protocol, jury
-defence, minute-by-minute plan. Do not brainstorm; the thinking is already in
-`docs/`. Rotate and build.
+`brownie` + the problem statement → the brief is written to `docs/BRIEF.md`,
+then a **fit assessment**, then either a rotation or a pivot, with the validation
+protocol, jury defence and minute-by-minute plan. Do not brainstorm; the thinking
+is already in `docs/`.
 
 If `brownie` arrives with no brief text, ask one question — *"What did they
 announce?"* — and wait. Never guess the brief.
+
+**The spine is allowed to be wrong.** This is a *Cursor* hackathon hosted at
+Taxfix, not a Taxfix hackathon — the prior edition floated themes like
+design-to-code that never touch the host's domain. If the brief doesn't fit,
+`brownie` must say so and send the user to `docs/PIVOT.md` rather than shoehorn
+a tax engine into it. Dropping the prep is the strong move, not the weak one —
+and it has to be decided in the first ten minutes.
 
 ## Why this repo exists
 
@@ -37,7 +45,8 @@ core/       brief-agnostic, already working, do not rebuild
   harness/  oracle → cases → metric → pass bar → the number you say on stage
 build/      the surface. bescheid/ is the default bet; brownie may rotate it
 data/       the corpus (statutes, PAP XML, invoice fixtures, BMF templates)
-docs/       DOSSIER (company), PLAYBOOK (7 ideas), ROTATION (the matrix)
+docs/       BRIEF (filled at 19:00), ROTATION (fit gate + matrix),
+            PIVOT (greenfield path), DOSSIER (company), PLAYBOOK (7 ideas)
 tests/      conformance
 ```
 
@@ -68,6 +77,7 @@ to pip. Keep it that way.
   *refusing* is worth more than three extra features.
 - **Say what is synthetic.** A stated limitation beats a quiet one.
 - **Never invent a validation number.** If the suite has not run, say so.
+- **Never shoehorn.** If the spine doesn't fit the brief, say so and pivot.
 - Nothing in `core/` asserts a tax position without a human in the loop. That is
   the §StBerG line and the answer to "who owns the liability when it's wrong".
 

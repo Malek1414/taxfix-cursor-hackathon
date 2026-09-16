@@ -5,10 +5,15 @@ built and tested — only the surface rotates.
 
 ```
                     ┌─────────────────────────────────────────────┐
-  THE BRIEF  ──────▶│  brownie  ──▶  bucket  ──▶  surface          │
+  THE BRIEF  ──────▶│  brownie  ──▶  FIT GATE  ──▶  bucket         │
   (unknown until    └───────────────────┬─────────────────────────┘
-   19:00)                               │  binds to
-                                        ▼
+   19:00)                               │
+                    ┌──────────────────┴──────────────────┐
+                    │                                     │
+              ROTATE / PARTIAL                          PIVOT
+                    │                              (docs/PIVOT.md —
+                    │  binds to                     drop the spine,
+                    ▼                               keep the harness)
         ┌───────────────────────────────────────────────────────┐
         │  CORE — brief-agnostic, already working, tested        │
         │                                                        │
@@ -19,7 +24,29 @@ built and tested — only the surface rotates.
         └───────────────────────────────────────────────────────┘
 ```
 
-## The six buckets
+## The fit gate — run this first
+
+Four questions, honestly answered. This is judgment, not keyword matching.
+
+| # | Question | Module it unlocks |
+|---|---|---|
+| 1 | Does the brief involve German tax arithmetic — any euro figure whose correctness matters? | `core/pap/` |
+| 2 | Claims, law, explanations, or LLM output that could be wrong? | `core/law/` |
+| 3 | Documents, invoices, receipts, VAT? | `core/einvoice/` |
+| 4 | Does anything at all need proving? | `core/harness/` — nearly always yes |
+
+| 2+ of Q1–3 | exactly 1 | none |
+|---|---|---|
+| **ROTATE** — use the spine | **PARTIAL** — keep that module + harness, build the rest fresh | **PIVOT** — abandon the spine, see `docs/PIVOT.md` |
+
+One-sentence test: *if I deleted `core/`, would this build get meaningfully
+harder?* If no, pivot.
+
+**If Taxfix hands out their own dataset or API, theirs beats ours** — that is at
+least PARTIAL and often PIVOT. A team building on the host's data is always more
+credible than a team building on something they brought.
+
+## The seven buckets
 
 | Bucket | Brief sounds like | Surface | Primary oracle |
 |---|---|---|---|
@@ -29,15 +56,19 @@ built and tested — only the surface rotates.
 | **D** AI trust | "why not ChatGPT", hallucination, grounding | verification harness | EStG XML citation resolution |
 | **E** Platform | partners, embed, API, B2B | embedded SDK | none — integration measurement |
 | **F** Open | no constraint | `build/bescheid` | as A |
+| **G** **Off-domain** | Cursor itself, AI-native dev, design-to-code, marketing, hiring, or "anything except tax" | **greenfield — `docs/PIVOT.md`** | found fresh; harness still applies |
 
 ## What each core module unlocks, by bucket
 
-| | A | B | C | D | E | F |
-|---|---|---|---|---|---|---|
-| `pap/` federal tax engine | ●●● | ●●● | ●● | ●● | ● | ●●● |
-| `law/` statute + citations | ●● | ●● | ● | ●●● | ● | ●● |
-| `einvoice/` embedded truth | ● | ●●● | ●●● | – | ● | ● |
-| `harness/` the number | ●●● | ●●● | ●●● | ●●● | ●● | ●●● |
+| | A | B | C | D | E | F | G |
+|---|---|---|---|---|---|---|---|
+| `pap/` federal tax engine | ●●● | ●●● | ●● | ●● | ● | ●●● | – |
+| `law/` statute + citations | ●● | ●● | ● | ●●● | ● | ●● | – |
+| `einvoice/` embedded truth | ● | ●●● | ●●● | – | ● | ● | – |
+| `harness/` the number | ●●● | ●●● | ●●● | ●●● | ●● | ●●● | **●●●** |
+
+Note the last column: in a pivot you lose three of the four modules and keep the
+one that matters most on stage. Validation doctrine is domain-independent.
 
 ## Rotations in detail
 
@@ -70,16 +101,19 @@ No accuracy oracle; say so rather than faking a metric. Measure integration:
 lines of host code, minutes for a cold integrator, style isolation across three
 hosts, and whether the host can read tax data (it must not).
 
-## If the brief fits nothing here
+### G — Off-domain → **pivot, and say so**
 
-Keep the method, drop the surface. Ask:
-1. What is the **oracle**? If there isn't one, what independent measurement
-   substitutes?
-2. Which core module supplies the numbers?
-3. What is the **adversarial case** — the thing that should make it refuse?
+This is a *Cursor* hackathon hosted at Taxfix, not a Taxfix hackathon. The prior
+edition at Bliq floated themes like design-to-code and AI-native engineering
+workflows — neither touching the host's domain. If that happens, forcing the tax
+engine in loses the room.
 
-A brief with no oracle is not a reason to skip validation. It is a reason to
-measure something else honestly.
+Full greenfield path in `docs/PIVOT.md`: how to pick a target in ten minutes,
+where oracles hide in an unfamiliar domain, and the opening line that turns the
+drop into evidence of judgment rather than failure.
+
+Decide inside the first ten minutes. A pivot at 19:05 is free; a pivot at 20:00
+is a loss.
 
 ## Fixed, whatever happens
 
