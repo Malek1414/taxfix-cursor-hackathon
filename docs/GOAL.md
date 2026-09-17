@@ -1,6 +1,9 @@
 # The goal for tonight
 
-Working title: Tap to deduct. Sami set it on 17.09.2026, before the 19:00 brief. If the brief points
+Working title: Tap to deduct. Sami set it on 17.09.2026 before the brief, and a Taxfix employee
+validated it on the night: pay in the shop, get the eligibility answer back immediately, and when it is
+eligible the push asks for the photo right then. Same person confirmed the bank route, every bank has to
+expose the account API and Taxfix can sit on it. If the brief points
 elsewhere, this is the fallback we already know how to build.
 
 ## In one sentence
