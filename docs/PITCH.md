@@ -22,11 +22,13 @@ Their rows, their pill, their footer."
 > 80 euros becomes **785**. Every figure is a recompute on two states, to the cent."
 
 ## 0:50–1:05 — the purchase (the Apple Pay beat, on the Simulator)
-Tap **⌘ Apple Pay @ REWE** in the toggle. The app asks one question in its own
-idiom: "REWE · 38,40 € — what was this for?" Pick **My business**, Confirm.
+**Tap n' tax.** Sammy pays 1 € on stage (phone on the Mac's hotspot); fallback: Sammy runs the Shortcut by hand; last resort the **⌘ Apple Pay @ REWE** button. The app asks one question in its own
+idiom: "REWE · 38,40 € — what was this for?" Business card → 'My business' is pre-selected. One tap. Then the receipt photo — no photo, no entry.
 > "That came from an Apple Pay payment through a Wallet automation — no Apple
-> approval needed. One answer: 9 euros off income tax, 6,13 euros VAT back in
-> the next VAT return, and in April that question is already answered."
+> approval needed. One tap, one photo: 9 euros off income tax, 6,13 euros VAT
+> back in the next VAT return, and REWE never asks again on that card. In April
+> that question is already answered. Production: the same event from PSD2 bank
+> data, which Taxfix already has the rails for."
 
 ## 1:05–1:30 — the catch (screen: the amber cards)
 > "And this is the part that is Taxfix, not ChatGPT. The gardener you paid cash:

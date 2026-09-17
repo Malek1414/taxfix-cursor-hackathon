@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Taxfix · Tax year 2026, live (localhost simulator)</title>
+<title>Taxfix · Tap n' tax (localhost simulator)</title>
 <style>
 /* tokens read off the 17 Sep screen recording of Taxfix iOS 4.1.0 */
 :root{--ink:#161616;--mute:#6f6f6f;--line:#ececec;--tile:#f4f4f2;--lime:#cdf68a;--btn:#a6e96b;--btn2:#dff5c0;--help:#eef2f7;--next:#fdf5c8;--warn:#fff4dd;--warn-ink:#7a5200;--green:#2f7a3a}
@@ -66,6 +66,10 @@ h2{font-size:15px;font-weight:700;margin:0 16px 12px}
  <div class="top"><span class="back" onclick="go('s1')">←</span><span class="help"><span class="avs"><i></i><i></i><i></i></span>Help</span></div>
  <h1>Tax year 2026</h1>
  <div class="summary"><div class="k">If you filed today</div><div class="n" id="today">…</div><div class="d" id="days">…</div></div>
+ <div class="sect">This week · Tap n' tax</div>
+ <div class="rows" id="week"></div>
+ <div class="sect">Receipts to add</div>
+ <div class="rows" id="pending"></div>
  <div class="sect">Before 31 December</div>
  <div class="rows" id="moves"></div>
  <div class="sect">Not worth it, and why</div>
@@ -102,6 +106,19 @@ h2{font-size:15px;font-weight:700;margin:0 16px 12px}
  <p style="margin:0 16px;font-size:11.5px;color:var(--mute);line-height:1.45">Came in from your Wallet automation. Saved to Expenses · 2026. In April this question is already answered.</p>
 </section>
 
+<!-- SCREEN 6: the photo — their document-scan pattern. No photo, no entry. -->
+<section class="screen" id="s6">
+ <div class="top"><span class="back" onclick="go('s5')">←</span><b style="font-size:15px">Receipt</b><span class="help"><span class="avs"><i></i><i></i><i></i></span>Help</span></div>
+ <div class="q" id="s6q"><span>Photograph the receipt while it's still in your hand<small>The entry counts the moment the photo is attached. VAT needs the seller's invoice (§ 14 UStG).</small></span><span>ⓘ</span></div>
+ <div style="margin:0 16px;height:300px;border-radius:14px;background:#dff5c0;position:relative;display:flex;align-items:center;justify-content:center">
+  <div style="position:absolute;inset:26px 36px;border:3px solid #2f7a3a;border-radius:10px;border-style:solid;opacity:.5"></div>
+  <div style="background:#fff;width:150px;height:200px;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.12);padding:12px;font-size:9px;color:#444;line-height:1.5"><b>REWE</b><br>Berlin Köpenicker Str.<br>17.09.2026 19:34<br>———————————<br>Druckerpapier A4 &nbsp; 7,49<br>Toner schwarz &nbsp;&nbsp; 24,99<br>Ordner 2x &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5,92<br>———————————<br><b>SUMME 38,40</b><br>MwSt 19 % 6,13<br>VISA •• 4821</div>
+  <div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:54px;height:54px;border-radius:50%;background:#2f7a3a;border:4px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.2)"></div>
+ </div>
+ <button class="btn confirm" onclick="receipt('ok')">Use this photo</button>
+ <div style="display:flex;gap:10px;margin:0 16px"><button class="btn" style="flex:1;background:var(--btn2)" onclick="receipt('unclear')">Unclear — retake</button><button class="btn" style="flex:1;background:var(--btn2)" onclick="receipt('wrong')">Wrong receipt</button></div>
+</section>
+
 <!-- SCREEN 4: their refusal pattern, for the thing the engine won't price -->
 <section class="screen" id="s4">
  <div class="top"><span class="back" onclick="go('s2')">←</span><b style="font-size:15px">About you</b><span class="help"><span class="avs"><i></i><i></i><i></i></span>Help</span></div>
@@ -126,6 +143,11 @@ function render(c){CARD=c;
   document.getElementById("disc").textContent=c.disclosure;
   const worth=c.moves.filter(m=>m.status==="worth"),zero=c.moves.filter(m=>m.status==="zero"),esc=c.moves.filter(m=>m.status==="escalate");
   document.getElementById("moves").innerHTML=worth.map((m,i)=>`<div class="row" onclick="openMove(${i})"><div class="tile">${ICON[m.kind]||"•"}</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="r">+${eur(m.saving_eur)}${Number(m.vat_reclaim_eur||0)>0?`<div style="font-size:11px;color:var(--mute);font-weight:600">+${Number(m.vat_reclaim_eur).toFixed(2).replace(".",",")} € VAT</div>`:""}</div><div class="chev">›</div></div>`).join("");
+  const pend=c.moves.filter(m=>m.status==="pending");
+  document.getElementById("pending").innerHTML=pend.length?pend.map(m=>`<div class="row" onclick="reupload(${m.event_id})"><div class="tile" style="background:var(--warn)">📷</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="z">${m.receipt==="none"?"add":"redo"} · +${eur(m.saving_eur)}</div><div class="chev">›</div></div>`).join("")
+    :`<div class="row"><div class="tile">✓</div><div class="l"><div class="t">Nothing pending</div><div class="s">Every entry carries its receipt.</div></div></div>`;
+  const w=c.week||{entries:0,saving_eur:"0",vat_eur:"0",receipts_missing:0};
+  document.getElementById("week").innerHTML=`<div class="row"><div class="tile">🧾</div><div class="l"><div class="t">${w.entries} purchase${w.entries==1?"":"s"} filed</div><div class="s">${w.receipts_missing} receipt${w.receipts_missing==1?"":"s"} missing</div></div><div class="r">+${eur(w.saving_eur)}${Number(w.vat_eur)>0?`<div style="font-size:11px;color:var(--mute);font-weight:600">+${Number(w.vat_eur).toFixed(2).replace(".",",")} € VAT</div>`:""}</div></div>`;
   document.getElementById("zeros").innerHTML=zero.map(m=>`<div class="row"><div class="tile">${ICON[m.kind]||"•"}</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="z">0 €</div></div>`).join("");
   document.getElementById("esc").innerHTML=esc.map((m,i)=>`<div class="row" onclick="openEsc(${i})"><div class="tile">${m.kind==="other"?"👥":"🤖"}</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="chev">›</div></div>`).join("");
   if(worth[0]){document.getElementById("nextT").textContent=worth[0].label.split(" — ")[0];document.querySelector("#next .tile").textContent=ICON[worth[0].kind]||"•";}
@@ -139,14 +161,22 @@ function openMove(i){const m=CARD.moves.filter(x=>x.status==="worth")[i];current
 function openEsc(i){const m=CARD.moves.filter(x=>x.status==="escalate")[i];document.getElementById("esctext").textContent=m.why;go("s4");}
 function pick(el){el.parentElement.querySelectorAll(".opt").forEach(o=>o.classList.remove("on"));el.classList.add("on");}
 let PENDING=null;
-function checkInbox(){fetch("/v1/events").then(r=>r.json()).then(d=>{const e=d.unclassified[0]; if(!e) return; PENDING=e;
+function checkInbox(){fetch("/v1/events").then(r=>r.json()).then(d=>{
+  const e=d.unclassified[0];
+  if(!e){const n=d.needs_receipt.find(x=>x.remembered); if(n){PENDING=n; document.getElementById("s6q").innerHTML=`<span>${n.merchant} · ${Number(n.amount).toFixed(2).replace(".",",")} € — filed as ${n.purpose}, like last time<small>You answered this merchant before, so no question. Just the receipt.</small></span><span>ⓘ</span>`; go("s6");} return;}
+  PENDING=e;
+  document.querySelectorAll("#s5 .opt").forEach(o=>o.classList.toggle("on",o.dataset.p===(e.suggest||"business")));
   document.getElementById("pcard").textContent=e.card||"Apple Pay";
   document.getElementById("preceipt").textContent=e.receipt?"attached ✓":"none yet";
-  document.getElementById("pq").innerHTML=`<span>${e.merchant} · ${Number(e.amount).toFixed(2).replace(".",",")} € — what was this for?<small>Answer once. The number updates, and the 2026 return already knows.</small></span><span>ⓘ</span>`;
+  document.getElementById("pq").innerHTML=`<span>${e.merchant} · ${Number(e.amount).toFixed(2).replace(".",",")} € — what was this for?<small>${e.suggest==="business"?"Paid with your business card, so we assume business. One tap confirms.":"Paid with a private card."} Answer once — this merchant won't ask again on this card.</small></span><span>ⓘ</span>`;
   go("s5");});}
 function classify(){const purpose=document.querySelector("#s5 .opt.on").dataset.p;
   fetch("/v1/events/classify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:PENDING.id,purpose})})
-  .then(r=>r.json()).then(d=>{render(d.card);go("s2");});}
+  .then(r=>r.json()).then(d=>{render(d.card); if(purpose==="private"){go("s2");} else {go("s6");}});}
+function receipt(status){fetch("/v1/events/receipt",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:PENDING.id,status})})
+  .then(r=>r.json()).then(d=>{render(d.card); if(status==="ok"){go("s2");} else {
+    document.getElementById("s6q").innerHTML=`<span>${status==="unclear"?"That photo is unreadable — hold still and retake":"That receipt doesn't match 38,40 € at REWE — upload the right one"}<small>The entry stays pending until a usable receipt is attached. Nothing counts yet.</small></span><span>ⓘ</span>`;}});}
+function reupload(id){PENDING={id}; document.getElementById("s6q").innerHTML=`<span>Add or replace the receipt<small>The entry is priced but not counted until the photo is attached.</small></span><span>ⓘ</span>`; go("s6");}
 document.getElementById("tPay").onclick=()=>fetch("/v1/events/transaction",{method:"POST",headers:{"Content-Type":"application/json"},
   body:JSON.stringify({merchant:"REWE",amount:38.40,card:"Visa •• 4821",receipt:true})}).then(checkInbox);
 function confirmQ(){const cash=document.querySelectorAll(".opt")[1].classList.contains("on");

@@ -36,7 +36,7 @@ This repo pre-loads the oracles.
 | `core/harness/` | oracle → cases → metric → pass bar → the number | ready |
 | `build/bescheid/` | Bescheid-Check, the default bet | **40/40, 0 silent errors** |
 
-## 17 Sep, 19:00 — the brief dropped, and the spine rotated
+## 17 Sep, 19:00 — the brief dropped, and the spine rotated → **Tap n' tax**
 
 Taxfix asked for **voluntary, recurring engagement outside filing season — not
 reminders, not nudges** (`docs/BRIEF.md`). `brownie` said ROTATE. The surface is now

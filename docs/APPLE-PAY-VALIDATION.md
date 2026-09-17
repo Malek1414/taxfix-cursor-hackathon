@@ -57,6 +57,15 @@ For the pitch: the bank route is the production answer ("Taxfix already asks
 for Belegabruf consent; account-information consent is the same shape"). The
 Shortcut is the demo answer, and it is honest: it is what a user can do today.
 
+## Live on stage — Sammy's phone (decided 20:05)
+1. Mac: System Settings → General → Sharing → **Internet Sharing** on (share Wi-Fi to Wi-Fi) or use
+   the venue Wi-Fi if devices can see each other. On the hotspot the Mac is usually **192.168.2.1**;
+   on venue Wi-Fi it is **192.168.112.222**. Check from the phone: open `http://<ip>:8787/v1/health`.
+2. Phone: the Shortcut below, URL pointed at that IP. Card filter: Sammy's business card.
+3. Sammy pays 1 € → the question card appears on the Simulator → tap → photo → row on the card.
+4. **Fallback A:** Sammy runs the Shortcut by hand (same payload, merchant "Taxfix Bar", 1.00).
+   **Fallback B:** the "⌘ Apple Pay @ REWE" button on the Simulator. Both post the identical event.
+
 ## What we demo
 - Screen: "Your tax returns" → the 2026 card → the REWE row appears with its euro value.
 - Say: "That row came from an Apple Pay payment, through a Shortcut, with no
