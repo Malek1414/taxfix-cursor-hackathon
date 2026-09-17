@@ -55,7 +55,7 @@ python3 build/yearround/api.py            # localhost:8787 — their home screen
 
 Plan and jury defence: `docs/PLAN.md`. The two-minute script: `docs/PITCH.md`.
 
-**Demo props, no Wi-Fi needed**
+**Demo props, no Wi-Fi needed** — hosting steps and every link: `docs/DEPLOY.md`
 - iPad card terminal (tap = Approved): https://malek1414.github.io/taxfix-cursor-hackathon/
 - Their screens with the 2026 card, static copy: https://malek1414.github.io/taxfix-cursor-hackathon/app.html
 - Hosted server (Sliplane, from this repo's Dockerfile): once deployed, open the terminal as
