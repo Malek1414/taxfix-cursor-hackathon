@@ -46,10 +46,19 @@ struct Events: Decodable { struct E: Decodable { let id: Int; let merchant: Stri
     private var seen = Set<Int>()
     private var primed = false
 
+    var offline = false
     func start() {
+        if card == nil { card = try? JSONDecoder().decode(Card.self, from: Data(CARD_BEFORE.utf8)) }   // bundled, so the screen is never empty
         Task { while true { await tick(); try? await Task.sleep(nanoseconds: 1_000_000_000) } }
     }
+    /// The demo trigger with no network: long-press the title. Same notification, same row.
+    func simulatePurchase() {
+        offline = true
+        notify(Events.E(id: -1, merchant: "REWE", amount: 38.40, purpose: "business", receipt: "ok"))
+        card = try? JSONDecoder().decode(Card.self, from: Data(CARD_AFTER.utf8))
+    }
     func tick() async {
+        if offline { return }
         do {
             let (d, _) = try await URLSession.shared.data(from: URL(string: server + "/v1/events")!)
             let ev = try JSONDecoder().decode(Events.self, from: d)
@@ -60,7 +69,7 @@ struct Events: Decodable { struct E: Decodable { let id: Int; let merchant: Stri
             }
             let (c, _) = try await URLSession.shared.data(from: URL(string: server + "/v1/demo/card")!)
             card = try JSONDecoder().decode(Card.self, from: c); error = nil
-        } catch { self.error = error.localizedDescription }
+        } catch { if card == nil { self.error = error.localizedDescription } }
     }
     func notify(_ e: Events.E) {
         justFiled = e.merchant

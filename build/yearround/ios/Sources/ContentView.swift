@@ -69,6 +69,7 @@ struct TaxYearView: View {
                         Button { scanning = true } label: { Image(systemName: "camera").font(.system(size: 15, weight: .semibold)).foregroundStyle(Color.ink).frame(width: 34, height: 30).background(Color.lime).clipShape(Capsule()) }.padding(.trailing, 8)
                         HelpPill() }.padding(.horizontal, 16).padding(.top, 8)
                     Text("Tax year 2026").font(.system(size: 26, weight: .heavy)).tracking(-0.3).padding(.horizontal, 16).padding(.top, 10).padding(.bottom, 14)
+                        .onLongPressGesture(minimumDuration: 0.8) { m.simulatePurchase() }
                     if let c = m.card {
                         // the refund pill from the questionnaire header, made year-round — in their lime question-card style
                         HStack(alignment: .top) {
