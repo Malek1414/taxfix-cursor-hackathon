@@ -1,0 +1,21 @@
+---
+description: How this repo is organised and the rules every agent in it follows
+alwaysApply: true
+---
+
+# Orchestra
+
+- `orchestra/` is the infrastructure: router cascade, cache, cost ledger, permission gate, audit, data
+  sources and sinks, the pipeline, the MCP bridge, the comparison page. It works. Do not rebuild it.
+- What you change for a new brief: `orchestra/scenarios/<brief>.py` (records, tools, stages, expectations,
+  sinks) and the four prompts in `orchestra/agents/`.
+- `spine/` holds the oracles: the federal wage-tax algorithm, statutes with a citation resolver, e-invoices,
+  the validation harness, and the `brownie` skill that rotates the build onto the real brief.
+- Python 3 standard library only. No pip. Keys only in `.env`, never in code, never in a log.
+- `Decimal`, never `float`, for money. Report silent errors separately from over-escalation. Declare the pass
+  bar before running the suite. Never state a validation number that did not come from a run.
+- Every agent has an identity with an owner, a tool allowlist, data classes, a budget and an approval list.
+  New tools go through the gate; never bypass it. Model output is user input: never eval, shell or innerHTML.
+- Everything written for a person is in English.
+- Verify with `python3 -m unittest tests.test_orchestra` and `python3 orchestra/demo.py --compare` before
+  saying something works.
