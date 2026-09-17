@@ -149,6 +149,15 @@ The classifier does not disappear, it changes job. It decides whether to ask at 
 a supermarket never interrupts anyone, and it reads the photo afterwards for amount, VAT, line items and
 merchant, and files the entry. No photo, no entry, and the reminder expires with the day.
 
+
+## The open source piece
+
+The decision, the memory and the notification text live in their own public repo so
+anyone can take them: **https://github.com/sami-mag07/tapntax** (MIT, no dependencies,
+26 tests). One folder to vendor, three seams to replace: the trigger, the store, the
+push. The rules that must not bend are in `tests/test_classify.py` under
+`RulesThatMustNotBend`, which is the specification rather than a test suite.
+
 ## Two things that must be right
 
 - The saving is not the amount spent. It is the amount times the marginal rate, or the input tax for a
