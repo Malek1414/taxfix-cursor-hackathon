@@ -20,6 +20,8 @@ targets:
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         NSAppTransportSecurity: {NSAllowsArbitraryLoads: true, NSAllowsLocalNetworking: true}
+        NSCameraUsageDescription: Photograph receipts to file them.
+        NSPhotoLibraryUsageDescription: Pick a receipt photo to file it.
         NSLocalNetworkUsageDescription: Connects to the Tap n' tax demo server on your Mac.
         UIBackgroundModes: [fetch]
     settings:

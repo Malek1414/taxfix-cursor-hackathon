@@ -60,11 +60,14 @@ struct HelpPill: View {
 
 struct TaxYearView: View {
     @EnvironmentObject var m: Model
+    @State private var scanning = false
     var body: some View {
         ZStack(alignment: .bottom) {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack { Image(systemName: "arrow.left").font(.system(size: 18)); Spacer(); HelpPill() }.padding(.horizontal, 16).padding(.top, 8)
+                    HStack { Image(systemName: "arrow.left").font(.system(size: 18)); Spacer()
+                        Button { scanning = true } label: { Image(systemName: "camera").font(.system(size: 15, weight: .semibold)).foregroundStyle(Color.ink).frame(width: 34, height: 30).background(Color.lime).clipShape(Capsule()) }.padding(.trailing, 8)
+                        HelpPill() }.padding(.horizontal, 16).padding(.top, 8)
                     Text("Tax year 2026").font(.system(size: 26, weight: .heavy)).tracking(-0.3).padding(.horizontal, 16).padding(.top, 10).padding(.bottom, 14)
                     if let c = m.card {
                         // the refund pill from the questionnaire header, made year-round — in their lime question-card style
@@ -117,6 +120,7 @@ struct TaxYearView: View {
                 }.padding(10).background(.white).clipShape(RoundedRectangle(cornerRadius: 12)).shadow(color: .black.opacity(0.14), radius: 9, y: 4).padding(.horizontal, 16).padding(.bottom, 10)
             }
         }
+        .fullScreenCover(isPresented: $scanning) { ScanSheet().environmentObject(m) }
     }
     func section(_ t: String) -> some View {
         Text(t.uppercased()).font(.system(size: 11, weight: .bold)).foregroundStyle(.secondary).kerning(0.7).padding(.horizontal, 16).padding(.top, 18).padding(.bottom, 4)
