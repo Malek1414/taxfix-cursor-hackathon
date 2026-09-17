@@ -21,7 +21,14 @@ Their rows, their pill, their footer."
 > never bothered logging suddenly become worth **49**. The donation, 58.
 > 80 euros becomes **785**. Every figure is a recompute on two states, to the cent."
 
-## 1:00–1:30 — the catch (screen: the amber cards)
+## 0:50–1:05 — the purchase (the Apple Pay beat, on the Simulator)
+Tap **⌘ Apple Pay @ REWE** in the toggle. The app asks one question in its own
+idiom: "REWE · 38,40 € — what was this for?" Pick **My business**, Confirm.
+> "That came from an Apple Pay payment through a Wallet automation — no Apple
+> approval needed. One answer: 9 euros off income tax, 6,13 euros VAT back in
+> the next VAT return, and in April that question is already answered."
+
+## 1:05–1:30 — the catch (screen: the amber cards)
 > "And this is the part that is Taxfix, not ChatGPT. The gardener you paid cash:
 > **zero**, and we say why — § 35a only counts transfers. The tip that says
 > 'deduct the materials, § 35b': the paragraph exists — it's about inheritance

@@ -44,7 +44,7 @@ h2{font-size:15px;font-weight:700;margin:0 16px 12px}
 .toggle button{background:transparent;border:0;color:#fff;padding:5px 10px;border-radius:999px;font-weight:600}.toggle button.on{background:#fff;color:#111}
 [hidden]{display:none!important}
 </style></head><body>
-<div class="toggle"><button id="tBefore">App today</button><button id="tAfter" class="on">With 2026 live · :8787</button></div>
+<div class="toggle"><button id="tBefore">App today</button><button id="tAfter" class="on">2026 live</button><button id="tPay">⌘ Apple Pay @ REWE</button></div>
 <div class="app">
 
 <!-- SCREEN 1: Your tax returns (year chooser) — the insertion point -->
@@ -89,6 +89,19 @@ h2{font-size:15px;font-weight:700;margin:0 16px 12px}
  <p style="margin:0 16px;font-size:11.5px;color:var(--mute);line-height:1.45">This answer is saved to your 2026 return. In April there is one question fewer.</p>
 </section>
 
+<!-- SCREEN 5: a purchase arrived from the Wallet automation — one question, their idiom -->
+<section class="screen" id="s5">
+ <div class="top"><span class="back" onclick="go('s2')">←</span><b style="font-size:15px">Expenses</b><span class="help"><span class="avs"><i></i><i></i><i></i></span>Help</span></div>
+ <div class="kv"><span>Paid with</span><span id="pcard">…</span></div>
+ <div class="kv"><span>Receipt</span><span id="preceipt">…</span></div>
+ <div class="q" id="pq"></div>
+ <div class="opt on" data-p="business" onclick="pick(this)"><b></b>My business — net is a Betriebsausgabe, VAT comes back</div>
+ <div class="opt" data-p="work" onclick="pick(this)"><b></b>For my job — Werbungskosten</div>
+ <div class="opt" data-p="private" onclick="pick(this)"><b></b>Private — nothing to do</div>
+ <button class="btn confirm" onclick="classify()">Confirm</button>
+ <p style="margin:0 16px;font-size:11.5px;color:var(--mute);line-height:1.45">Came in from your Wallet automation. Saved to Expenses · 2026. In April this question is already answered.</p>
+</section>
+
 <!-- SCREEN 4: their refusal pattern, for the thing the engine won't price -->
 <section class="screen" id="s4">
  <div class="top"><span class="back" onclick="go('s2')">←</span><b style="font-size:15px">About you</b><span class="help"><span class="avs"><i></i><i></i><i></i></span>Help</span></div>
@@ -112,7 +125,7 @@ function render(c){CARD=c;
   document.getElementById("after").textContent=eur(c.afterPlan.amountEur);
   document.getElementById("disc").textContent=c.disclosure;
   const worth=c.moves.filter(m=>m.status==="worth"),zero=c.moves.filter(m=>m.status==="zero"),esc=c.moves.filter(m=>m.status==="escalate");
-  document.getElementById("moves").innerHTML=worth.map((m,i)=>`<div class="row" onclick="openMove(${i})"><div class="tile">${ICON[m.kind]||"•"}</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="r">+${eur(m.saving_eur)}</div><div class="chev">›</div></div>`).join("");
+  document.getElementById("moves").innerHTML=worth.map((m,i)=>`<div class="row" onclick="openMove(${i})"><div class="tile">${ICON[m.kind]||"•"}</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="r">+${eur(m.saving_eur)}${Number(m.vat_reclaim_eur||0)>0?`<div style="font-size:11px;color:var(--mute);font-weight:600">+${Number(m.vat_reclaim_eur).toFixed(2).replace(".",",")} € VAT</div>`:""}</div><div class="chev">›</div></div>`).join("");
   document.getElementById("zeros").innerHTML=zero.map(m=>`<div class="row"><div class="tile">${ICON[m.kind]||"•"}</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="z">0 €</div></div>`).join("");
   document.getElementById("esc").innerHTML=esc.map((m,i)=>`<div class="row" onclick="openEsc(${i})"><div class="tile">${m.kind==="other"?"👥":"🤖"}</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="chev">›</div></div>`).join("");
   if(worth[0]){document.getElementById("nextT").textContent=worth[0].label.split(" — ")[0];document.querySelector("#next .tile").textContent=ICON[worth[0].kind]||"•";}
@@ -124,12 +137,23 @@ function openMove(i){const m=CARD.moves.filter(x=>x.status==="worth")[i];current
   document.getElementById("qtext").innerHTML=`<span>Will you pay the ${m.kind==="handwerker"?"electrician's labour share":"amount"} before 31 December 2026?<small>${m.why}</small></span><span>ⓘ</span>`;
   go("s3");}
 function openEsc(i){const m=CARD.moves.filter(x=>x.status==="escalate")[i];document.getElementById("esctext").textContent=m.why;go("s4");}
-function pick(el){document.querySelectorAll(".opt").forEach(o=>o.classList.remove("on"));el.classList.add("on");}
+function pick(el){el.parentElement.querySelectorAll(".opt").forEach(o=>o.classList.remove("on"));el.classList.add("on");}
+let PENDING=null;
+function checkInbox(){fetch("/v1/events").then(r=>r.json()).then(d=>{const e=d.unclassified[0]; if(!e) return; PENDING=e;
+  document.getElementById("pcard").textContent=e.card||"Apple Pay";
+  document.getElementById("preceipt").textContent=e.receipt?"attached ✓":"none yet";
+  document.getElementById("pq").innerHTML=`<span>${e.merchant} · ${Number(e.amount).toFixed(2).replace(".",",")} € — what was this for?<small>Answer once. The number updates, and the 2026 return already knows.</small></span><span>ⓘ</span>`;
+  go("s5");});}
+function classify(){const purpose=document.querySelector("#s5 .opt.on").dataset.p;
+  fetch("/v1/events/classify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:PENDING.id,purpose})})
+  .then(r=>r.json()).then(d=>{render(d.card);go("s2");});}
+document.getElementById("tPay").onclick=()=>fetch("/v1/events/transaction",{method:"POST",headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({merchant:"REWE",amount:38.40,card:"Visa •• 4821",receipt:true})}).then(checkInbox);
 function confirmQ(){const cash=document.querySelectorAll(".opt")[1].classList.contains("on");
   if(cash){alert("Saved. Paid in cash → § 35a gives 0 €. The card now shows this at 0 € with the reason.");}
   else{alert("Saved to Expenses · Household services · 2026. Position updates.");}
   go("s2");}
-fetch("/v1/demo/card").then(r=>r.json()).then(render).catch(e=>{document.getElementById("pill").textContent="offline";});
+fetch("/v1/demo/card").then(r=>r.json()).then(c=>{render(c);checkInbox();}).catch(e=>{document.getElementById("pill").textContent="offline";});
 const b1=document.getElementById("tBefore"),b2=document.getElementById("tAfter");
 b1.onclick=()=>{document.getElementById("y2026").hidden=true;b1.classList.add("on");b2.classList.remove("on");go("s1");document.getElementById("next").hidden=true;};
 b2.onclick=()=>{document.getElementById("y2026").hidden=false;b2.classList.add("on");b1.classList.remove("on");go("s1");document.getElementById("next").hidden=false;};

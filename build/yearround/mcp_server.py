@@ -47,7 +47,8 @@ PROFILE_SCHEMA = {
 CANDIDATE_SCHEMA = {
     "type": "object",
     "properties": {
-        "kind": {"type": "string", "enum": ["werbungskosten", "homeoffice", "handwerker", "haushalt", "spende", "other"]},
+        "kind": {"type": "string", "enum": ["werbungskosten", "homeoffice", "handwerker", "haushalt", "spende", "betriebsausgabe", "other"]},
+        "vat_rate": {"type": "number", "description": "betriebsausgabe: 0.19 / 0.07 / 0", "default": 0.19},
         "label": {"type": "string"},
         "amount": {"type": "number", "description": "EUR, or days for homeoffice"},
         "labour": {"type": "number", "description": "handwerker/haushalt: labour share (materials never count)"},
@@ -110,7 +111,8 @@ def _plain(o):
 def _move(m) -> dict:
     return _plain({"label": m.candidate.label, "status": m.status, "saving_eur": m.saving,
                    "citation": m.citation, "citation_resolves": m.citation_ok, "why": m.why,
-                   "tax_before": m.before, "tax_after": m.after, "deadline": m.deadline})
+                   "tax_before": m.before, "tax_after": m.after, "deadline": m.deadline,
+                   "vat_reclaim_eur": m.vat_reclaim})
 
 
 def call(name: str, args: dict):

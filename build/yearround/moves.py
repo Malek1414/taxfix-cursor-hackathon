@@ -45,6 +45,8 @@ HAUSHALT_RATE     = Decimal("0.20") # § 35a Abs. 2 EStG  haushaltsnahe Dienstle
 HAUSHALT_CAP      = Decimal(4000)   #   … höchstens 4 000 EUR
 SPENDEN_CAP_RATE  = Decimal("0.20") # § 10b Abs. 1 EStG  bis 20 % des Gesamtbetrags der Einkünfte
 SA_PAUSCHBETRAG   = Decimal(36)     # § 10c EStG  Sonderausgaben-Pauschbetrag
+VAT_STANDARD      = Decimal("0.19") # § 12 Abs. 1 UStG  Regelsteuersatz
+VAT_REDUCED       = Decimal("0.07") # § 12 Abs. 2 UStG
 
 CITES = {
     "werbungskosten": "§ 9 EStG",
@@ -54,6 +56,8 @@ CITES = {
     "haushalt":       "§ 35a EStG",
     "spende":         "§ 10b EStG",
     "abfluss":        "§ 11 EStG",
+    "betriebsausgabe": "§ 4 EStG",      # Abs. 4: Betriebsausgaben, in full, no Pauschbetrag
+    "vorsteuer":      "§ 15 UStG",     # input VAT back in the next Voranmeldung
 }
 
 
@@ -75,11 +79,12 @@ class Profile:
     handwerker_labour: Decimal = Decimal(0)   # labour already paid by transfer this year
     haushalt_labour: Decimal = Decimal(0)
     spenden: Decimal = Decimal(0)
+    betriebsausgaben: Decimal = Decimal(0)   # net business expenses (self-employed), § 4 Abs. 4
     today: date = date(2026, 11, 12)
     name: str = "Musterperson"
 
     def __post_init__(self):
-        for f in ("gross", "werbungskosten", "handwerker_labour", "haushalt_labour", "spenden"):
+        for f in ("gross", "werbungskosten", "handwerker_labour", "haushalt_labour", "spenden", "betriebsausgaben"):
             setattr(self, f, D(getattr(self, f)))
 
     # -- derived, each one a statutory rule ---------------------------------
@@ -103,7 +108,7 @@ class Profile:
 
     @property
     def taxable(self) -> Decimal:
-        return max(Decimal(0), self.gross - self.werbungskosten_effective - self.spenden_effective)
+        return max(Decimal(0), self.gross - self.werbungskosten_effective - self.spenden_effective - self.betriebsausgaben)
 
     @property
     def credit_35a(self) -> Decimal:
@@ -165,6 +170,7 @@ class Candidate:
     labour: Decimal | None = None   # handwerker/haushalt: labour share (materials never count)
     cash: bool = False           # § 35a Abs. 5: cash payment gets nothing
     due: date | None = None      # when the bill is due — the December/January question
+    vat_rate: Decimal = VAT_STANDARD   # betriebsausgabe: the receipt's VAT rate (0.19 / 0.07 / 0)
     citation: str | None = None  # an externally supplied citation (e.g. from an LLM tip)
     claim: str = ""
 
@@ -172,6 +178,7 @@ class Candidate:
         self.amount = D(self.amount)
         if self.labour is not None:
             self.labour = D(self.labour)
+        self.vat_rate = D(self.vat_rate)
 
 
 @dataclass
@@ -185,6 +192,7 @@ class Move:
     before: Decimal = Decimal(0)
     after: Decimal = Decimal(0)
     deadline: date | None = None
+    vat_reclaim: Decimal = Decimal(0)   # § 15 UStG: cash back in the next Voranmeldung, separate from the tax saving
 
     @property
     def shown(self) -> bool:
@@ -208,7 +216,18 @@ def apply(p: Profile, c: Candidate) -> Profile | None:
         return replace(p, **{key: getattr(p, key) + labour})
     if c.kind == "spende":
         return replace(p, spenden=p.spenden + c.amount)
+    if c.kind == "betriebsausgabe":
+        return replace(p, betriebsausgaben=p.betriebsausgaben + net_of_vat(c))
     return None
+
+
+def net_of_vat(c: Candidate) -> Decimal:
+    """Gross receipt → net; only the net is a Betriebsausgabe, the VAT comes back separately."""
+    return (c.amount / (1 + c.vat_rate)).quantize(CENT, rounding=ROUND_HALF_UP)
+
+
+def vat_of(c: Candidate) -> Decimal:
+    return (c.amount - net_of_vat(c)).quantize(CENT)
 
 
 def price(p: Profile, c: Candidate) -> Move:
@@ -246,12 +265,13 @@ def price(p: Profile, c: Candidate) -> Move:
     assert saving >= 0, "a deduction never raises tax — if this fires, the model is wrong"
 
     # 3. priced, and zero: say exactly why
-    if saving == 0:
+    vat = vat_of(c) if c.kind == "betriebsausgabe" else Decimal(0)
+    if saving == 0 and vat == 0:
         return Move(c, "zero", saving, citation, citation_ok, _why_zero(p, c, after_p),
                     before, after, p.deadline)
 
     return Move(c, "worth", saving, citation, citation_ok, _why_worth(p, c, after_p, saving),
-                before, after, p.deadline)
+                before, after, p.deadline, vat)
 
 
 def _why_zero(p: Profile, c: Candidate, q: Profile) -> str:
@@ -295,6 +315,9 @@ def _why_worth(p: Profile, c: Candidate, q: Profile, saving: Decimal) -> str:
         return f"{int(c.amount)} more days × 6 EUR (§ 4 Abs. 5 Nr. 6c EStG) — log them, they count as Werbungskosten"
     if c.kind == "spende":
         return "deductible as Sonderausgaben, receipt needed above 300 EUR (§ 10b EStG)"
+    if c.kind == "betriebsausgabe":
+        return (f"net {net_of_vat(c):,.2f} EUR is a Betriebsausgabe in full (§ 4 Abs. 4 EStG); "
+                f"the {vat_of(c):,.2f} EUR VAT comes back in your next Voranmeldung (§ 15 UStG) — keep the receipt")
     return "lowers your tax on today's facts"
 
 

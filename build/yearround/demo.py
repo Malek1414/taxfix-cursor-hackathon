@@ -149,6 +149,24 @@ def build_suite() -> Suite:
     C(Case("donation on low income", {"profile": prof(gross=10_000),
            "candidate": cand("spende", amount=5000)}, exp(T(10_000) - T(10_000 - 1964))))
 
+    # --- Betriebsausgaben (§ 4 Abs. 4 EStG) + Vorsteuer (§ 15 UStG): net in full, VAT separate ----
+    # 38.40 gross @19 % → net 32.27, VAT 6.13; no Pauschbetrag threshold for business expenses
+    C(Case("REWE 38.40 @19 %: net off taxable, VAT separate", {"profile": prof(),
+           "candidate": cand("betriebsausgabe", amount=Decimal("38.40"))},
+           {**exp(T(G) - T(G - Decimal("32.27"))), "vat": Decimal("6.13")}))
+    # 1 190 gross @19 % → net 1 000, VAT 190
+    C(Case("1 190 @19 % → net 1 000", {"profile": prof(),
+           "candidate": cand("betriebsausgabe", amount=Decimal(1190))},
+           {**exp(T(G) - T(G - 1000)), "vat": Decimal(190)}))
+    # 107 gross @7 % (books) → net 100, VAT 7
+    C(Case("107 @7 % → net 100", {"profile": prof(),
+           "candidate": cand("betriebsausgabe", amount=Decimal(107), vat_rate=Decimal("0.07"))},
+           {**exp(T(G) - T(G - 100)), "vat": Decimal(7)}))
+    # a business expense must NOT be gated by the employee Pauschbetrag
+    C(Case("business expense ignores the 1 230 Pauschbetrag", {"profile": prof(werbungskosten=0),
+           "candidate": cand("betriebsausgabe", amount=Decimal(595))},
+           {**exp(T(G) - T(G - 500)), "vat": Decimal(95)}, tier=A))
+
     # --- refusals: the engine must say no, out loud ------------------------------------
     C(Case("invented paragraph § 99z EStG", {"profile": prof(),
            "candidate": cand("werbungskosten", amount=800, citation="§ 99z EStG", claim="absetzbar")},
@@ -173,6 +191,8 @@ def compare(move, want: dict) -> bool:
     if move.status != want["status"]:
         return False
     if "saving" in want and move.saving != Decimal(want["saving"]).quantize(Decimal("0.01")):
+        return False
+    if "vat" in want and move.vat_reclaim != Decimal(want["vat"]).quantize(Decimal("0.01")):
         return False
     return True
 

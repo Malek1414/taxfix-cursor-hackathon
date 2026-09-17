@@ -46,10 +46,13 @@ def demo_candidates():
     """The November table plus anything the phone posted since the server started."""
     extra = []
     for e in EVENTS:
-        if not e.get("business", True):
-            continue
-        extra.append(Candidate("werbungskosten", f"{e['merchant']} — {e['amount']} EUR ({e.get('category') or 'business purchase'})",
-                               amount=Decimal(str(e["amount"]))))
+        label = f"{e['merchant']} — {e['amount']:.2f} EUR" + (" · receipt attached" if e.get("receipt") else "")
+        if e.get("purpose") == "work":
+            extra.append(Candidate("werbungskosten", label, amount=Decimal(str(e["amount"]))))
+        elif e.get("purpose") == "business":
+            extra.append(Candidate("betriebsausgabe", label, amount=Decimal(str(e["amount"])),
+                                   vat_rate=Decimal(str(e.get("vat_rate", "0.19")))))
+        # private, or not yet classified: not a move
     return november_table() + extra
 
 HOST, PORT = "0.0.0.0", 8787
@@ -107,6 +110,8 @@ class H(BaseHTTPRequestHandler):
                 return self._send(200, call("tax_position", {}))
             if u.path == "/v1/demo/card":
                 return self._send(200, card_payload())
+            if u.path == "/v1/events":
+                return self._send(200, {"events": EVENTS, "unclassified": [e for e in EVENTS if e.get("purpose") is None]})
             return self._send(404, {"error": f"no route {u.path}"})
         except Exception as e:
             return self._send(400, {"error": f"refused: {e}"})
@@ -125,9 +130,10 @@ class H(BaseHTTPRequestHandler):
                 return self._send(200, card_payload(b.get("profile"), b.get("candidates")))
             if u.path == "/v1/events/transaction":
                 # from the iOS Shortcuts "Transaction" automation: merchant, amount, card, category
-                ev = {"merchant": str(b.get("merchant", "Unknown")), "amount": float(b.get("amount", 0)),
-                      "card": b.get("card", ""), "category": b.get("category", ""),
-                      "business": bool(b.get("business", True)), "receipt": bool(b.get("receipt", False))}
+                ev = {"id": len(EVENTS), "merchant": str(b.get("merchant", "Unknown")), "amount": float(b.get("amount", 0)),
+                      "card": b.get("card", ""), "category": b.get("category", ""), "vat_rate": b.get("vat_rate", "0.19"),
+                      "purpose": b.get("purpose"),            # work | business | private | None = ask the user
+                      "receipt": bool(b.get("receipt", False))}
                 if ev["amount"] <= 0:
                     return self._send(400, {"error": "refused: amount must be positive"})
                 EVENTS.append(ev)
@@ -135,6 +141,10 @@ class H(BaseHTTPRequestHandler):
                 return self._send(200, {"saved": ev, "position_today_eur": card["headline"]["amountEur"],
                                         "after_plan_eur": card["afterPlan"]["amountEur"],
                                         "moves": len([m for m in card["moves"] if m["status"] == "worth"])})
+            if u.path == "/v1/events/classify":
+                ev = EVENTS[int(b["id"])]
+                ev["purpose"] = b["purpose"]
+                return self._send(200, {"event": ev, "card": card_payload()})
             if u.path == "/v1/audit":
                 return self._send(200, call("audit_claim", b))
             return self._send(404, {"error": f"no route {u.path}"})
