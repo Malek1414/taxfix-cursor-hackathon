@@ -106,3 +106,7 @@ published algorithm directly.
 5. `docs/PLAYBOOK.md` — the seven candidate surfaces
 6. `docs/BRIEF.md` — empty until 19:00; the spine's memory
 7. `research/` — the full dossier and playbook behind all of the above
+
+## Demo video
+
+[demo/Taxfix-Hackathon-Demo.mp4](demo/Taxfix-Hackathon-Demo.mp4) — 43s vertical cut: today's Taxfix onboarding vs. the prototype (snap a receipt, it's filed).

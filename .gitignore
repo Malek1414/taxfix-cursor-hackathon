@@ -4,3 +4,6 @@ __pycache__/
 .venv/
 *.MP4
 *.mov
+
+# demo video is tracked on purpose
+!demo/Taxfix-Hackathon-Demo.mp4
