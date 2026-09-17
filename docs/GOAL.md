@@ -117,6 +117,25 @@ The learning agent is the right shape here, with one rule that must not bend: fr
 - The audit trail stores who decided each entry: rule, model, or human. When the office asks two years
   later, that column is the difference between an answer and a problem.
 
+## Decided on the night: always a photo
+
+We dropped the automatic path. Sometimes filing by itself and sometimes asking is a coin flip the user
+cannot predict, and an entry nobody looked at is an entry they signed blind. One rule instead: every
+entry carries a photo of the receipt, no exceptions.
+
+What it costs: some people will not take the picture, and those expenses are lost. We accept that.
+
+What it buys, and this is the pitch:
+
+- Every entry survives an audit, input tax included. Nothing in the file rests on a card charge alone.
+- The moment is right. The push arrives while the paper is still in your hand, which is the only moment
+  it ever exists. At home the receipt is gone. That is why the trigger has to be the payment itself.
+- The flow is one line with no branches: pay, answer, photo, filed. It demos in thirty seconds.
+
+The classifier does not disappear, it changes job. It decides whether to ask at all, so a private card at
+a supermarket never interrupts anyone, and it reads the photo afterwards for amount, VAT, line items and
+merchant, and files the entry. No photo, no entry, and the reminder expires with the day.
+
 ## Two things that must be right
 
 - The saving is not the amount spent. It is the amount times the marginal rate, or the input tax for a
