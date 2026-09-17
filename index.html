@@ -1,0 +1,24 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Card terminal</title>
+<style>
+body{margin:0;background:#0d0f12;color:#fff;font-family:-apple-system,"SF Pro Display",Helvetica,Arial,sans-serif;height:100vh;display:flex;align-items:center;justify-content:center}
+.t{width:min(92vw,560px);background:#1a1d22;border-radius:36px;padding:48px 40px;box-shadow:0 40px 90px rgba(0,0,0,.6);text-align:center;border:1px solid #2a2e35}
+.m{font-size:22px;letter-spacing:.12em;color:#8b93a1;text-transform:uppercase}.a{font-size:96px;font-weight:700;margin:14px 0 6px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.s{font-size:24px;color:#c7ccd4;margin-bottom:34px}
+.nfc{width:150px;height:150px;border-radius:50%;margin:0 auto;border:3px solid #3a3f48;display:flex;align-items:center;justify-content:center;font-size:56px;position:relative}
+.nfc:before,.nfc:after{content:"";position:absolute;inset:-14px;border-radius:50%;border:2px solid #2f7a3a;opacity:0;animation:p 2s infinite}.nfc:after{animation-delay:1s}
+@keyframes p{0%{transform:scale(.8);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+.ok .nfc{border-color:#4cd964;background:#153a1c}.ok .nfc:before,.ok .nfc:after{animation:none}
+.h{font-size:20px;color:#8b93a1;margin-top:30px}.ok .h{color:#4cd964;font-weight:700}
+.brand{margin-top:26px;font-size:14px;color:#565c66;letter-spacing:.2em}
+</style></head><body><div class="t" id="t">
+<div class="m">REWE · Köpenicker Str.</div><div class="a">38,40 €</div><div class="s">Druckerpapier · Toner · Ordner</div>
+<div class="nfc" id="nfc">📶</div><div class="h" id="h">Hold your phone near the reader</div><div class="brand" id="brand">PARTNER · DIGITAL RECEIPT</div></div>
+<script>
+const t=document.getElementById("t");let done=false;
+// API base: ?api=https://xxx.trycloudflare.com (public tunnel to the Mac), else same origin (localhost demo)
+const API=new URLSearchParams(location.search).get("api")||"";
+function approve(){if(done)return;done=true;t.classList.add("ok");document.getElementById("nfc").textContent="✓";document.getElementById("h").textContent="Approved · VISA •• 4821 · receipt sent to Taxfix";
+ fetch(API+"/v1/events/transaction",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({merchant:"REWE",amount:38.40,card:"Business Visa •• 4821",category:"Office supplies",purpose:"business",receipt_status:"ok",partner:true})}).catch(()=>{});}
+if(API){document.getElementById("brand").textContent="PARTNER · DIGITAL RECEIPT · LINKED";}
+document.body.addEventListener("click",approve);document.body.addEventListener("touchstart",approve,{passive:true});
+</script></body></html>

@@ -1,0 +1,190 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Taxfix · Tap n' tax (localhost simulator)</title>
+<style>
+/* tokens read off the 17 Sep screen recording of Taxfix iOS 4.1.0 */
+:root{--ink:#161616;--mute:#6f6f6f;--line:#ececec;--tile:#f4f4f2;--lime:#cdf68a;--btn:#a6e96b;--btn2:#dff5c0;--help:#eef2f7;--next:#fdf5c8;--warn:#fff4dd;--warn-ink:#7a5200;--green:#2f7a3a}
+*{box-sizing:border-box}html,body{margin:0;background:#fff;color:var(--ink);font-family:-apple-system,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;font-size:15px}
+.app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;position:relative}
+.top{display:flex;justify-content:space-between;align-items:center;padding:58px 16px 6px;min-height:92px}
+.back{font-size:20px;width:28px}.help{background:var(--help);border-radius:999px;padding:5px 10px 5px 6px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.avs{display:flex}.avs i{width:18px;height:18px;border-radius:50%;background:#c9a27e;border:2px solid #fff;margin-left:-6px;display:block}.avs i:first-child{margin-left:0}
+.gift{background:var(--btn2);border-radius:999px;padding:5px 10px;font-size:12px;font-weight:600}
+h1{font-size:26px;font-weight:800;margin:6px 16px 14px;letter-spacing:-.01em}
+h2{font-size:15px;font-weight:700;margin:0 16px 12px}
+.screen{display:none;flex:1;flex-direction:column;padding-bottom:150px}.screen.on{display:flex}
+/* year chooser */
+.year{margin:0 16px 12px;background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:16px;display:flex;justify-content:space-between;align-items:center}
+.year .y{font-size:22px;font-weight:800}.year .sub{font-size:11px;color:var(--mute);margin-top:6px;display:flex;align-items:center;gap:4px}
+.year .cta{background:var(--btn);border-radius:8px;padding:8px 16px;font-weight:700;font-size:13px}.year .cta.light{background:var(--btn2)}
+.year.live{border:1.5px solid #bfe98a}.year .pill{background:var(--lime);border-radius:999px;padding:5px 10px;font-weight:800;font-size:15px;font-variant-numeric:tabular-nums}
+/* section rows (home idiom) */
+.rows{padding:0 16px}.row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.tile{width:40px;height:40px;border-radius:10px;background:var(--tile);display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+.row .l{flex:1;min-width:0}.row .t{font-size:15px}.row .s{font-size:11.5px;color:var(--mute);margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.row .r{font-size:15px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;white-space:nowrap}.row .z{font-size:13px;font-weight:700;color:var(--warn-ink)}.chev{color:#b5b5b5;font-size:20px}
+.row.done .tile{background:var(--lime)}
+.summary{margin:0 16px 14px;background:var(--lime);border-radius:12px;padding:14px 16px}
+.summary .k{font-size:12px;font-weight:600}.summary .n{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;margin:2px 0}.summary .d{font-size:12px;color:#2b4a12}
+.sect{font-size:12px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;margin:18px 16px 4px}
+/* sticky next + tab bar */
+.next{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;width:min(398px,calc(100% - 32px));background:#fff;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.14);padding:10px 12px;display:flex;align-items:center;gap:10px;z-index:5}
+.next .tile{background:var(--next);width:36px;height:36px}.next .k{font-size:11px;color:var(--mute)}.next .t{font-size:14px;font-weight:700}.next .l{flex:1;min-width:0}.next .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn{background:var(--btn);border:0;border-radius:8px;padding:10px 16px;font-weight:700;font-size:14px;color:var(--ink)}
+.tabs{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(430px,100%);background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 0 26px;z-index:5}
+.tab{font-size:11px;color:#444;text-align:center}.tab i{display:block;width:34px;height:24px;border-radius:8px;margin:0 auto 3px;background:transparent;font-style:normal;font-size:16px;line-height:24px}.tab.on i{background:var(--lime)}
+/* question card (interview idiom) */
+.q{margin:0 16px 16px;background:var(--lime);border-radius:12px;padding:16px;font-weight:700;font-size:16px;display:flex;justify-content:space-between;gap:10px}
+.q small{font-weight:400;font-size:12px;display:block;margin-top:6px;color:#2b4a12}
+.opt{display:flex;align-items:center;gap:10px;margin:0 16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}.opt b{width:20px;height:20px;border-radius:50%;border:1.5px solid #999;display:inline-block}.opt.on b{border:6px solid var(--green)}
+.confirm{margin:16px;display:block;width:calc(100% - 32px)}
+.kv{display:flex;justify-content:space-between;margin:0 16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}.kv span:last-child{color:var(--mute);text-align:right}
+/* refusal (their pattern) */
+.sorry{margin:0 16px;border:1px solid var(--line);border-radius:12px;padding:18px;text-align:center}.sorry .ic{font-size:36px}.sorry b{display:block;margin:6px 0 4px}.sorry p{margin:0;font-size:12px;color:var(--mute)}
+.toggle{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9;background:#111;color:#fff;border-radius:999px;padding:3px;display:flex;gap:2px;font-size:11px}
+.toggle button{background:transparent;border:0;color:#fff;padding:5px 10px;border-radius:999px;font-weight:600}.toggle button.on{background:#fff;color:#111}
+[hidden]{display:none!important}
+</style></head><body>
+<div class="toggle"><button id="tBefore">App today</button><button id="tAfter" class="on">2026 live</button><button id="tPay">⌘ Apple Pay @ REWE</button></div>
+<div class="app">
+
+<!-- SCREEN 1: Your tax returns (year chooser) — the insertion point -->
+<section class="screen on" id="s1">
+ <div class="top"><span class="back"></span><span class="gift">Gift 25%</span></div>
+ <h1>Your tax returns</h1><h2>Choose a year to continue</h2>
+ <div class="year live" id="y2026" onclick="go('s2')">
+  <div><div class="y">2026 <span class="pill" id="pill">…</span></div><div class="sub">◔ Running year · if you filed today</div></div>
+  <div class="cta">Continue</div>
+ </div>
+ <div class="year"><div><div class="y">2025</div><div class="sub">🛡 With tax advisor</div></div><div class="cta">Continue</div></div>
+ <div class="year"><div class="y">2024</div><div class="cta light">Start</div></div>
+ <div class="year"><div class="y">2023</div><div class="cta light">Start</div></div>
+ <div class="year"><div class="y">2022</div><div class="cta light">Start</div></div>
+</section>
+
+<!-- SCREEN 2: Tax year 2026 — same layout as Tax year 2025, rows are the moves -->
+<section class="screen" id="s2">
+ <div class="top"><span class="back" onclick="go('s1')">←</span><span class="help"><span class="avs"><i></i><i></i><i></i></span>Help</span></div>
+ <h1>Tax year 2026</h1>
+ <div class="summary"><div class="k">If you filed today</div><div class="n" id="today">…</div><div class="d" id="days">…</div></div>
+ <div class="sect">This week · Tap n' tax</div>
+ <div class="rows" id="week"></div>
+ <div class="sect">Receipts to add</div>
+ <div class="rows" id="pending"></div>
+ <div class="sect">Before 31 December</div>
+ <div class="rows" id="moves"></div>
+ <div class="sect">Not worth it, and why</div>
+ <div class="rows" id="zeros"></div>
+ <div class="sect">Ask your advisor</div>
+ <div class="rows" id="esc"></div>
+ <div class="kv"><span>After these moves</span><span id="after" style="color:var(--green);font-weight:800;font-size:15px">…</span></div>
+ <p style="margin:12px 16px 0;font-size:11px;color:var(--mute);line-height:1.45" id="disc"></p>
+</section>
+
+<!-- SCREEN 3: the move as a question card — writes into Expenses for the 2026 return -->
+<section class="screen" id="s3">
+ <div class="top"><span class="back" onclick="go('s2')">←</span><b style="font-size:15px">Expenses</b><span class="help"><span class="avs"><i></i><i></i><i></i></span>Help</span></div>
+ <div class="kv"><span>Household services</span><span id="kvlabel">…</span></div>
+ <div class="kv"><span>Worth before 31 Dec</span><span id="kvsaving">…</span></div>
+ <div class="q" id="qtext"></div>
+ <div class="opt on" onclick="pick(this)"><b></b>Yes, by bank transfer in December</div>
+ <div class="opt" onclick="pick(this)"><b></b>Yes, in cash</div>
+ <div class="opt" onclick="pick(this)"><b></b>Not yet — I'll pay in January</div>
+ <button class="btn confirm" onclick="confirmQ()">Confirm</button>
+ <p style="margin:0 16px;font-size:11.5px;color:var(--mute);line-height:1.45">This answer is saved to your 2026 return. In April there is one question fewer.</p>
+</section>
+
+<!-- SCREEN 5: a purchase arrived from the Wallet automation — one question, their idiom -->
+<section class="screen" id="s5">
+ <div class="top"><span class="back" onclick="go('s2')">←</span><b style="font-size:15px">Expenses</b><span class="help"><span class="avs"><i></i><i></i><i></i></span>Help</span></div>
+ <div class="kv"><span>Paid with</span><span id="pcard">…</span></div>
+ <div class="kv"><span>Receipt</span><span id="preceipt">…</span></div>
+ <div class="q" id="pq"></div>
+ <div class="opt on" data-p="business" onclick="pick(this)"><b></b>My business — net is a Betriebsausgabe, VAT comes back</div>
+ <div class="opt" data-p="work" onclick="pick(this)"><b></b>For my job — Werbungskosten</div>
+ <div class="opt" data-p="private" onclick="pick(this)"><b></b>Private — nothing to do</div>
+ <button class="btn confirm" onclick="classify()">Confirm</button>
+ <p style="margin:0 16px;font-size:11.5px;color:var(--mute);line-height:1.45">Came in from your Wallet automation. Saved to Expenses · 2026. In April this question is already answered.</p>
+</section>
+
+<!-- SCREEN 6: the photo — their document-scan pattern. No photo, no entry. -->
+<section class="screen" id="s6">
+ <div class="top"><span class="back" onclick="go('s5')">←</span><b style="font-size:15px">Receipt</b><span class="help"><span class="avs"><i></i><i></i><i></i></span>Help</span></div>
+ <div class="q" id="s6q"><span>Photograph the receipt while it's still in your hand<small>The entry counts the moment the photo is attached. VAT needs the seller's invoice (§ 14 UStG).</small></span><span>ⓘ</span></div>
+ <div style="margin:0 16px;height:300px;border-radius:14px;background:#dff5c0;position:relative;display:flex;align-items:center;justify-content:center">
+  <div style="position:absolute;inset:26px 36px;border:3px solid #2f7a3a;border-radius:10px;border-style:solid;opacity:.5"></div>
+  <div style="background:#fff;width:150px;height:200px;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.12);padding:12px;font-size:9px;color:#444;line-height:1.5"><b>REWE</b><br>Berlin Köpenicker Str.<br>17.09.2026 19:34<br>———————————<br>Druckerpapier A4 &nbsp; 7,49<br>Toner schwarz &nbsp;&nbsp; 24,99<br>Ordner 2x &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5,92<br>———————————<br><b>SUMME 38,40</b><br>MwSt 19 % 6,13<br>VISA •• 4821</div>
+  <div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:54px;height:54px;border-radius:50%;background:#2f7a3a;border:4px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.2)"></div>
+ </div>
+ <button class="btn confirm" onclick="receipt('ok')">Use this photo</button>
+ <div style="display:flex;gap:10px;margin:0 16px"><button class="btn" style="flex:1;background:var(--btn2)" onclick="receipt('unclear')">Unclear — retake</button><button class="btn" style="flex:1;background:var(--btn2)" onclick="receipt('wrong')">Wrong receipt</button></div>
+</section>
+
+<!-- SCREEN 4: their refusal pattern, for the thing the engine won't price -->
+<section class="screen" id="s4">
+ <div class="top"><span class="back" onclick="go('s2')">←</span><b style="font-size:15px">About you</b><span class="help"><span class="avs"><i></i><i></i><i></i></span>Help</span></div>
+ <div class="kv"><span>Marry before 31 Dec?</span><span>Ehegattensplitting</span></div>
+ <div class="sorry"><div class="ic">🧰</div><b>We won't put a number on this</b><p id="esctext"></p><p style="margin-top:10px"><b style="display:inline;color:var(--green)">Ask Suat →</b> your advisor prices it with your partner's income.</p></div>
+</section>
+
+<div class="next" id="next"><div class="tile">🔌</div><div class="l"><div class="k">Next</div><div class="t" id="nextT">…</div></div><button class="btn" id="nextB">Continue</button></div>
+<div class="tabs"><div class="tab on"><i>▤</i>Taxes</div><div class="tab"><i>◯</i>Account</div></div>
+</div>
+<script>
+const ICON={handwerker:"🔌",haushalt:"🧹",werbungskosten:"💻",homeoffice:"🏠",spende:"💚",other:"👥"};
+const eur=s=>Number(s).toLocaleString("en-DE",{maximumFractionDigits:0}).replace(/,/g,".")+" €";
+let CARD=null, current=null;
+function go(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("on",s.id===id));window.scrollTo(0,0);
+  const nx=document.getElementById("next"); nx.hidden=(id==="s3"||id==="s4"||id==="s5"||id==="s6");}
+function render(c){CARD=c;
+  document.getElementById("pill").textContent=eur(c.headline.amountEur);
+  document.getElementById("today").textContent=eur(c.headline.amountEur);
+  document.getElementById("days").textContent=`${c.deadline.daysLeft} days to 31 Dec — that's ${c.deadline.basis}, not us`;
+  document.getElementById("after").textContent=eur(c.afterPlan.amountEur);
+  document.getElementById("disc").textContent=c.disclosure;
+  const worth=c.moves.filter(m=>m.status==="worth"),zero=c.moves.filter(m=>m.status==="zero"),esc=c.moves.filter(m=>m.status==="escalate");
+  document.getElementById("moves").innerHTML=worth.map((m,i)=>`<div class="row" onclick="openMove(${i})"><div class="tile">${ICON[m.kind]||"•"}</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="r">+${eur(m.saving_eur)}${Number(m.vat_reclaim_eur||0)>0?`<div style="font-size:11px;color:var(--mute);font-weight:600">+${Number(m.vat_reclaim_eur).toFixed(2).replace(".",",")} € VAT</div>`:""}</div><div class="chev">›</div></div>`).join("");
+  const pend=c.moves.filter(m=>m.status==="pending");
+  document.getElementById("pending").innerHTML=pend.length?pend.map(m=>`<div class="row" onclick="reupload(${m.event_id})"><div class="tile" style="background:var(--warn)">📷</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="z">${m.receipt==="none"?"add":"redo"} · +${eur(m.saving_eur)}</div><div class="chev">›</div></div>`).join("")
+    :`<div class="row"><div class="tile">✓</div><div class="l"><div class="t">Nothing pending</div><div class="s">Every entry carries its receipt.</div></div></div>`;
+  const w=c.week||{entries:0,saving_eur:"0",vat_eur:"0",receipts_missing:0};
+  document.getElementById("week").innerHTML=`<div class="row"><div class="tile">🧾</div><div class="l"><div class="t">${w.entries} purchase${w.entries==1?"":"s"} filed</div><div class="s">${w.receipts_missing} receipt${w.receipts_missing==1?"":"s"} missing</div></div><div class="r">+${eur(w.saving_eur)}${Number(w.vat_eur)>0?`<div style="font-size:11px;color:var(--mute);font-weight:600">+${Number(w.vat_eur).toFixed(2).replace(".",",")} € VAT</div>`:""}</div></div>`;
+  document.getElementById("zeros").innerHTML=zero.map(m=>`<div class="row"><div class="tile">${ICON[m.kind]||"•"}</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="z">0 €</div></div>`).join("");
+  document.getElementById("esc").innerHTML=esc.map((m,i)=>`<div class="row" onclick="openEsc(${i})"><div class="tile">${m.kind==="other"?"👥":"🤖"}</div><div class="l"><div class="t">${m.label}</div><div class="s">${m.why}</div></div><div class="chev">›</div></div>`).join("");
+  if(worth[0]){document.getElementById("nextT").textContent=worth[0].label.split(" — ")[0];document.querySelector("#next .tile").textContent=ICON[worth[0].kind]||"•";}
+  document.getElementById("nextB").onclick=()=>{ if(document.getElementById("s1").classList.contains("on")) go("s2"); else openMove(0); };
+}
+function openMove(i){const m=CARD.moves.filter(x=>x.status==="worth")[i];current=m;
+  document.getElementById("kvlabel").textContent=m.label.split(" — ")[0];
+  document.getElementById("kvsaving").textContent="+"+eur(m.saving_eur)+" · "+m.citation;
+  document.getElementById("qtext").innerHTML=`<span>Will you pay the ${m.kind==="handwerker"?"electrician's labour share":"amount"} before 31 December 2026?<small>${m.why}</small></span><span>ⓘ</span>`;
+  go("s3");}
+function openEsc(i){const m=CARD.moves.filter(x=>x.status==="escalate")[i];document.getElementById("esctext").textContent=m.why;go("s4");}
+function pick(el){el.parentElement.querySelectorAll(".opt").forEach(o=>o.classList.remove("on"));el.classList.add("on");}
+let PENDING=null;
+function checkInbox(){fetch("/v1/events").then(r=>r.json()).then(d=>{
+  const e=d.unclassified[0];
+  if(!e){const n=d.needs_receipt.find(x=>x.remembered); if(n){PENDING=n; document.getElementById("s6q").innerHTML=`<span>${n.merchant} · ${Number(n.amount).toFixed(2).replace(".",",")} € — filed as ${n.purpose}, like last time<small>You answered this merchant before, so no question. Just the receipt.</small></span><span>ⓘ</span>`; go("s6");} return;}
+  PENDING=e;
+  document.querySelectorAll("#s5 .opt").forEach(o=>o.classList.toggle("on",o.dataset.p===(e.suggest||"business")));
+  document.getElementById("pcard").textContent=e.card||"Apple Pay";
+  document.getElementById("preceipt").textContent=e.receipt?"attached ✓":"none yet";
+  document.getElementById("pq").innerHTML=`<span>${e.merchant} · ${Number(e.amount).toFixed(2).replace(".",",")} € — what was this for?<small>${e.suggest==="business"?"Paid with your business card, so we assume business. One tap confirms.":"Paid with a private card."} Answer once — this merchant won't ask again on this card.</small></span><span>ⓘ</span>`;
+  go("s5");});}
+function classify(){const purpose=document.querySelector("#s5 .opt.on").dataset.p;
+  fetch("/v1/events/classify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:PENDING.id,purpose})})
+  .then(r=>r.json()).then(d=>{render(d.card); if(purpose==="private"){go("s2");} else {go("s6");}});}
+function receipt(status){fetch("/v1/events/receipt",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:PENDING.id,status})})
+  .then(r=>r.json()).then(d=>{render(d.card); if(status==="ok"){go("s2");} else {
+    document.getElementById("s6q").innerHTML=`<span>${status==="unclear"?"That photo is unreadable — hold still and retake":"That receipt doesn't match 38,40 € at REWE — upload the right one"}<small>The entry stays pending until a usable receipt is attached. Nothing counts yet.</small></span><span>ⓘ</span>`;}});}
+function reupload(id){PENDING={id}; document.getElementById("s6q").innerHTML=`<span>Add or replace the receipt<small>The entry is priced but not counted until the photo is attached.</small></span><span>ⓘ</span>`; go("s6");}
+document.getElementById("tPay").onclick=()=>fetch("/v1/events/transaction",{method:"POST",headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({merchant:"REWE",amount:38.40,card:"Visa •• 4821",receipt:true})}).then(checkInbox);
+function confirmQ(){const cash=document.querySelectorAll(".opt")[1].classList.contains("on");
+  if(cash){alert("Saved. Paid in cash → § 35a gives 0 €. The card now shows this at 0 € with the reason.");}
+  else{alert("Saved to Expenses · Household services · 2026. Position updates.");}
+  go("s2");}
+fetch("/v1/demo/card").then(r=>r.json()).then(c=>{render(c);checkInbox();}).catch(e=>{document.getElementById("pill").textContent="offline";});
+const b1=document.getElementById("tBefore"),b2=document.getElementById("tAfter");
+b1.onclick=()=>{document.getElementById("y2026").hidden=true;b1.classList.add("on");b2.classList.remove("on");go("s1");document.getElementById("next").hidden=true;};
+b2.onclick=()=>{document.getElementById("y2026").hidden=false;b2.classList.add("on");b1.classList.remove("on");go("s1");document.getElementById("next").hidden=false;};
+</script></body></html>
