@@ -132,6 +132,19 @@ What it buys, and this is the pitch:
   it ever exists. At home the receipt is gone. That is why the trigger has to be the payment itself.
 - The flow is one line with no branches: pay, answer, photo, filed. It demos in thirty seconds.
 
+Partners are the exception, and they are also the business model. Where the shop is a partner the digital
+receipt arrives on its own and the photo step falls away: one tap, nothing to hold up. That keeps the rule
+predictable, because the user sees the partner badge on the merchant rather than guessing what the app
+will do this time.
+
+Why a shop signs: our users prefer the shop where filing takes one tap, and the digital receipt saves them
+the paper they are obliged to hand out anyway. That pull is real where the expense is a business one,
+office supply, hardware, fuel, tools, software. Nobody switches supermarket over a receipt, so do not
+claim they will.
+
+One line that must not move: partner status changes how the receipt arrives, never whether something is
+deductible. The moment the tax answer follows the ad budget, the product is finished.
+
 The classifier does not disappear, it changes job. It decides whether to ask at all, so a private card at
 a supermarket never interrupts anyone, and it reads the photo afterwards for amount, VAT, line items and
 merchant, and files the entry. No photo, no entry, and the reminder expires with the day.
