@@ -148,11 +148,18 @@ struct TaxYearView: View {
 }
 
 struct AccountView: View {
+    @EnvironmentObject var m: Model
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 Text("My account").font(.system(size: 26, weight: .heavy)).padding(.horizontal, 16).padding(.top, 24)
                 Text("malek@code.berlin").font(.system(size: 13)).foregroundStyle(.secondary).padding(.horizontal, 16).padding(.top, 4)
+                // demo plumbing: where the phone listens for purchases (LAN IP or the public tunnel)
+                HStack(spacing: 10) {
+                    Image(systemName: "antenna.radiowaves.left.and.right").font(.system(size: 14)).frame(width: 20)
+                    TextField("https://….trycloudflare.com", text: $m.server).font(.system(size: 13)).textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.URL)
+                    Circle().fill(m.error == nil && m.card != nil ? Color.green : Color.orange).frame(width: 8, height: 8)
+                }.padding(.vertical, 10).padding(.horizontal, 16).overlay(Rectangle().frame(height: 1).foregroundStyle(Color.line), alignment: .bottom).padding(.top, 8)
                 Text("Account settings").font(.system(size: 15, weight: .bold)).padding(.horizontal, 16).padding(.top, 20).padding(.bottom, 6)
                 ForEach([("Prefilled tax return", "doc.text"), ("Billing history", "doc.plaintext"), ("Refer a friend", "person.2"), ("My vouchers", "gift"), ("Tax advisor mandate", "square.and.pencil"), ("Tap n' tax cards", "creditcard"), ("Change PIN", "lock"), ("Privacy settings", "shield"), ("Change language", "globe")], id: \.0) { s in
                     HStack(spacing: 12) { Image(systemName: s.1).font(.system(size: 14)).frame(width: 20); Text(s.0).font(.system(size: 15)); Spacer(); Text("›").foregroundStyle(Color(white: 0.7)).font(.system(size: 18)) }

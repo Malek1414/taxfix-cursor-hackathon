@@ -60,16 +60,18 @@ struct Events: Decodable { struct E: Decodable { let id: Int; let merchant: Stri
     func tick() async {
         if offline { return }
         do {
-            let (d, _) = try await URLSession.shared.data(from: URL(string: server + "/v1/events")!)
+            let base = server.trimmingCharacters(in: .whitespacesAndNewlines).trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+            guard let u1 = URL(string: base + "/v1/events"), let u2 = URL(string: base + "/v1/demo/card") else { return }
+            let (d, _) = try await URLSession.shared.data(from: u1)
             let ev = try JSONDecoder().decode(Events.self, from: d)
             if !primed { seen = Set(ev.events.map(\.id)); primed = true }
             for e in ev.events where !seen.contains(e.id) {
                 seen.insert(e.id)
                 if e.purpose == "business" || e.purpose == "work" { notify(e) }
             }
-            let (c, _) = try await URLSession.shared.data(from: URL(string: server + "/v1/demo/card")!)
+            let (c, _) = try await URLSession.shared.data(from: u2)
             card = try JSONDecoder().decode(Card.self, from: c); error = nil
-        } catch { if card == nil { self.error = error.localizedDescription } }
+        } catch { self.error = error.localizedDescription }
     }
     func notify(_ e: Events.E) {
         justFiled = e.merchant
