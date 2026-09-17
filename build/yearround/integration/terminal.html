@@ -12,10 +12,13 @@ body{margin:0;background:#0d0f12;color:#fff;font-family:-apple-system,"SF Pro Di
 .brand{margin-top:26px;font-size:14px;color:#565c66;letter-spacing:.2em}
 </style></head><body><div class="t" id="t">
 <div class="m">REWE · Köpenicker Str.</div><div class="a">38,40 €</div><div class="s">Druckerpapier · Toner · Ordner</div>
-<div class="nfc" id="nfc">📶</div><div class="h" id="h">Hold your phone near the reader</div><div class="brand">PARTNER · DIGITAL RECEIPT</div></div>
+<div class="nfc" id="nfc">📶</div><div class="h" id="h">Hold your phone near the reader</div><div class="brand" id="brand">PARTNER · DIGITAL RECEIPT</div></div>
 <script>
 const t=document.getElementById("t");let done=false;
+// API base: ?api=https://xxx.trycloudflare.com (public tunnel to the Mac), else same origin (localhost demo)
+const API=new URLSearchParams(location.search).get("api")||"";
 function approve(){if(done)return;done=true;t.classList.add("ok");document.getElementById("nfc").textContent="✓";document.getElementById("h").textContent="Approved · VISA •• 4821 · receipt sent to Taxfix";
- fetch("/v1/events/transaction",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({merchant:"REWE",amount:38.40,card:"Business Visa •• 4821",category:"Office supplies",purpose:"business",receipt_status:"ok",partner:true})}).catch(()=>{});}
+ fetch(API+"/v1/events/transaction",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({merchant:"REWE",amount:38.40,card:"Business Visa •• 4821",category:"Office supplies",purpose:"business",receipt_status:"ok",partner:true})}).catch(()=>{});}
+if(API){document.getElementById("brand").textContent="PARTNER · DIGITAL RECEIPT · LINKED";}
 document.body.addEventListener("click",approve);document.body.addEventListener("touchstart",approve,{passive:true});
 </script></body></html>
