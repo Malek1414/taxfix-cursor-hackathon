@@ -16,6 +16,7 @@ Standard library only. CORS open for the demo so a local RN/web client can hit i
 
 Routes
   GET  /                       the home-screen simulator with the card, live
+  GET  /terminal               the iPad card-terminal page for the video hook (tap = approved → posts the purchase)
   GET  /v1/health
   GET  /v1/position?profile=demo                 the number today
   POST /v1/position            {profile}         the number for a real profile
@@ -141,8 +142,9 @@ class H(BaseHTTPRequestHandler):
     def do_GET(self):
         u = urlparse(self.path)
         try:
-            if u.path in ("/", "/index.html", "/simulator"):
-                html = (Path(__file__).resolve().parent / "integration" / "simulator.html").read_bytes()
+            if u.path in ("/", "/index.html", "/simulator", "/terminal"):
+                name = "terminal.html" if u.path == "/terminal" else "simulator.html"
+                html = (Path(__file__).resolve().parent / "integration" / name).read_bytes()
                 self.send_response(200); self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("Content-Length", str(len(html))); self.end_headers(); self.wfile.write(html); return
             if u.path == "/v1/health":

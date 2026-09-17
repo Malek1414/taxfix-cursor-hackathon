@@ -1,0 +1,28 @@
+name: Taxfix
+options:
+  bundleIdPrefix: com.tapntax
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    DEVELOPMENT_TEAM: AHU398M2XY
+    CODE_SIGN_STYLE: Automatic
+    SWIFT_VERSION: "5.9"
+targets:
+  Taxfix:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: Taxfix
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        NSAppTransportSecurity: {NSAllowsArbitraryLoads: true, NSAllowsLocalNetworking: true}
+        NSLocalNetworkUsageDescription: Connects to the Tap n' tax demo server on your Mac.
+        UIBackgroundModes: [fetch]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tapntax.taxfix
+        TARGETED_DEVICE_FAMILY: "1"
