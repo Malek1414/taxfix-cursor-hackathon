@@ -55,6 +55,11 @@ python3 build/yearround/api.py            # localhost:8787 — their home screen
 
 Plan and jury defence: `docs/PLAN.md`. The two-minute script: `docs/PITCH.md`.
 
+**Demo props, no Wi-Fi needed**
+- iPad card terminal (tap = Approved): https://malek1414.github.io/taxfix-cursor-hackathon/
+- Their screens with the 2026 card, static copy: https://malek1414.github.io/taxfix-cursor-hackathon/app.html
+- Native iPhone app (signed build): https://github.com/Malek1414/taxfix-cursor-hackathon/releases/tag/tap-n-tax-demo
+
 ## Try it
 
 ```bash
