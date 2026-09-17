@@ -100,11 +100,14 @@ struct ScanSheet: View {
         HStack { Text(k).font(.system(size: 13)); Spacer(); Text(v).font(.system(size: 13)).foregroundStyle(.secondary).lineLimit(1) }.padding(.vertical, 9).overlay(Rectangle().frame(height: 1).foregroundStyle(Color.line), alignment: .bottom)
     }
     func file(_ s: ReceiptScan) {
-        busy = true
-        var req = URLRequest(url: URL(string: m.server + "/v1/events/transaction")!); req.httpMethod = "POST"
+        // instant: file on the phone, dismiss, tell the server in the background (3 s cap, best effort)
+        m.fileLocally(merchant: s.merchant, amount: s.amount, vatRate: s.vatRate)
+        dismiss()
+        guard let url = URL(string: m.server.trimmingCharacters(in: .whitespacesAndNewlines) + "/v1/events/transaction") else { return }
+        var req = URLRequest(url: url, timeoutInterval: 3); req.httpMethod = "POST"
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         req.httpBody = try? JSONSerialization.data(withJSONObject: ["merchant": s.merchant, "amount": s.amount, "card": "Business Visa •• 4821", "category": "Receipt scan",
                                                                     "purpose": "business", "receipt_status": "ok", "vat_rate": s.vatRate])
-        URLSession.shared.dataTask(with: req) { _, _, _ in DispatchQueue.main.async { busy = false; dismiss() } }.resume()
+        URLSession.shared.dataTask(with: req) { _, _, _ in }.resume()
     }
 }
