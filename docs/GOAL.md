@@ -90,6 +90,30 @@ was for, look the merchant up and propose it.
 Auto filling a reason nobody confirmed would be writing the user's statement for them. Proposing one they
 accept in a tap is the product.
 
+## Line items, and what the agent may learn
+
+A supermarket charge is one number for a basket that was half private. The receipt line items are the
+only thing that splits it, and the shops already have them: REWE and Lidl and dm all issue a digital
+receipt in their own app, with articles and VAT rates on it.
+
+The legal way to get them is the user's own copy, never the shop's app. Three doors, in order: the
+receipt mail forwarded into the same inbox we already match invoices in, the export the user is entitled
+to under GDPR article 20, and the photo. Scraping a shop app or holding a user's login for it is off the
+table, it breaks their terms and it is the kind of thing that ends a partnership conversation. The door
+that scales is a digital receipt network, and Taxfix is big enough to be the one that asks.
+
+The learning agent is the right shape here, with one rule that must not bend: frequency is not a reason.
+
+- Learn per merchant and context, not per merchant alone. Repeat visits to a supermarket are evidence of
+  groceries, not of business. Turning "often at REWE" into an automatic yes is how a user ends up signing
+  a return they never read.
+- Auto file only what the user has answered the same way several times, only under a value limit, and
+  only where the category is unambiguous. Software subscription yes, supermarket no.
+- Everything auto filed appears in the Friday summary as a list that can be revoked with one tap. The
+  user has to be able to see what was decided for them before it is filed.
+- The audit trail stores who decided each entry: rule, model, or human. When the office asks two years
+  later, that column is the difference between an answer and a problem.
+
 ## Two things that must be right
 
 - The saving is not the amount spent. It is the amount times the marginal rate, or the input tax for a
