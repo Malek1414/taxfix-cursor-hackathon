@@ -1,0 +1,6 @@
+.git
+build/yearround/ios/build
+build/yearround/out
+**/__pycache__
+research
+*.pdf

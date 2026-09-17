@@ -58,6 +58,9 @@ Plan and jury defence: `docs/PLAN.md`. The two-minute script: `docs/PITCH.md`.
 **Demo props, no Wi-Fi needed**
 - iPad card terminal (tap = Approved): https://malek1414.github.io/taxfix-cursor-hackathon/
 - Their screens with the 2026 card, static copy: https://malek1414.github.io/taxfix-cursor-hackathon/app.html
+- Hosted server (Sliplane, from this repo's Dockerfile): once deployed, open the terminal as
+  `https://malek1414.github.io/taxfix-cursor-hackathon/?api=https://<service>.sliplane.app`
+  and set the same URL in the app's Account tab (server row). Phone and iPad then need no shared Wi-Fi.
 - Native iPhone app (signed build): https://github.com/Malek1414/taxfix-cursor-hackathon/releases/tag/tap-n-tax-demo
 
 ## Try it

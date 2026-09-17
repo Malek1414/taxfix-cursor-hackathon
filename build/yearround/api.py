@@ -214,6 +214,7 @@ class H(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else PORT
+    import os
+    port = int(sys.argv[1]) if len(sys.argv) > 1 else int(os.environ.get("PORT", PORT))
     print(f"year-round position API on http://{HOST}:{port}  (read-only, files nothing)")
     ThreadingHTTPServer((HOST, port), H).serve_forever()
