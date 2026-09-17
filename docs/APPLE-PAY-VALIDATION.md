@@ -32,7 +32,7 @@ the "Kurzbefehle → in Taxfix" arrow on the whiteboard.
 2. Cards: the business card. Categories: all. Merchants: don't filter. **Run Immediately.**
 3. Action **Ask for Input** → question "Business purchase?" (or skip and default yes).
 4. Action **Get Contents of URL**
-   - URL `http://192.168.112.222:8787/v1/events/transaction` (the Mac's LAN IP; phone on the same Wi-Fi)
+   - URL `http://192.168.113.105:8787/v1/events/transaction` (the Mac's LAN IP; phone on the same Wi-Fi)
    - Method POST, Request Body JSON:
      `merchant` = Shortcut Input › Merchant · `amount` = Shortcut Input › Amount ·
      `card` = Shortcut Input › Card or Pass · `category` = "Office supplies" · `business` = true
@@ -60,7 +60,7 @@ Shortcut is the demo answer, and it is honest: it is what a user can do today.
 ## Live on stage — Sammy's phone (decided 20:05)
 1. Mac: System Settings → General → Sharing → **Internet Sharing** on (share Wi-Fi to Wi-Fi) or use
    the venue Wi-Fi if devices can see each other. On the hotspot the Mac is usually **192.168.2.1**;
-   on venue Wi-Fi it is **192.168.112.222**. Check from the phone: open `http://<ip>:8787/v1/health`.
+   on venue Wi-Fi it is **192.168.113.105**. Check from the phone: open `http://<ip>:8787/v1/health`.
 2. Phone: the Shortcut below, URL pointed at that IP. Card filter: Sammy's business card.
 3. Sammy pays 1 € → the question card appears on the Simulator → tap → photo → row on the card.
 4. **Fallback A:** Sammy runs the Shortcut by hand (same payload, merchant "Taxfix Bar", 1.00).

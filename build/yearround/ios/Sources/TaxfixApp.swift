@@ -39,7 +39,7 @@ struct Card: Decodable {
 struct Events: Decodable { struct E: Decodable { let id: Int; let merchant: String; let amount: Double; let purpose: String?; let receipt: String? }; let events: [E] }
 
 @MainActor final class Model: ObservableObject {
-    @AppStorage("server") var server: String = "http://192.168.112.222:8787"
+    @AppStorage("server") var server: String = "http://192.168.113.105:8787"
     @Published var card: Card?
     @Published var justFiled: String?          // label of the entry that just arrived
     @Published var error: String?
