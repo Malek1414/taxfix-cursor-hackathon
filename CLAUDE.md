@@ -50,9 +50,20 @@ docs/       BRIEF (filled at 19:00), ROTATION (fit gate + matrix),
 tests/      conformance
 ```
 
+## Status at 19:20 on the day
+
+Brief announced and written to `docs/BRIEF.md`. Verdict ROTATE. Surface is
+`build/yearround/` (position + Q4 moves + MCP server + November screen). Pitch
+video upload is a **hard 21:00 deadline**; presentation is 2 minutes.
+Script in `docs/PITCH.md`, plan in `docs/PLAN.md`.
+
 ## Commands
 
 ```bash
+python3 build/yearround/demo.py --stage    # the demo path (2 min)
+python3 build/yearround/demo.py            # 31-case validation, prints the number
+python3 tests/test_yearround.py            # properties + pass bar
+python3 build/yearround/screen.py          # November screen -> out/november.html
 python3 tests/test_pap.py                  # 14 structural conformance checks
 python3 build/bescheid/demo.py             # 40-case validation, prints the number
 python3 build/bescheid/demo.py --stage     # the 3-minute demo path

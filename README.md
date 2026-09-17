@@ -36,6 +36,25 @@ This repo pre-loads the oracles.
 | `core/harness/` | oracle → cases → metric → pass bar → the number | ready |
 | `build/bescheid/` | Bescheid-Check, the default bet | **40/40, 0 silent errors** |
 
+## 17 Sep, 19:00 — the brief dropped, and the spine rotated
+
+Taxfix asked for **voluntary, recurring engagement outside filing season — not
+reminders, not nudges** (`docs/BRIEF.md`). `brownie` said ROTATE. The surface is now
+`build/yearround/`: *your tax position, live* — one number from the BMF algorithm
+that is true all year, and in Q4 the moves that change it before 31 December,
+each cent-exact and cited, with the ones we refuse shown as refusals.
+
+```bash
+python3 build/yearround/demo.py --stage   # the two-minute path: 80 EUR -> 785 EUR, and the refusals
+python3 build/yearround/demo.py           # 31 cases, 0 silent errors, 13/13 adversarial held
+python3 build/yearround/screen.py         # renders the November screen to build/yearround/out/november.html
+python3 tests/test_yearround.py           # 9 properties + the declared pass bar
+python3 build/yearround/mcp_server.py     # stdio MCP server; .cursor/mcp.json registers it in Cursor
+python3 build/yearround/api.py            # localhost:8787 — their home screen with the card, live (open in the iOS Simulator)
+```
+
+Plan and jury defence: `docs/PLAN.md`. The two-minute script: `docs/PITCH.md`.
+
 ## Try it
 
 ```bash

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "taxfix-yearround": {
+      "command": "python3",
+      "args": ["/Users/malekhassan/Desktop/taxfix-cursor-hackathon-project/build/yearround/mcp_server.py"]
+    }
+  }
+}
