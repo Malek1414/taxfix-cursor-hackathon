@@ -68,6 +68,28 @@ mandatory to receive since January 2025, and Malek already built the einvoice re
 charge triggers the case, the e-invoice or the invoice mail closes it, the Eigenbeleg fills the gap that
 is left. That chain is the demo nobody else in the room will have.
 
+## Filling the reason from the register
+
+Sami's idea, and it is the one that makes the single tap possible: do not ask the user what the expense
+was for, look the merchant up and propose it.
+
+- The German commercial register has been free to query since 2022 and carries each company's stated
+  purpose in words. Resolve the merchant, read the purpose, propose the category. Office supplies from a
+  company whose register entry says trade in office goods writes its own line.
+- Resolving the merchant is the hard half. Card descriptors are mangled, "SUMUP *K42" names nobody. Three
+  fallbacks in order: our own history for this user, what other users already answered for that same
+  descriptor, then the register or a places lookup. The merchant category code would settle it outright,
+  and the Wallet trigger does not carry it. Bank data over PSD2 usually does. One more reason the
+  production path is the bank, not the phone.
+- What the register cannot know is why it was business. Deductibility is about the reason for the spend,
+  not the seller's trade. So the register fills the draft and the user confirms it with the same tap that
+  files the entry. Proposed by us, confirmed by them, logged as both.
+- Entertainment stays manual. The law wants the occasion and the people at the table, and no lookup
+  invents those.
+
+Auto filling a reason nobody confirmed would be writing the user's statement for them. Proposing one they
+accept in a tap is the product.
+
 ## Two things that must be right
 
 - The saving is not the amount spent. It is the amount times the marginal rate, or the input tax for a
