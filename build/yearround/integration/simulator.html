@@ -134,7 +134,7 @@ const ICON={handwerker:"🔌",haushalt:"🧹",werbungskosten:"💻",homeoffice:"
 const eur=s=>Number(s).toLocaleString("en-DE",{maximumFractionDigits:0}).replace(/,/g,".")+" €";
 let CARD=null, current=null;
 function go(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("on",s.id===id));window.scrollTo(0,0);
-  const nx=document.getElementById("next"); nx.hidden=(id==="s3"||id==="s4");}
+  const nx=document.getElementById("next"); nx.hidden=(id==="s3"||id==="s4"||id==="s5"||id==="s6");}
 function render(c){CARD=c;
   document.getElementById("pill").textContent=eur(c.headline.amountEur);
   document.getElementById("today").textContent=eur(c.headline.amountEur);
